@@ -72,7 +72,7 @@ class VendorController extends Controller
         }
         $categories=$request->input('categories.*');
         foreach($categories as $category){
-           print_r($category);
+           //print_r($category);
             category_event::create([
                 'vendor_id'=>$vendor[0]->vendor_id,
                 'category'=>$category['category']
