@@ -25,6 +25,7 @@ Route::group(['middleware' => 'auth:api'], function() {
 //Auth::guard('api')->user(); // instance of the logged user
 //Auth::guard('api')->check(); // if a user is authenticated
 //Auth::guard('api')->id(); // the id of the authenticated user   
-
+Route::post('ngo/create', 'NgoController@create'  );
+Route::post('vendor/create','VendorController@create');
 });
 
