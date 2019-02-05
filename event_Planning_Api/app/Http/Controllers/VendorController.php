@@ -10,7 +10,8 @@ use App\category_event;
 use App\payment_method;
 use App\User;
 use Illuminate\Support\Facades\DB;
-
+use App\Http\Resources\Vendor as vendorResource;
+use App\Http\Requests;
 class VendorController extends Controller
 {
     /**
@@ -20,7 +21,22 @@ class VendorController extends Controller
      */
     public function index()
     {
-        //
+        //show all vendors (used by admin currently open for use by others)
+        $vendor= vendor::paginate(15);
+
+        return vendorResource::collection($vendor);
+
+    }
+    public function updateStatus(request $request,$id){
+        $user=User::findOrFail(Auth::guard('api')->id());
+        if($user->user_type=="admin"){
+           if($request->input('status')=="approved"||$request->input('status')=="rejected" ){
+            //$vendor=DB::select("UPDATE vendors SET account_status = $request->input('status') where username = '$user->name'");
+            $vendor=vendor::findOrFail($id);
+            $status=$request->input('status');
+            $vendor->update(["account_status" => "$status"]);
+            }
+    }
     }
 
     /**

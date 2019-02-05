@@ -8,7 +8,7 @@ class category_event extends Model
 {
     //
     protected $table = 'category_events';
-    protected $primarykey = 'id';
+    protected $primaryKey = 'id';
     public $timestamps = false;
     protected $fillable = [
         'vendor_id',

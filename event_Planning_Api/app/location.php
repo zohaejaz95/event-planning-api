@@ -8,7 +8,7 @@ class location extends Model
 {
     //
     protected $table = 'locations';
-    protected $primarykey = 'id';
+    protected $primaryKey = 'id';
     public $timestamps = false;
     protected $fillable = [
         'vendor_id',

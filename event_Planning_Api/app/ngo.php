@@ -8,7 +8,7 @@ class ngo extends Model
 {
     //
     protected $table = 'ngos';
-    protected $primarykey = 'ngo_id';
+    protected $primaryKey = 'ngo_id';
     public $timestamps = false;
     protected $fillable = [
         'ngo_name',

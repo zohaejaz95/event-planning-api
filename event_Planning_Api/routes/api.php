@@ -27,5 +27,11 @@ Route::group(['middleware' => 'auth:api'], function() {
 //Auth::guard('api')->id(); // the id of the authenticated user   
 Route::post('ngo/create', 'NgoController@create'  );
 Route::post('vendor/create','VendorController@create');
+Route::post('customer/create','CustomerController@create');
+Route::get('customers','CustomerController@index');
+Route::get('vendors','VendorController@index');
+Route::get('NGOs','NgoController@index');
+Route::put('admin/vendor/update/{id}','VendorController@updateStatus');
+Route::put('admin/NGO/update/{id}','NgoController@updateStatus');
 });
 
