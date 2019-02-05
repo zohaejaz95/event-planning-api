@@ -33,5 +33,12 @@ Route::get('vendors','VendorController@index');
 Route::get('NGOs','NgoController@index');
 Route::put('admin/vendor/update/{id}','VendorController@updateStatus');
 Route::put('admin/NGO/update/{id}','NgoController@updateStatus');
+Route::get('admin/NGO/approved/','NgoController@approved');
+Route::get('admin/NGO/rejected/','NgoController@rejected');
+Route::get('admin/NGO/pending/','NgoController@pending');
+Route::get('admin/vendor/approved/','VendorController@approved');
+Route::get('admin/vendor/rejected/','VendorController@rejected');
+Route::get('admin/vendor/pending/','VendorController@pending');
+
 });
 

@@ -32,6 +32,27 @@ class NgoController extends Controller
             }
     }
     }
+    public function approved(request $request){
+        $user=User::findOrFail(Auth::guard('api')->id());
+        if($user->user_type=="admin"){
+            $ngo=ngo::where('status','approved')->paginate(15);
+            return ngoResource::collection($ngo);
+        }
+    }
+    public function rejected(request $request){
+        $user=User::findOrFail(Auth::guard('api')->id());
+        if($user->user_type=="admin"){
+            $ngo=ngo::where('status','rejected')->paginate(15);
+            return ngoResource::collection($ngo);
+        }
+    }
+    public function pending(request $request){
+        $user=User::findOrFail(Auth::guard('api')->id());
+        if($user->user_type=="admin"){
+            $ngo=ngo::where('status','pending')->paginate(15);
+            return ngoResource::collection($ngo);
+        }
+    }
 
     /**
      * Show the form for creating a new resource.
