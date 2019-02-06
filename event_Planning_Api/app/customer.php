@@ -17,5 +17,13 @@ class customer extends Model
         'email',
         'username'
     ];
+    public function contact_lists()
+    {
+        return $this->hasMany('App\contact_list');
+    }
+    public function customer_events()
+    {
+        return $this->hasMany('App\customer_event');
+    }
     //
 }

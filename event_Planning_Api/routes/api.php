@@ -40,6 +40,7 @@ Route::get('admin/NGO/pending/','NgoController@pending');
 Route::get('admin/vendor/approved/','VendorController@approved');
 Route::get('admin/vendor/rejected/','VendorController@rejected');
 Route::get('admin/vendor/pending/','VendorController@pending');
-
+Route::post('customer/newevent/','customerEventController@store');
+Route::get('customer/events','customerEventController@index');
 });
 
