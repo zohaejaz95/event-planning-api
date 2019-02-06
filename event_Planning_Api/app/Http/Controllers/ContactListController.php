@@ -1,8 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\contact_list;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Auth;
+use App\User;
+use App\Http\Requests;
+use App\Http\Resources\contactlist as clist;
 
 class ContactListController extends Controller
 {
@@ -13,7 +18,10 @@ class ContactListController extends Controller
      */
     public function index()
     {
-        //
+        $user=User::findOrFail(Auth::guard('api')->id());
+        $customer=DB::select("select customer_id from customers where username = '$user->name'");
+        $clist=contact_list::where('customer_id',$customer[0]->customer_id)->paginate(15);
+        return clist::collection($clist);
     }
 
     /**
@@ -35,6 +43,61 @@ class ContactListController extends Controller
     public function store(Request $request)
     {
         //
+        $user=User::findOrFail(Auth::guard('api')->id());
+        $customer=DB::select("select customer_id from customers where username = '$user->name'");
+        if ($request->has('province')) {
+            $province=$request->input('province');
+        }
+        if ($request->has('city')) {
+            $city=$request->input('city');
+        }
+       
+        if($user->user_type=="customer"||$request->has('city')||$request->has('province') ){
+            $event=contact_list::create([
+                'first_name'=> $request->input('first_name'),
+                'last_name'=> $request->input('last_name'),
+                'contact'=> $request->input('contact'),
+                'address'=> $request->input('address'),
+                'email'=> $request->input('email'),
+                'province'=>$province,
+                'city'=>$city, 
+                'customer_id'=>$customer[0]->customer_id 
+            ]);
+        }
+        else if($user->user_type=="customer"||$request->has('province') ){
+            $event=contact_list::create([
+                'first_name'=> $request->input('first_name'),
+                'last_name'=> $request->input('last_name'),
+                'contact'=> $request->input('contact'),
+                'address'=> $request->input('address'),
+                'email'=> $request->input('email'),
+                'province'=>$province,
+                 
+                'customer_id'=>$customer[0]->customer_id 
+            ]);
+        }
+        else if($user->user_type=="customer"||$request->has('city') ){
+            $event=contact_list::create([
+                'first_name'=> $request->input('first_name'),
+                'last_name'=> $request->input('last_name'),
+                'contact'=> $request->input('contact'),
+                'address'=> $request->input('address'),
+                'email'=> $request->input('email'),
+                
+                'city'=>$city, 
+                'customer_id'=>$customer[0]->customer_id 
+            ]);
+        }
+        else if($user->user_type=="customer"||!$request->has('city')||!$request->has('province') ){
+            $event=contact_list::create([
+                'first_name'=> $request->input('first_name'),
+                'last_name'=> $request->input('last_name'),
+                'contact'=> $request->input('contact'),
+                'address'=> $request->input('address'),
+                'email'=> $request->input('email'), 
+                'customer_id'=>$customer[0]->customer_id 
+            ]);
+        }
     }
 
     /**

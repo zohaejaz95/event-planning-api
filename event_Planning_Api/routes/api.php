@@ -42,5 +42,7 @@ Route::get('admin/vendor/rejected/','VendorController@rejected');
 Route::get('admin/vendor/pending/','VendorController@pending');
 Route::post('customer/newevent/','customerEventController@store');
 Route::get('customer/events','customerEventController@index');
+Route::post('customer/newcontact/','ContactListController@store');
+Route::get('customer/contacts','ContactListController@index');
 });
 
