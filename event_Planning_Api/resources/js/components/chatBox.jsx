@@ -22,7 +22,7 @@ class ChatBox extends Component {
                 </Row>
 
                 <hr />
-                <Row style={{ height: 700 }}>
+                <Row style={{ height: 400 }}>
                     <Col span={22} offset={1}>
                         <p
                             style={{

@@ -87,13 +87,16 @@ class Packages extends Component {
                     <h4>Package Name</h4>
                 </span>
                 <br />
-                <p>Email: </p>
-                <p>Website: </p>
-                <p>Contact:</p>
-                <p>City/ies: </p>
-                <p>Events: </p>
-                <p>Payment Methods:</p>
+                <p>Service: </p>
+                <p>Price: </p>
+
                 <p>Description: </p>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Saepe numquam eveniet quo esse debitis mollitia, ratione
+                    maiores, quidem deleniti quam inventore voluptatum cumque
+                    vitae commodi nobis reprehenderit natus provident dolores.
+                </p>
                 <br />
             </div>
         );

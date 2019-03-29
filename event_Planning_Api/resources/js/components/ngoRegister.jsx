@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import { Form, Icon, Input, Button, Checkbox, Row, Col } from "antd";
+import { Form, Icon, Input, Button, Checkbox, Row, Col, Select } from "antd";
 
 import loginImage from "../images/Pakistani-Wedding.png";
 
+const { TextArea } = Input;
+const Option = Select.Option;
 class ngoRegister extends Component {
     constructor() {
         super();
@@ -18,6 +20,15 @@ class ngoRegister extends Component {
     }
     render() {
         const { getFieldDecorator } = this.props.form;
+        const selectAfterW = (
+            <Select defaultValue=".com" style={{ width: 80 }}>
+                <Option value=".com">.com</Option>
+                <Option value=".net">.net</Option>
+                <Option value=".pk">.pk</Option>
+                <Option value=".org">.org</Option>
+            </Select>
+        );
+
         return (
             <div className="contents">
                 <br />
@@ -56,31 +67,7 @@ class ngoRegister extends Component {
                                                 }}
                                             />
                                         }
-                                        placeholder="First Name"
-                                    />
-                                )}
-                            </Form.Item>
-
-                            <Form.Item>
-                                {getFieldDecorator("lastName", {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message:
-                                                "Please input your Last Name!"
-                                        }
-                                    ]
-                                })(
-                                    <Input
-                                        prefix={
-                                            <Icon
-                                                type="user"
-                                                style={{
-                                                    color: "rgba(0,0,0,.25)"
-                                                }}
-                                            />
-                                        }
-                                        placeholder="Last Name"
+                                        placeholder="Organization Name"
                                     />
                                 )}
                             </Form.Item>
@@ -110,28 +97,12 @@ class ngoRegister extends Component {
                             </Form.Item>
 
                             <Form.Item>
-                                {getFieldDecorator("address", {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message:
-                                                "Please input your address!"
-                                        }
-                                    ]
-                                })(
-                                    <Input
-                                        prefix={
-                                            <Icon
-                                                type="home"
-                                                style={{
-                                                    color: "rgba(0,0,0,.25)"
-                                                }}
-                                            />
-                                        }
-                                        placeholder="Address"
-                                    />
-                                )}
+                                <Input
+                                    addonAfter={selectAfterW}
+                                    placeholder="Please input your website"
+                                />
                             </Form.Item>
+
                             <Form.Item>
                                 {getFieldDecorator("email", {
                                     rules: [
@@ -158,6 +129,12 @@ class ngoRegister extends Component {
                                         placeholder="Email"
                                     />
                                 )}
+                            </Form.Item>
+                            <Form.Item>
+                                <TextArea
+                                    rows={4}
+                                    placeholder="Enter Description"
+                                />
                             </Form.Item>
                             <Form.Item>
                                 {getFieldDecorator("userName", {
@@ -206,6 +183,7 @@ class ngoRegister extends Component {
                                     />
                                 )}
                             </Form.Item>
+
                             <Form.Item className="text-to-left">
                                 {getFieldDecorator("remember", {
                                     valuePropName: "checked",

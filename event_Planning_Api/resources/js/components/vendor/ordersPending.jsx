@@ -88,6 +88,9 @@ class OrdersPending extends Component {
                                         key={item.num}
                                         style={customPanelStyle}
                                     >
+                                        <p>Service/Package Name:</p>
+                                        <p>Payment Method:</p>
+                                        <p>Description:</p>
                                         <p>
                                             Lorem, ipsum dolor sit amet
                                             consectetur adipisicing elit.
@@ -97,7 +100,6 @@ class OrdersPending extends Component {
                                             voluptatibus doloribus fugiat eum
                                             ratione quibusdam dicta eius.
                                         </p>
-
                                         <Checkbox onClick={showDeleteConfirm}>
                                             Mark as Complete
                                         </Checkbox>

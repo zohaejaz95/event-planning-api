@@ -1,7 +1,11 @@
 import React, { Component } from "react";
-import { Form, Icon, Input, Button, Checkbox, Row, Col } from "antd";
+import { Form, Icon, Select, Input, Button, Checkbox, Row, Col } from "antd";
 
 import loginImage from "../images/form-img.jpg";
+function onChange(checkedValues) {
+    console.log("checked = ", checkedValues);
+}
+
 class VendorRegister extends Component {
     constructor() {
         super();
@@ -15,8 +19,20 @@ class VendorRegister extends Component {
             }
         });
     }
+
     render() {
         const { getFieldDecorator } = this.props.form;
+        const { TextArea } = Input;
+        const Option = Select.Option;
+        const selectAfterW = (
+            <Select defaultValue=".com" style={{ width: 80 }}>
+                <Option value=".com">.com</Option>
+                <Option value=".jp">.jp</Option>
+                <Option value=".cn">.cn</Option>
+                <Option value=".org">.org</Option>
+            </Select>
+        );
+
         return (
             <div className="contents">
                 <br />
@@ -109,6 +125,13 @@ class VendorRegister extends Component {
                             </Form.Item>
 
                             <Form.Item>
+                                <Input
+                                    addonAfter={selectAfterW}
+                                    placeholder="mysite"
+                                />
+                            </Form.Item>
+
+                            <Form.Item>
                                 {getFieldDecorator("address", {
                                     rules: [
                                         {
@@ -158,6 +181,43 @@ class VendorRegister extends Component {
                                     />
                                 )}
                             </Form.Item>
+
+                            <Form.Item>
+                                <TextArea
+                                    rows={4}
+                                    placeholder="Enter Description"
+                                />
+                            </Form.Item>
+
+                            <Form.Item>
+                                <div className="text-to-left">
+                                    <label>Cities:</label>
+                                    <br />{" "}
+                                </div>
+                                <Checkbox.Group
+                                    style={{ width: "100%" }}
+                                    onChange={onChange}
+                                >
+                                    <Row>
+                                        <Col span={8}>
+                                            <Checkbox value="Islamabad">
+                                                Islamabad
+                                            </Checkbox>
+                                        </Col>
+                                        <Col span={8}>
+                                            <Checkbox value="Lahore">
+                                                Lahore
+                                            </Checkbox>
+                                        </Col>
+                                        <Col span={8}>
+                                            <Checkbox value="Karachi">
+                                                Karachi
+                                            </Checkbox>
+                                        </Col>
+                                    </Row>
+                                </Checkbox.Group>
+                                ,
+                            </Form.Item>
                             <Form.Item>
                                 {getFieldDecorator("userName", {
                                     rules: [
@@ -205,6 +265,7 @@ class VendorRegister extends Component {
                                     />
                                 )}
                             </Form.Item>
+
                             <Form.Item className="text-to-left">
                                 {getFieldDecorator("remember", {
                                     valuePropName: "checked",

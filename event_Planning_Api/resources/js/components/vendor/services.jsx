@@ -87,13 +87,17 @@ class Services extends Component {
                     <h4>Service Name</h4>
                 </span>
                 <br />
-                <p>Email: </p>
-                <p>Website: </p>
-                <p>Contact:</p>
-                <p>City/ies: </p>
-                <p>Events: </p>
-                <p>Payment Methods:</p>
+                <p>Event Type: </p>
+                <p>Category: </p>
+                <p>Price:</p>
                 <p>Description: </p>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                    Aliquid quod nostrum inventore sit accusantium alias,
+                    maiores quo cumque, error perferendis at et quasi sequi,
+                    distinctio assumenda dicta ea officia in.
+                </p>
+                <p>More according to category</p>
                 <br />
             </div>
         );

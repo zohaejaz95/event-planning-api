@@ -1,6 +1,19 @@
 import React, { Component } from "react";
-import { Form, Icon, Input, Button, Checkbox, Row, Col } from "antd";
+import {
+    Form,
+    Input,
+    InputNumber,
+    Select,
+    Button,
+    Checkbox,
+    Row,
+    Col
+} from "antd";
 
+import loginImage from "../../images/Pakistani-Wedding.png";
+function onChange(value) {
+    console.log("changed", value);
+}
 class SponsorshipForm extends Component {
     constructor() {
         super();
@@ -15,195 +28,73 @@ class SponsorshipForm extends Component {
         });
     }
     render() {
-        const { getFieldDecorator } = this.props.form;
+        const Option = Select.Option;
+        const selectAfter = (
+            <Select defaultValue="service1" style={{ width: 100 }}>
+                <Option value="service1">service1</Option>
+                <Option value="service2">service2</Option>
+            </Select>
+        );
         return (
             <div className="contents">
                 <Row>
-                    <Col span={12} offset={6}>
-                        <h4 className="text-to-left">Sponsorship Form</h4>
+                    <Col span={8} offset={3}>
+                        <img src={loginImage} alt="" className="myImage" />
+                    </Col>
+                    <Col span={12} offset={1}>
+                        <h4 className="text-to-left">Sponsorship</h4>
                         <br />
                         <Form
                             onSubmit={this.handleSubmit}
                             className="login-form "
                         >
                             <Form.Item>
-                                {getFieldDecorator("firstName", {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message:
-                                                "Please input your First Name!"
-                                        }
-                                    ]
-                                })(
-                                    <Input
-                                        prefix={
-                                            <Icon
-                                                type="user"
-                                                style={{
-                                                    color: "rgba(0,0,0,.25)"
-                                                }}
-                                            />
-                                        }
-                                        placeholder="First Name"
-                                    />
-                                )}
-                            </Form.Item>
+                                <div className="text-to-left">
+                                    <label>Type:</label>
+                                    <br />{" "}
+                                </div>
 
-                            <Form.Item>
-                                {getFieldDecorator("lastName", {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message:
-                                                "Please input your Last Name!"
-                                        }
-                                    ]
-                                })(
-                                    <Input
-                                        prefix={
-                                            <Icon
-                                                type="user"
-                                                style={{
-                                                    color: "rgba(0,0,0,.25)"
-                                                }}
-                                            />
-                                        }
-                                        placeholder="Last Name"
-                                    />
-                                )}
-                            </Form.Item>
-
-                            <Form.Item>
-                                {getFieldDecorator("contact", {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message:
-                                                "Please input your Contact No.!"
-                                        }
-                                    ]
-                                })(
-                                    <Input
-                                        prefix={
-                                            <Icon
-                                                type="phone"
-                                                style={{
-                                                    color: "rgba(0,0,0,.25)"
-                                                }}
-                                            />
-                                        }
-                                        placeholder="Contact No."
-                                    />
-                                )}
-                            </Form.Item>
-
-                            <Form.Item>
-                                {getFieldDecorator("address", {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message:
-                                                "Please input your address!"
-                                        }
-                                    ]
-                                })(
-                                    <Input
-                                        prefix={
-                                            <Icon
-                                                type="home"
-                                                style={{
-                                                    color: "rgba(0,0,0,.25)"
-                                                }}
-                                            />
-                                        }
-                                        placeholder="Address"
-                                    />
-                                )}
-                            </Form.Item>
-                            <Form.Item>
-                                {getFieldDecorator("email", {
-                                    rules: [
-                                        {
-                                            type: "email",
-                                            message:
-                                                "The input is not valid E-mail!"
-                                        },
-                                        {
-                                            required: true,
-                                            message: "Please input your E-mail!"
-                                        }
-                                    ]
-                                })(
-                                    <Input
-                                        prefix={
-                                            <Icon
-                                                type="mail"
-                                                style={{
-                                                    color: "rgba(0,0,0,.25)"
-                                                }}
-                                            />
-                                        }
-                                        placeholder="Email"
-                                    />
-                                )}
-                            </Form.Item>
-                            <Form.Item>
-                                {getFieldDecorator("userName", {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message:
-                                                "Please input your username!"
-                                        }
-                                    ]
-                                })(
-                                    <Input
-                                        prefix={
-                                            <Icon
-                                                type="user"
-                                                style={{
-                                                    color: "rgba(0,0,0,.25)"
-                                                }}
-                                            />
-                                        }
-                                        placeholder="Username"
-                                    />
-                                )}
-                            </Form.Item>
-                            <Form.Item>
-                                {getFieldDecorator("password", {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message:
-                                                "Please input your Password!"
-                                        }
-                                    ]
-                                })(
-                                    <Input
-                                        prefix={
-                                            <Icon
-                                                type="lock"
-                                                style={{
-                                                    color: "rgba(0,0,0,.25)"
-                                                }}
-                                            />
-                                        }
-                                        type="password"
-                                        placeholder="Password"
-                                    />
-                                )}
-                            </Form.Item>
-                            <Form.Item className="text-to-left">
-                                <Button
-                                    type="primary"
-                                    htmlType="submit"
-                                    className="login-form-button"
+                                <Checkbox.Group
+                                    style={{ width: "100%" }}
+                                    onChange={onChange}
                                 >
-                                    Submit
-                                </Button>
+                                    <Row>
+                                        <Col span={8}>
+                                            <Checkbox value="Financial">
+                                                Financial
+                                            </Checkbox>
+                                        </Col>
+                                        <Col span={8}>
+                                            <Checkbox value="Services">
+                                                Services
+                                            </Checkbox>
+                                        </Col>
+                                    </Row>
+                                </Checkbox.Group>
                             </Form.Item>
+                            <Form.Item>
+                                <InputNumber
+                                    style={{ width: 300 }}
+                                    min={1}
+                                    max={1000000}
+                                    onChange={onChange}
+                                    placeholder="Amount"
+                                />
+                            </Form.Item>
+                            <Form.Item>
+                                <Input
+                                    addonAfter={selectAfter}
+                                    placeholder="Services"
+                                />
+                            </Form.Item>
+
+                            <Button
+                                type="primary"
+                                htmlType="submit"
+                                className="login-form-button"
+                            >
+                                Submit
+                            </Button>
                         </Form>
                     </Col>
                 </Row>

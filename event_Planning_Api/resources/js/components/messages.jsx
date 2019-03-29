@@ -43,7 +43,7 @@ class Messages extends Component {
                                 defaultSelectedKeys={["0"]}
                                 mode="inline"
                                 theme="light"
-                                style={{ height: 720 }}
+                                style={{ height: 440 }}
                             >
                                 {this.state.data.map((data, i) => (
                                     <Menu.Item key={i}>

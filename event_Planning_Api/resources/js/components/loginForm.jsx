@@ -2,17 +2,48 @@ import React, { Component } from "react";
 import { Form, Icon, Input, Button, Checkbox, Row, Col } from "antd";
 
 import loginImage from "../images/Pakistani-Wedding.png";
-
+import { userLogin } from "./userFunction";
 class LoginForm extends Component {
     constructor() {
         super();
+        this.state = {
+            email: "",
+            password: "",
+            usertype: "admin",
+            errors: {}
+        };
+        this.onChange = this.onChange.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+    onChange(e) {
+        this.setState({ [e.target.name]: e.target.value });
+        //console.log(this.state.usertype);
+    }
+    onSubmit(e) {
+        e.preventDefault();
+        const user = {
+            email: this.state.email,
+            password: this.state.password
+        };
+        console.log(this.state.usertype);
+        userLogin(user).then(res => {
+            if (res) {
+                this.props.history.push(this.state.usertype);
+            }
+        });
     }
     handleSubmit(e) {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log("Received values of form: ", values);
+                userLogin(values).then(res => {
+                    if (res) {
+                        console.log(res.user_type);
+                        history.push(res.user_type);
+                    }
+                });
             }
         });
     }
@@ -55,6 +86,7 @@ class LoginForm extends Component {
                                             />
                                         }
                                         placeholder="Email"
+                                        onChange={this.onChange}
                                     />
                                 )}
                             </Form.Item>
@@ -79,14 +111,12 @@ class LoginForm extends Component {
                                         }
                                         type="password"
                                         placeholder="Password"
+                                        onChange={this.onChange}
                                     />
                                 )}
                             </Form.Item>
                             <Form.Item className="text-to-left">
-                                {getFieldDecorator("remember", {
-                                    valuePropName: "checked",
-                                    initialValue: true
-                                })(<Checkbox>Remember me</Checkbox>)}
+                                <Checkbox>Remember me</Checkbox>)
                                 <a className="login-form-forgot" href="/">
                                     Forgot password
                                 </a>

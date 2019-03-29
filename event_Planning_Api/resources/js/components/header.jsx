@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Menu, Icon, Button } from "antd";
-//import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 //import { Button } from "reactstrap";
 import Login from "./login";
 import CustomerRegister from "./customerRegister";
@@ -88,9 +88,11 @@ class Header extends Component {
                         <MenuItemGroup>
                             <Menu.Item>
                                 Are you a Vendor?
-                                <Button type="primary" className="m-2">
-                                    Register Now
-                                </Button>
+                                <Link to="/vendor/register">
+                                    <Button type="primary" className="m-2">
+                                        Register Now
+                                    </Button>
+                                </Link>
                             </Menu.Item>
                         </MenuItemGroup>
                     </SubMenu>

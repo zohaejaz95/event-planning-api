@@ -13,7 +13,7 @@ import Home from "./components/home";
 import NGO from "./components/ngo";
 import Contact from "./components/contactUs";
 import Admin from "./components/admin";
-import NGOSignup from "./components/ngoRegister";
+import NGORegister from "./components/ngoRegister";
 import VendorSignup from "./components/vendorRegister";
 import Vendor from "./components/vendor";
 import Customer from "./components/customer";
@@ -43,7 +43,7 @@ export default class App extends Component {
                         <Route
                             exact
                             path="/ngo/register"
-                            component={NGOSignup}
+                            component={NGORegister}
                         />
                         <Route
                             exact

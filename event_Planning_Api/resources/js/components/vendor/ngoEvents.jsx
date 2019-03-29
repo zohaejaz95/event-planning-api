@@ -106,13 +106,17 @@ class NGOEvents extends Component {
                     <h5>NGO Name</h5>
                 </span>
                 <br />
-                <p>Email: </p>
-                <p>Website: </p>
-                <p>Contact:</p>
-                <p>City/ies: </p>
-                <p>Events: </p>
-                <p>Payment Methods:</p>
-                <p>Description: </p>
+                <p>Subject: </p>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Deleniti accusantium consequatur numquam, nulla at omnis
+                    iusto molestias facilis inventore nostrum tenetur beatae
+                    dolorum ad eligendi, maxime exercitationem sequi repudiandae
+                    obcaecati!
+                </p>
+                <p>Time: </p>
+                <p>Date:</p>
+                <p>Required Fund: </p>
                 <br />
                 <Button type="primary" onClick={this.toggleSponsor.bind(this)}>
                     Accept
@@ -131,7 +135,7 @@ class NGOEvents extends Component {
                     <h5>NGO Name</h5>
                 </span>
                 <br />
-                financial or service?
+
                 <SponsorshipForm />
                 <Button type="danger" onClick={this.toggleDetail.bind(this)}>
                     Cancel
