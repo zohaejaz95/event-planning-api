@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Form, Icon, Input, Button, Checkbox, Row, Col } from "antd";
 
-import loginImage from "../images/Pakistani-Wedding.png";
 class AddService extends Component {
     constructor() {
         super();
@@ -24,10 +23,7 @@ class AddService extends Component {
                 <br />
                 <br />
                 <Row>
-                    <Col span={8} offset={3}>
-                        <img src={loginImage} alt="" className="myImage" />
-                    </Col>
-                    <Col span={12} offset={1}>
+                    <Col span={12} offset={6}>
                         <h4 className="text-to-left">
                             Vendor Signup to EventEra
                         </h4>

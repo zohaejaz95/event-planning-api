@@ -53,7 +53,7 @@ class VendorInfo extends Component {
                                     type="primary"
                                     onClick={this.toggleDetail.bind(this)}
                                 >
-                                    View Detail
+                                    View Details
                                 </Button>
                             </List.Item>
                         </div>

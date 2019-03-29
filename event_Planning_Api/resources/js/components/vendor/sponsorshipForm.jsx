@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Form, Icon, Input, Button, Checkbox, Row, Col } from "antd";
 
-import loginImage from "../images/Pakistani-Wedding.png";
 class SponsorshipForm extends Component {
     constructor() {
         super();
@@ -19,18 +18,9 @@ class SponsorshipForm extends Component {
         const { getFieldDecorator } = this.props.form;
         return (
             <div className="contents">
-                <br />
-                <br />
-                <br />
-                <br />
                 <Row>
-                    <Col span={8} offset={3}>
-                        <img src={loginImage} alt="" className="myImage" />
-                    </Col>
-                    <Col span={12} offset={1}>
-                        <h4 className="text-to-left">
-                            Vendor Signup to EventEra
-                        </h4>
+                    <Col span={12} offset={6}>
+                        <h4 className="text-to-left">Sponsorship Form</h4>
                         <br />
                         <Form
                             onSubmit={this.handleSubmit}
@@ -206,23 +196,13 @@ class SponsorshipForm extends Component {
                                 )}
                             </Form.Item>
                             <Form.Item className="text-to-left">
-                                {getFieldDecorator("remember", {
-                                    valuePropName: "checked",
-                                    initialValue: true
-                                })(<Checkbox>Remember me</Checkbox>)}
-                                <a className="login-form-forgot" href="/">
-                                    Forgot password
-                                </a>
-                                <br />
                                 <Button
                                     type="primary"
                                     htmlType="submit"
                                     className="login-form-button"
                                 >
-                                    Register
+                                    Submit
                                 </Button>
-                                <br />
-                                Or <a href="/">login now!</a>
                             </Form.Item>
                         </Form>
                     </Col>
