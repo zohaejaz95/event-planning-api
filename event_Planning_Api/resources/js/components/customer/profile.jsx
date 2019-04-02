@@ -1,16 +1,7 @@
 import React, { Component } from "react";
 import { Statistic, Card, Row, Col, Icon } from "antd";
 
-//import ProfilePic from "../profilePic";
-
 import Avatar from "../../images/avatar.jpg";
-//import { Layout } from "antd";
-//import { Link } from "react-router-dom";
-
-//import CustNavBar from "../custNavBar";
-//import Customer from "../customer";
-
-//const { Content } = Layout;
 
 class CustProfile extends Component {
     render() {
@@ -25,14 +16,10 @@ class CustProfile extends Component {
                         offset={1}
                         style={{ background: "#ECECEC", padding: "30px" }}
                     >
-                        <h4>My name</h4>
-                        <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Iste ipsam doloribus mollitia minima a enim
-                            sit, aliquid amet temporibus eum autem recusandae
-                            culpa vel perspiciatis dolorem repellendus similique
-                            deleniti laudantium?
-                        </p>
+                        <h4>Customer name</h4>
+                        <p>Email: </p>
+                        <p>Contact:</p>
+                        <p>Address: </p>
                     </Col>
                 </Row>
                 <br />

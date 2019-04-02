@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { List, Avatar, Button, Icon } from "antd";
+import ReactPlayer from "react-player";
+
 //import VendorDetail from "../admin/vendorDetail";
 import avatar from "../../images/avatar.jpg";
 
@@ -86,6 +88,11 @@ class Packages extends Component {
                 <span>
                     <h4>Package Name</h4>
                 </span>
+                <br />
+                <ReactPlayer
+                    url="https://www.youtube.com/watch?v=lqx5ocbekWA"
+                    playing
+                />
                 <br />
                 <p>Service: </p>
                 <p>Price: </p>
