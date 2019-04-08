@@ -16,7 +16,7 @@ class NGO extends Component {
                 <div className="ngo-reg">
                     <h3>Come together for a better cause.</h3>
                     <h6>Get quality sponsors for your events or projects.</h6>
-                    <Link to="/ngo/register">
+                    <Link to="/ngos/register">
                         <button className="btn btn-success">
                             Register Now
                         </button>

@@ -29,7 +29,7 @@ export default class App extends Component {
                     <Header />
                     <Route exact path="/" component={Home} />
                     <div>
-                        <Route exact path="/ngo" component={NGO} />
+                        <Route exact path="/ngos" component={NGO} />
                         <Route exact path="/contact-us" component={Contact} />
                         <Route exact path="/admin" component={Admin} />
 
@@ -42,14 +42,10 @@ export default class App extends Component {
 
                         <Route
                             exact
-                            path="/ngo/register"
+                            path="/ngos/register"
                             component={NGORegister}
                         />
-                        <Route
-                            exact
-                            path="/ngo/profile"
-                            component={NGOSidebar}
-                        />
+                        <Route exact path="/ngo" component={NGOSidebar} />
 
                         <Route exact path="/customer" component={Customer} />
                     </div>
