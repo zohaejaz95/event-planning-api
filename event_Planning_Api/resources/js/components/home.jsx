@@ -121,7 +121,7 @@ class Home extends Component {
                     ))}
                 </Row>
                 <div className="text-to-right" style={{ paddingRight: "10%" }}>
-                    <Link to="/">View more</Link>
+                    <Link to="/services">View more</Link>
                 </div>
 
                 <br />
