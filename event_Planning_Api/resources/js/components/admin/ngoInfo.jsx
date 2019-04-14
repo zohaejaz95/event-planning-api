@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { List, Avatar, Button, Icon, Progress } from "antd";
+import { List, Avatar, Button, Icon, Progress, Tooltip } from "antd";
 //import NGODetail from "../admin/ngoDetail";
 import avatar from "../../images/avatar.jpg";
 
@@ -103,17 +103,24 @@ class NGOInfo extends Component {
         return (
             <div>
                 <div>
-                    <Progress type="circle" percent={30} width={80} />
+                    <Tooltip placement="top" title="Total NGOs">
+                        <Progress type="circle" percent={30} width={80} />
+                    </Tooltip>
                     <span />
-                    <Progress
-                        type="circle"
-                        percent={70}
-                        width={80}
-                        status="exception"
-                        className="m-4 "
-                    />
+                    <Tooltip placement="top" title="Pending Accounts ">
+                        <Progress
+                            type="circle"
+                            percent={70}
+                            width={80}
+                            status="exception"
+                            className="m-4 "
+                        />
+                    </Tooltip>
+
                     <span />
-                    <Progress type="circle" percent={100} width={80} />
+                    <Tooltip placement="top" title="Approved">
+                        <Progress type="circle" percent={100} width={80} />
+                    </Tooltip>
                 </div>
                 <hr />
                 <br />

@@ -29,7 +29,7 @@ class LoginForm extends Component {
         console.log(this.state.usertype);
         userLogin(user).then(res => {
             if (res) {
-                this.props.history.push(this.state.usertype);
+                history.push(this.state.usertype);
             }
         });
     }
@@ -40,8 +40,8 @@ class LoginForm extends Component {
                 console.log("Received values of form: ", values);
                 userLogin(values).then(res => {
                     if (res) {
-                        console.log(res.user_type);
-                        history.push(res.user_type);
+                        console.log(res.data.user_type);
+                        this.props.history.push("/admin");
                     }
                 });
             }

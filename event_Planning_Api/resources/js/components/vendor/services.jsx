@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { List, Avatar, Button, Icon } from "antd";
-//import VendorDetail from "../admin/vendorDetail";
+import ReactPlayer from "react-player";
 import avatar from "../../images/avatar.jpg";
 
 const ButtonGroup = Button.Group;
@@ -86,6 +86,11 @@ class Services extends Component {
                 <span>
                     <h4>Service Name</h4>
                 </span>
+                <br />
+                <ReactPlayer
+                    url="https://www.youtube.com/watch?v=lqx5ocbekWA"
+                    playing
+                />
                 <br />
                 <p>Event Type: </p>
                 <p>Category: </p>

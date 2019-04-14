@@ -36,7 +36,7 @@ class Header extends Component {
                         </a>
                     </Menu.Item>
                     <Menu.Item key="ngo">
-                        <a href="/ngo">
+                        <a href="/ngos">
                             <Icon type="team" />
                             NGOs
                         </a>

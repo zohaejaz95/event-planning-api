@@ -12,6 +12,10 @@ import Header from "./components/header";
 import Home from "./components/home";
 import NGO from "./components/ngo";
 import Contact from "./components/contactUs";
+import Services from "./components/services";
+import Category from "./components/category";
+import Order from "./components/order";
+
 import Admin from "./components/admin";
 import NGORegister from "./components/ngoRegister";
 import VendorSignup from "./components/vendorRegister";
@@ -29,9 +33,20 @@ export default class App extends Component {
                     <Header />
                     <Route exact path="/" component={Home} />
                     <div>
-                        <Route exact path="/ngo" component={NGO} />
+                        <Route exact path="/ngos" component={NGO} />
                         <Route exact path="/contact-us" component={Contact} />
                         <Route exact path="/admin" component={Admin} />
+                        <Route exact path="/services" component={Services} />
+                        <Route
+                            exact
+                            path="/services/photography"
+                            component={Category}
+                        />
+                        <Route
+                            exact
+                            path="/services/photography/vendor-name"
+                            component={Order}
+                        />
 
                         <Route
                             exact
@@ -42,14 +57,10 @@ export default class App extends Component {
 
                         <Route
                             exact
-                            path="/ngo/register"
+                            path="/ngos/register"
                             component={NGORegister}
                         />
-                        <Route
-                            exact
-                            path="/ngo/profile"
-                            component={NGOSidebar}
-                        />
+                        <Route exact path="/ngo" component={NGOSidebar} />
 
                         <Route exact path="/customer" component={Customer} />
                     </div>

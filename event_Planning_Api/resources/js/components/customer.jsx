@@ -6,6 +6,10 @@ import Customization from "./cardCustomization/customization";
 import ViewEventCust from "./customer/viewEventCust";
 import Profile from "./customer/profile";
 import CustEventForm from "./customer/custEventForm";
+import Messages from "./messages";
+import TodoList from "./customer/todoList";
+import GuestList from "./customer/addGuestList";
+import Contacts from "./customer/contacts";
 
 const { Header, Sider, Content } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -17,7 +21,11 @@ class Customer extends Component {
             customize: false,
             viewEvent: false,
             eventForm: false,
-            profile: true
+            profile: true,
+            messages: false,
+            list: false,
+            newGuest: false,
+            contact: false
         };
         this.toggle = this.toggle.bind(this);
         this.cardCustomize = this.cardCustomize.bind(this);
@@ -37,7 +45,11 @@ class Customer extends Component {
             eventForm: false,
             viewEvent: false,
             profile: false,
-            customize: true
+            customize: true,
+            messages: false,
+            list: false,
+            newGuest: false,
+            contact: false
         });
     }
     myEvents() {
@@ -45,7 +57,11 @@ class Customer extends Component {
             customize: false,
             eventForm: false,
             profile: false,
-            viewEvent: true
+            viewEvent: true,
+            messages: false,
+            list: false,
+            newGuest: false,
+            contact: false
         });
     }
     newEvent() {
@@ -53,7 +69,11 @@ class Customer extends Component {
             customize: false,
             viewEvent: false,
             profile: false,
-            eventForm: true
+            eventForm: true,
+            messages: false,
+            list: false,
+            newGuest: false,
+            contact: false
         });
     }
     profiles() {
@@ -61,7 +81,59 @@ class Customer extends Component {
             customize: false,
             viewEvent: false,
             eventForm: false,
-            profile: true
+            profile: true,
+            messages: false,
+            list: false,
+            newGuest: false,
+            contact: false
+        });
+    }
+    message() {
+        this.setState({
+            customize: false,
+            viewEvent: false,
+            eventForm: false,
+            profile: false,
+            messages: true,
+            list: false,
+            newGuest: false,
+            contact: false
+        });
+    }
+    todoList() {
+        this.setState({
+            customize: false,
+            viewEvent: false,
+            eventForm: false,
+            profile: false,
+            messages: false,
+            list: true,
+            newGuest: false,
+            contact: false
+        });
+    }
+    addGuest() {
+        this.setState({
+            customize: false,
+            viewEvent: false,
+            eventForm: false,
+            profile: false,
+            messages: false,
+            list: false,
+            newGuest: true,
+            contact: false
+        });
+    }
+    contacts() {
+        this.setState({
+            customize: false,
+            viewEvent: false,
+            eventForm: false,
+            profile: false,
+            messages: false,
+            list: false,
+            newGuest: false,
+            contact: true
         });
     }
     render() {
@@ -107,7 +179,12 @@ class Customer extends Component {
                                 >
                                     New Event
                                 </Menu.Item>
-                                <Menu.Item key="4">To-Do List</Menu.Item>
+                                <Menu.Item
+                                    key="4"
+                                    onClick={this.todoList.bind(this)}
+                                >
+                                    To-Do List
+                                </Menu.Item>
                             </SubMenu>
 
                             <SubMenu
@@ -119,8 +196,18 @@ class Customer extends Component {
                                     </span>
                                 }
                             >
-                                <Menu.Item key="5">Contacts</Menu.Item>
-                                <Menu.Item key="6">Guest List</Menu.Item>
+                                <Menu.Item
+                                    key="5"
+                                    onClick={this.contacts.bind(this)}
+                                >
+                                    Contacts
+                                </Menu.Item>
+                                <Menu.Item
+                                    key="6"
+                                    onClick={this.addGuest.bind(this)}
+                                >
+                                    Guest List
+                                </Menu.Item>
                             </SubMenu>
 
                             <Menu.Item
@@ -130,7 +217,10 @@ class Customer extends Component {
                                 <Icon type="idcard" />
                                 <span>Card Customization</span>
                             </Menu.Item>
-                            <Menu.Item key="8">
+                            <Menu.Item
+                                key="8"
+                                onClick={this.message.bind(this)}
+                            >
                                 <Icon type="message" />
                                 <span>Messages</span>
                             </Menu.Item>
@@ -164,6 +254,14 @@ class Customer extends Component {
                                 <CustEventForm />
                             ) : this.state.profile ? (
                                 <Profile />
+                            ) : this.state.list ? (
+                                <TodoList />
+                            ) : this.state.newGuest ? (
+                                <GuestList />
+                            ) : this.state.contact ? (
+                                <Contacts />
+                            ) : this.state.messages ? (
+                                <Messages />
                             ) : (
                                 <Profile />
                             )}
@@ -176,39 +274,3 @@ class Customer extends Component {
 }
 
 export default Customer;
-/*
-
-<Content
-              style={{
-                margin: "24px 16px",
-                padding: 24,
-                background: "#fff",
-                minHeight: 280
-              }}
-            >
-              Contents
-              <ViewEventCust />
-              <Customization />
-            </Content>
-{(() => {
-                switch (this.key) {
-                  case 7:
-                    return <Customization />;
-
-                  default:
-                    return "Content";
-                }
-              })()}
-, BrowserRouter as Router, Route
-
-<Router>
-                <div>
-                  <Route exact path="/view-events" component={ViewEventCust} />
-                  <Route
-                    exact
-                    path="/card-customization"
-                    component={Customization}
-                  />
-                </div>
-              </Router>
-*/

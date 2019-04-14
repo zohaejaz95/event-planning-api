@@ -1,13 +1,21 @@
 import React, { Component } from "react";
 import { Layout, Menu, Icon } from "antd";
+import NGOProfile from "./ngo/ngoProfile";
+import NGOEventForm from "./ngo/ngoEventForm";
+import Sponsors from "./ngo/sponsors";
+import ViewEventNGO from "./ngo/viewEventNgo";
+import Messages from "./messages";
 
-const { Header, Sider, Content } = Layout;
-const SubMenu = Menu.SubMenu;
 class NGOSidebar extends Component {
     constructor() {
         super();
         this.state = {
-            collapsed: false
+            collapsed: false,
+            eventForm: false,
+            viewEvent: false,
+            messages: false,
+            sponsor: false,
+            profile: true
         };
         this.toggle = this.toggle.bind(this);
     }
@@ -17,7 +25,54 @@ class NGOSidebar extends Component {
             collapsed: !this.state.collapsed
         });
     }
+    ngoEventform() {
+        this.setState({
+            profile: false,
+            viewEvent: false,
+            messages: false,
+            sponsor: false,
+            eventForm: true
+        });
+    }
+    ngoprofiles() {
+        this.setState({
+            viewEvent: false,
+            eventForm: false,
+            messages: false,
+            sponsor: false,
+            profile: true
+        });
+    }
+    myEvents() {
+        this.setState({
+            eventForm: false,
+            profile: false,
+            messages: false,
+            sponsor: false,
+            viewEvent: true
+        });
+    }
+    message() {
+        this.setState({
+            viewEvent: false,
+            profile: false,
+            eventForm: false,
+            sponsor: false,
+            messages: true
+        });
+    }
+    sponsors() {
+        this.setState({
+            viewEvent: false,
+            profile: false,
+            eventForm: false,
+            messages: false,
+            sponsor: true
+        });
+    }
     render() {
+        const { Header, Sider, Content } = Layout;
+        const SubMenu = Menu.SubMenu;
         return (
             <div className="text-to-left">
                 <br />
@@ -31,7 +86,10 @@ class NGOSidebar extends Component {
                     >
                         <div className="logo" />
                         <Menu mode="inline" defaultSelectedKeys={["1"]}>
-                            <Menu.Item key="1">
+                            <Menu.Item
+                                key="1"
+                                onClick={this.ngoprofiles.bind(this)}
+                            >
                                 <Icon type="user" />
                                 <span>Profile</span>
                             </Menu.Item>
@@ -44,15 +102,30 @@ class NGOSidebar extends Component {
                                     </span>
                                 }
                             >
-                                <Menu.Item key="2">View Events</Menu.Item>
-                                <Menu.Item key="3">New Event</Menu.Item>
-                                <Menu.Item key="4">To-Do List</Menu.Item>
+                                <Menu.Item
+                                    key="2"
+                                    onClick={this.myEvents.bind(this)}
+                                >
+                                    View Events
+                                </Menu.Item>
+                                <Menu.Item
+                                    key="3"
+                                    onClick={this.ngoEventform.bind(this)}
+                                >
+                                    New Event
+                                </Menu.Item>
                             </SubMenu>
-                            <Menu.Item key="2">
+                            <Menu.Item
+                                key="4"
+                                onClick={this.sponsors.bind(this)}
+                            >
                                 <Icon type="gift" />
                                 <span>Sponsors</span>
                             </Menu.Item>
-                            <Menu.Item key="3">
+                            <Menu.Item
+                                key="5"
+                                onClick={this.message.bind(this)}
+                            >
                                 <Icon type="message" />
                                 <span>Messages</span>
                             </Menu.Item>
@@ -78,7 +151,19 @@ class NGOSidebar extends Component {
                                 minHeight: 280
                             }}
                         >
-                            Content
+                            {this.state.eventForm ? (
+                                <NGOEventForm />
+                            ) : this.state.viewEvent ? (
+                                <ViewEventNGO />
+                            ) : this.state.sponsor ? (
+                                <Sponsors />
+                            ) : this.state.profile ? (
+                                <NGOProfile />
+                            ) : this.state.messages ? (
+                                <Messages />
+                            ) : (
+                                <NGOProfile />
+                            )}
                         </Content>
                     </Layout>
                 </Layout>
