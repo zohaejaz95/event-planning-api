@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Form, Input, Button, Row, Col } from "antd";
 
-import loginImage from "../../images/Pakistani-Wedding.png";
+//import loginImage from "../../images/Pakistani-Wedding.png";
 
 class AddList extends Component {
     constructor() {
@@ -23,15 +23,8 @@ class AddList extends Component {
 
         return (
             <div className="contents">
-                <br />
-                <br />
-                <br />
-                <br />
                 <Row>
-                    <Col span={8} offset={3}>
-                        <img src={loginImage} alt="" className="myImage" />
-                    </Col>
-                    <Col span={12} offset={1}>
+                    <Col span={22} offset={1}>
                         <h4 className="text-to-left">To Do list</h4>
                         <br />
                         <Form
@@ -61,7 +54,7 @@ class AddList extends Component {
                                 htmlType="submit"
                                 className="login-form-button"
                             >
-                                Submit
+                                Add
                             </Button>
                         </Form>
                     </Col>

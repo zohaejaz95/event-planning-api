@@ -12,7 +12,7 @@ import {
     Col
 } from "antd";
 import moment from "moment";
-import loginImage from "../../images/form-img.jpg";
+//import loginImage from "../../images/form-img.jpg";
 
 function onChange(date, dateString, checkedValues, time, timeString) {
     console.log(date, dateString);
@@ -48,10 +48,7 @@ class CustEventForm extends Component {
         return (
             <div className="contents">
                 <Row>
-                    <Col span={8} offset={3}>
-                        <img src={loginImage} alt="" className="myImage" />
-                    </Col>
-                    <Col span={12} offset={1}>
+                    <Col span={12} offset={3}>
                         <h4 className="text-to-left">New Event</h4>
                         <br />
                         <Form

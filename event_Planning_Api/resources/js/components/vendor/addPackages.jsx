@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Form, Icon, Input, InputNumber, Button, Row, Col } from "antd";
 
-import loginImage from "../../images/Pakistani-Wedding.png";
+//import loginImage from "../../images/Pakistani-Wedding.png";
 function onChange(value) {
     console.log("changed", value);
 }
@@ -24,14 +24,8 @@ class AddPackages extends Component {
         return (
             <div className="contents">
                 <br />
-                <br />
-                <br />
-                <br />
                 <Row>
-                    <Col span={8} offset={3}>
-                        <img src={loginImage} alt="" className="myImage" />
-                    </Col>
-                    <Col span={12} offset={1}>
+                    <Col span={12} offset={3}>
                         <h3 className="text-to-left">Add Package</h3>
                         <br />
                         <Form

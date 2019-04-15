@@ -16,7 +16,7 @@ class NGOProfile extends Component {
                         offset={1}
                         style={{ background: "#ECECEC", padding: "30px" }}
                     >
-                        <h4>Customer name</h4>
+                        <h4>NGO name</h4>
                         <p>Email: </p>
                         <p>Contact:</p>
                         <p>Address: </p>

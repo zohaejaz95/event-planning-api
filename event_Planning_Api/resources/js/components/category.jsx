@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 //import { Link } from "react-router-dom";
-import { Card, Col, Row } from "antd";
+import { Card, Col, Row, Menu, Icon, Switch } from "antd";
 
 //service images
 import makeup from "../images/makeup.jpg";
@@ -69,6 +69,7 @@ class Category extends Component {
     }
     render() {
         const { Meta } = Card;
+        const { SubMenu } = Menu;
         const cardLayout = {
             labelcol: {
                 xs: { span: 24 },
@@ -84,23 +85,46 @@ class Category extends Component {
                 <br />
                 <br />
                 <br />
-                <br />
-                <h4>Photography</h4>
-
-                <Row type="flex" justify="center">
-                    {this.state.service.map((serve, i) => (
-                        <Col {...cardLayout} className="m-4" key={i}>
-                            <Card
-                                hoverable
-                                style={{ width: 240 }}
-                                cover={<img alt="example" src={serve.image} />}
-                                key={i}
-                                onClick={this.viewService.bind(this)}
-                            >
-                                <Meta title={serve.name} />
-                            </Card>
-                        </Col>
-                    ))}
+                <Row>
+                    <Col {...cardLayout}>
+                        <Menu
+                            defaultSelectedKeys={["1"]}
+                            mode="horizontal"
+                            theme="light"
+                        >
+                            <Menu.Item key="1">Photography</Menu.Item>
+                            <Menu.Item key="2">Videography</Menu.Item>
+                            <Menu.Item key="3">Makeup Artist</Menu.Item>
+                            <Menu.Item key="4">Decorators</Menu.Item>
+                            <Menu.Item key="5">Designers</Menu.Item>
+                            <Menu.Item key="6">Venues</Menu.Item>
+                            <Menu.Item key="7">Invitations and Cards</Menu.Item>
+                            <Menu.Item key="8">Food and Catering</Menu.Item>
+                            <Menu.Item key="9">
+                                Music and Entertainment
+                            </Menu.Item>
+                            <Menu.Item key="10">Car Rental Services</Menu.Item>
+                            <Menu.Item key="11">Event Planners</Menu.Item>
+                        </Menu>
+                    </Col>
+                    <h4>Photography</h4>
+                    <Row type="flex" justify="center">
+                        {this.state.service.map((serve, i) => (
+                            <Col {...cardLayout} className="m-4" key={i}>
+                                <Card
+                                    hoverable
+                                    style={{ width: 240 }}
+                                    cover={
+                                        <img alt="example" src={serve.image} />
+                                    }
+                                    key={i}
+                                    onClick={this.viewService.bind(this)}
+                                >
+                                    <Meta title={serve.name} />
+                                </Card>
+                            </Col>
+                        ))}
+                    </Row>
                 </Row>
             </div>
         );

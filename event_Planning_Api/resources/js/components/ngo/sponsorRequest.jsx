@@ -48,7 +48,7 @@ class SponsorRequest extends Component {
                                     <List.Item.Meta
                                         avatar={<Avatar src={avatar} />}
                                         title={<p>{item.title}</p>}
-                                        description="Customer Name"
+                                        description="Vendor Name"
                                     />
                                 </List.Item>
                                 <Collapse
