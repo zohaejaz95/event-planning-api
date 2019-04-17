@@ -46,14 +46,9 @@ class AddService extends Component {
         return (
             <div className="contents">
                 <br />
-                <br />
-                <br />
-                <br />
+
                 <Row>
-                    <Col span={8} offset={3}>
-                        <img src={loginImage} alt="" className="myImage" />
-                    </Col>
-                    <Col span={12} offset={1}>
+                    <Col span={12} offset={3}>
                         <h4 className="text-to-left">Add Service</h4>
                         <br />
                         <Form

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 class Footer extends Component {
     render() {
         return (
-            <div style={{ width: "100%" }}>
+            <div style={{ width: "100%" }} className="sand">
                 <hr />
                 <br />
                 <footer>
@@ -100,8 +100,10 @@ class Footer extends Component {
                         </Col>
                     </Row>
                     <hr />
-                    <br />
-                    Event Era ©2019 Created by COMSATS Students
+                    <div className="grape">
+                        <br />
+                        Event Era ©2019 Created by COMSATS Students
+                    </div>
                 </footer>
                 <br />
                 <br />

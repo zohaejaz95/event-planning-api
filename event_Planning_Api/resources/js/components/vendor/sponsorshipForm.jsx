@@ -10,7 +10,7 @@ import {
     Col
 } from "antd";
 
-import loginImage from "../../images/Pakistani-Wedding.png";
+//import loginImage from "../../images/Pakistani-Wedding.png";
 function onChange(value) {
     console.log("changed", value);
 }
@@ -38,9 +38,6 @@ class SponsorshipForm extends Component {
         return (
             <div className="contents">
                 <Row>
-                    <Col span={8} offset={3}>
-                        <img src={loginImage} alt="" className="myImage" />
-                    </Col>
                     <Col span={12} offset={1}>
                         <h4 className="text-to-left">Sponsorship</h4>
                         <br />

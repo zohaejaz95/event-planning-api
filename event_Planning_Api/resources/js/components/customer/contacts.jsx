@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Select, Input, Card, Button, Icon } from "antd";
+import { Select, Card, Button, Icon } from "antd";
 
 class Contacts extends Component {
     render() {
@@ -36,13 +36,7 @@ class Contacts extends Component {
                     <Option value="lucy">Lucy</Option>
                     <Option value="tom">Tom</Option>
                 </Select>
-                <br />
-                <Input
-                    suffix={
-                        <Icon type="search" className="certain-category-icon" />
-                    }
-                    placeholder="Type event name"
-                />
+
                 <br />
                 <Card hoverable bordered={false}>
                     <p>Izzah</p>
