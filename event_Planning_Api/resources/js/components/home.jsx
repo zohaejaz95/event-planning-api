@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 //import { Link } from "react-router-dom";
-import { Card, Row, Col, Input } from "antd";
+import { Card, Row, Col, Input, Carousel } from "antd";
 //main images
 import main from "../images/event-planning.jpg";
 import alter from "../images/chopping.jpg";
@@ -83,62 +83,65 @@ class Home extends Component {
                     onSearch={value => console.log(value)}
                     style={{ width: 200 }}
                 />
+                <Carousel autoplay>
+                    <div>
+                        <img
+                            src={main}
+                            alt={alter}
+                            className="img-fluid myImage"
+                        />
+                    </div>
+                    <div className="grape">
+                        <h3>Here is Website name</h3>
+                    </div>
+                </Carousel>
 
-                <img src={main} alt={alter} className="img-fluid myImage" />
-
-                <br />
-                <br />
-                <br />
-                <h3>Events</h3>
-                <Row type="flex" justify="center">
-                    {this.state.events.map((event, i) => (
-                        <Col {...cardLayout} className="m-4" key={i}>
-                            <Card
-                                hoverable
-                                style={{ width: 240 }}
-                                cover={<img alt="example" src={event.image} />}
-                                key={i}
-                            >
-                                <Meta title={event.name} />
-                            </Card>
-                        </Col>
-                    ))}
-                </Row>
-                <br />
-                <h3>Popular Services</h3>
-                <Row type="flex" justify="center">
-                    {this.state.services.map((serve, i) => (
-                        <Col {...cardLayout} className="m-4" key={i}>
-                            <Card
-                                hoverable
-                                style={{ width: 240 }}
-                                cover={<img alt="example" src={serve.image} />}
-                                key={i}
-                            >
-                                <Meta title={serve.name} />
-                            </Card>
-                        </Col>
-                    ))}
-                </Row>
-                <div className="text-to-right" style={{ paddingRight: "10%" }}>
-                    <a href="/services">View more</a>
+                <div className="shell">
+                    <h3>Events</h3>
+                    <Row type="flex" justify="center">
+                        {this.state.events.map((event, i) => (
+                            <Col {...cardLayout} className="m-4" key={i}>
+                                <Card
+                                    hoverable
+                                    style={{ width: 240 }}
+                                    cover={
+                                        <img alt="example" src={event.image} />
+                                    }
+                                    key={i}
+                                >
+                                    <Meta title={event.name} />
+                                </Card>
+                            </Col>
+                        ))}
+                    </Row>
+                    <br />
+                    <h3>Popular Services</h3>
+                    <Row type="flex" justify="center">
+                        {this.state.services.map((serve, i) => (
+                            <Col {...cardLayout} className="m-4" key={i}>
+                                <Card
+                                    hoverable
+                                    style={{ width: 240 }}
+                                    cover={
+                                        <img alt="example" src={serve.image} />
+                                    }
+                                    key={i}
+                                >
+                                    <Meta title={serve.name} />
+                                </Card>
+                            </Col>
+                        ))}
+                    </Row>
+                    <div
+                        className="text-to-right"
+                        style={{ paddingRight: "10%" }}
+                    >
+                        <a href="/services">View more</a>
+                    </div>
                 </div>
-
-                <br />
-                <br />
             </div>
         );
     }
 }
 
 export default Home;
-/*
-<Carousel autoplay>
-          <div>
-            <img src={main} alt={alter} className="img-fluid" />
-          </div>
-          <div>
-            <img src={alter} alt={main} className="img-fluid" />
-          </div>
-        </Carousel>
-        */
