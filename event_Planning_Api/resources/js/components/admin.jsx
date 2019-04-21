@@ -9,10 +9,18 @@ import avatar from "../images/avatar.jpg";
 const { Meta } = Card;
 const { Content } = Layout;
 const TabPane = Tabs.TabPane;
+const profileData = JSON.parse(localStorage.getItem("usertoken"));
 function callback(key) {
     console.log(key);
 }
 class Admin extends Component {
+    constructor() {
+        super();
+        this.state = {
+            name: localStorage.getItem("name"),
+            email: localStorage.getItem("email")
+        };
+    }
     render() {
         return (
             <div className="content">
@@ -52,7 +60,10 @@ class Admin extends Component {
                             <Icon type="logout" />
                         ]}
                     >
-                        <Meta title="Username" description="email address" />
+                        <Meta
+                            title={profileData.name}
+                            description={profileData.email}
+                        />
                     </Card>
                 </div>
                 <br />

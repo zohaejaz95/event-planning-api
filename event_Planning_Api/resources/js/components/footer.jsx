@@ -5,8 +5,7 @@ import { Link } from "react-router-dom";
 class Footer extends Component {
     render() {
         return (
-            <div style={{ width: "100%" }} className="sand">
-                <hr />
+            <div style={{ width: "100%" }}>
                 <br />
                 <footer>
                     <Row type="flex" justify="space-around">
@@ -100,7 +99,7 @@ class Footer extends Component {
                         </Col>
                     </Row>
                     <hr />
-                    <div className="grape">
+                    <div>
                         <br />
                         Event Era ©2019 Created by COMSATS Students
                     </div>

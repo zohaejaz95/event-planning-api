@@ -4,12 +4,13 @@ import { Form, Icon, Input, Button, Checkbox, Row, Col } from "antd";
 import loginImage from "../images/Pakistani-Wedding.png";
 import { userLogin } from "./userFunction";
 class LoginForm extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             email: "",
             password: "",
             usertype: "admin",
+            visisble: props.value,
             errors: {}
         };
         this.onChange = this.onChange.bind(this);
@@ -41,7 +42,8 @@ class LoginForm extends Component {
                 userLogin(values).then(res => {
                     if (res) {
                         console.log(res.data.user_type);
-                        this.props.history.push("/admin");
+                        this.props.visisble = false;
+                        //this.props.history.push("/admin");
                     }
                 });
             }

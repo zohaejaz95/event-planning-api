@@ -141,15 +141,19 @@ class Customer extends Component {
             <div className="text-to-left">
                 <br />
                 <br />
-                <Layout>
+                <Layout style={{ background: "#fff" }}>
                     <Sider
                         trigger={null}
                         collapsible
                         collapsed={this.state.collapsed}
-                        style={{ background: "#fff" }}
+                        style={{ background: "#ff" }}
                     >
-                        <div className="logo" />
-                        <Menu mode="inline" defaultSelectedKeys={["1"]}>
+                        <div className="logo">Dashboard</div>
+                        <Menu
+                            mode="inline"
+                            defaultSelectedKeys={["1"]}
+                            style={{ background: "#fff" }}
+                        >
                             <Menu.Item
                                 key="1"
                                 onClick={this.profiles.bind(this)}
