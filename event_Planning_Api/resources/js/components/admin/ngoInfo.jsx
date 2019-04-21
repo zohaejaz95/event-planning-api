@@ -2,37 +2,45 @@ import React, { Component } from "react";
 import { List, Avatar, Button, Icon, Progress, Tooltip } from "antd";
 //import NGODetail from "../admin/ngoDetail";
 import avatar from "../../images/avatar.jpg";
+import { getPendingNGOs } from "../userFunction";
 
 const ButtonGroup = Button.Group;
-const data = [
-    {
-        title: "NGO 1"
-    },
-    {
-        title: "NGO 2"
-    },
-    {
-        title: "NGO 3"
-    },
-    {
-        title: "NGO 4"
-    },
-    {
-        title: "NGO 5"
-    }
-];
+
 class NGOInfo extends Component {
     constructor() {
         super();
         this.state = {
-            detail: false
+            detail: false,
+            ngos: [],
+            arr: {}
         };
         this.toggleDetail = this.toggleDetail.bind(this);
     }
-
-    toggleDetail() {
+    toggleDetail(item) {
+        console.log(item);
+        //console.log.(e.target.key);
         this.setState({
-            detail: !this.state.detail
+            detail: true,
+            arr: item
+        });
+    }
+    toggleDetails() {
+        this.setState({
+            detail: false
+        });
+    }
+
+    componentDidMount() {
+        getPendingNGOs().then(res => {
+            if (res) {
+                console.log(res.data);
+                const lists = JSON.stringify(res.data);
+                const list = JSON.parse(lists);
+                this.setState({
+                    ngos: list
+                });
+                console.log(this.state.ngos);
+            }
         });
     }
     render() {
@@ -40,17 +48,17 @@ class NGOInfo extends Component {
             <div>
                 <List
                     itemLayout="horizontal"
-                    dataSource={data}
+                    dataSource={this.state.ngos}
                     renderItem={item => (
                         <List.Item>
                             <List.Item.Meta
                                 avatar={<Avatar src={avatar} />}
-                                title={<p>{item.title}</p>}
+                                title={<p>{item.ngo_name}</p>}
                                 description="Statement of Purpose"
                             />
                             <Button
                                 type="primary"
-                                onClick={this.toggleDetail.bind(this)}
+                                onClick={this.toggleDetail(item)}
                             >
                                 View Detail
                             </Button>
@@ -78,7 +86,7 @@ class NGOInfo extends Component {
                 <div>
                     <Button
                         type="primary"
-                        onClick={this.toggleDetail.bind(this)}
+                        onClick={this.toggleDetails.bind(this)}
                     >
                         Back
                         <Icon type="left-circle" />
@@ -87,13 +95,13 @@ class NGOInfo extends Component {
                     <br />
                     <span>
                         <Avatar size={64} icon="user" />
-                        <h4>NGO Name</h4>
+                        <h4>{this.state.arr.ngo_name}</h4>
                     </span>
                     <br />
-                    <p>Email: </p>
-                    <p>Website: </p>
-                    <p>Contact</p>
-                    <p>Purpose: </p>
+                    <p>Email: {this.state.arr.email}</p>
+                    <p>Website: {this.state.arr.website}</p>
+                    <p>Contact: {this.state.arr.contact}</p>
+                    <p>Purpose: {this.state.arr.purpose}</p>
                     <br />
                     <Button type="primary">Accept</Button>
                     <Button type="danger">Reject</Button>

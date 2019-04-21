@@ -41,21 +41,21 @@ class VendorController extends Controller
     public function approved(request $request){
         $user=User::findOrFail(Auth::guard('api')->id());
         if($user->user_type=="admin"){
-            $vendor=vendor::where('status','approved')->paginate(15);
+            $vendor=vendor::where('account_status','approved')->paginate(15);
             return vendorResource::collection($vendor);
         }
     }
     public function rejected(request $request){
         $user=User::findOrFail(Auth::guard('api')->id());
         if($user->user_type=="admin"){
-            $vendor=vendor::where('status','rejected')->paginate(15);
+            $vendor=vendor::where('account_status','rejected')->paginate(15);
             return vendorResource::collection($vendor);
         }
     }
     public function pending(request $request){
         $user=User::findOrFail(Auth::guard('api')->id());
         if($user->user_type=="admin"){
-            $vendor=vendor::where('status','pending')->paginate(15);
+            $vendor=vendor::where('account_status','pending')->paginate(15);
             return vendorResource::collection($vendor);
         }
     }
