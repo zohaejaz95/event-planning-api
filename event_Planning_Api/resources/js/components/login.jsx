@@ -1,20 +1,32 @@
 import React, { Component } from "react";
-import { Modal, Icon, Button, Form, Input, Checkbox, Row, Col } from "antd";
-import { BrowserRouter, Route } from "react-router-dom";
-//import LoginForm from "./loginForm";
-//import router from "./router";
+import {
+    Modal,
+    Icon,
+    Button,
+    Form,
+    Input,
+    Checkbox,
+    Row,
+    Col,
+    Alert
+} from "antd";
+
 import loginImage from "../images/Pakistani-Wedding.png";
 import { userLogin } from "./userFunction";
 class Login extends Component {
     constructor() {
         super();
         this.state = {
-            visible: false
+            visible: false,
+            url: "/",
+            msg: false,
+            succ: false
         };
         this.showModal = this.showModal.bind(this);
         this.handleOk = this.handleOk.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.changeUrl = this.changeUrl.bind(this);
     }
 
     showModal() {
@@ -42,20 +54,39 @@ class Login extends Component {
                 console.log("Received values of form: ", values);
                 userLogin(values).then(res => {
                     if (res) {
-                        console.log(res.data);
-                        this.handleOk();
+                        console.log(res.data.user_type);
+
+                        //var path = "/" + res.data.user_type;
+                        //this.handleOk();
                         //this.props.history.push("/admin");
-                        // this.setState({
-                        //     visible: false
-                        // });
+                        //this.changeUrl();
+                        this.setState({
+                            succ: true,
+                            msg: false
+                        });
+
+                        //console.log(this.state.url);
                         //router.push("/$res.data.user_type");
                         //this.context.router.push("/");
                         //this.props.history.push("/admin");
                         //this.context.router.history.push('/');
+                    } else {
+                        //e.preventDefault();
+                        this.setState({
+                            succ: false,
+                            msg: true
+                        });
                     }
                 });
             }
         });
+    }
+    changeUrl() {
+        var user = JSON.parse(localStorage.getItem("usertoken"));
+        this.setState({
+            url: user.user_type
+        });
+        //this.props.history.push("/" + this.state.url);
     }
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -141,7 +172,7 @@ class Login extends Component {
                                                     }
                                                 ]
                                             })(
-                                                <Input
+                                                <Input.Password
                                                     prefix={
                                                         <Icon
                                                             type="lock"
@@ -158,7 +189,12 @@ class Login extends Component {
                                             )}
                                         </Form.Item>
                                         <Form.Item className="text-to-left">
-                                            <Checkbox>Remember me</Checkbox>)
+                                            {getFieldDecorator("remember", {
+                                                valuePropName: "checked",
+                                                initialValue: true
+                                            })(
+                                                <Checkbox>Remember me</Checkbox>
+                                            )}
                                             <a
                                                 className="login-form-forgot"
                                                 href="/"
@@ -166,19 +202,38 @@ class Login extends Component {
                                                 Forgot password
                                             </a>
                                             <br />
-                                            <Button
-                                                type="primary"
-                                                htmlType="submit"
-                                                className="login-form-button"
-                                            >
-                                                Log in
-                                            </Button>
+                                            <a href="">
+                                                <Button
+                                                    type="primary"
+                                                    htmlType="submit"
+                                                    className="login-form-button"
+                                                >
+                                                    Log in
+                                                </Button>
+                                            </a>
                                             <br />
                                             Or <a href="/">register now!</a>
                                         </Form.Item>
                                     </Form>
                                 </Col>
                             </Row>
+                            {this.state.msg ? (
+                                <Alert
+                                    message="Error"
+                                    description="Invalid Email or Password"
+                                    type="error"
+                                    showIcon
+                                />
+                            ) : this.state.succ ? (
+                                <Alert
+                                    message="Login Successful!"
+                                    description="Click on Dashboard to view your profile."
+                                    type="success"
+                                    showIcon
+                                />
+                            ) : (
+                                <div />
+                            )}
                         </div>
                     </div>
                 </Modal>

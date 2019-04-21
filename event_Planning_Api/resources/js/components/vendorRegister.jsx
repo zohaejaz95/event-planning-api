@@ -2,13 +2,17 @@ import React, { Component } from "react";
 import { Form, Icon, Select, Input, Button, Checkbox, Row, Col } from "antd";
 
 import loginImage from "../images/form-img.jpg";
-function onChange(checkedValues) {
-    console.log("checked = ", checkedValues);
-}
 
 class VendorRegister extends Component {
     constructor() {
         super();
+        this.state = {
+            location: [],
+            isb: false,
+            lhr: false,
+            khi: false
+        };
+
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleSubmit(e) {
@@ -19,31 +23,37 @@ class VendorRegister extends Component {
             }
         });
     }
-
+    onChange(checkedValues) {
+        console.log("checked = ", checkedValues);
+        console.log(checkedValues[0]);
+    }
     render() {
         const { getFieldDecorator } = this.props.form;
         const { TextArea } = Input;
         const Option = Select.Option;
+        const InputGroup = Input.Group;
         const selectAfterW = (
             <Select defaultValue=".com" style={{ width: 80 }}>
                 <Option value=".com">.com</Option>
-                <Option value=".jp">.jp</Option>
-                <Option value=".cn">.cn</Option>
+                <Option value=".pk">.pk</Option>
+                <Option value=".dev">.dev</Option>
                 <Option value=".org">.org</Option>
             </Select>
         );
-
+        const bgForm = {
+            backgroundImage: "url(" + loginImage + "})",
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat"
+        };
         return (
-            <div className="contents">
+            <div className="contents" styles={bgForm}>
                 <br />
                 <br />
                 <br />
                 <br />
                 <Row>
-                    <Col span={8} offset={3}>
-                        <img src={loginImage} alt="" className="myImage" />
-                    </Col>
-                    <Col span={12} offset={1}>
+                    <Col span={12} offset={6}>
                         <h4 className="text-to-left">
                             Vendor Signup to EventEra
                         </h4>
@@ -132,29 +142,6 @@ class VendorRegister extends Component {
                             </Form.Item>
 
                             <Form.Item>
-                                {getFieldDecorator("address", {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message:
-                                                "Please input your address!"
-                                        }
-                                    ]
-                                })(
-                                    <Input
-                                        prefix={
-                                            <Icon
-                                                type="home"
-                                                style={{
-                                                    color: "rgba(0,0,0,.25)"
-                                                }}
-                                            />
-                                        }
-                                        placeholder="Address"
-                                    />
-                                )}
-                            </Form.Item>
-                            <Form.Item>
                                 {getFieldDecorator("email", {
                                     rules: [
                                         {
@@ -190,13 +177,39 @@ class VendorRegister extends Component {
                             </Form.Item>
 
                             <Form.Item>
+                                <InputGroup compact>
+                                    <Input defaultValue="Islamabad" />
+                                    {getFieldDecorator("address", {
+                                        rules: [
+                                            {
+                                                required: true,
+                                                message:
+                                                    "Please input your address!"
+                                            }
+                                        ]
+                                    })(
+                                        <Input
+                                            prefix={
+                                                <Icon
+                                                    type="home"
+                                                    style={{
+                                                        color: "rgba(0,0,0,.25)"
+                                                    }}
+                                                />
+                                            }
+                                            placeholder="Address"
+                                        />
+                                    )}
+                                </InputGroup>
+                            </Form.Item>
+                            <Form.Item>
                                 <div className="text-to-left">
                                     <label>Cities:</label>
                                     <br />{" "}
                                 </div>
                                 <Checkbox.Group
                                     style={{ width: "100%" }}
-                                    onChange={onChange}
+                                    onChange={this.onChange.bind}
                                 >
                                     <Row>
                                         <Col span={8}>
@@ -216,8 +229,8 @@ class VendorRegister extends Component {
                                         </Col>
                                     </Row>
                                 </Checkbox.Group>
-                                ,
                             </Form.Item>
+
                             <Form.Item>
                                 {getFieldDecorator("userName", {
                                     rules: [
@@ -251,7 +264,7 @@ class VendorRegister extends Component {
                                         }
                                     ]
                                 })(
-                                    <Input
+                                    <Input.Password
                                         prefix={
                                             <Icon
                                                 type="lock"
@@ -265,7 +278,6 @@ class VendorRegister extends Component {
                                     />
                                 )}
                             </Form.Item>
-
                             <Form.Item className="text-to-left">
                                 {getFieldDecorator("remember", {
                                     valuePropName: "checked",

@@ -103,7 +103,7 @@ class VendorInfo extends Component {
                 <br />
                 <br />
 
-                <table class="table table-striped table-hover">
+                <table className="table table-striped table-hover">
                     <thead>
                         <tr>
                             <td>

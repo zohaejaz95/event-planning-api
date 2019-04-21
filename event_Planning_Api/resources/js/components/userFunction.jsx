@@ -1,5 +1,26 @@
 import axios from "axios";
 
+export const userLogin = user => {
+    return axios
+        .post("/api/login", {
+            email: user.email,
+            password: user.password
+        })
+        .then(response => {
+            console.log("Login Successfull");
+            //console.log(response.data.data);
+            localStorage.setItem(
+                "usertoken",
+                JSON.stringify(response.data.data)
+            );
+            console.log(JSON.parse(localStorage.getItem("usertoken")));
+            return response.data;
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+
 export const register = newUser => {
     return axios
         .post("/api/register", {
@@ -10,8 +31,11 @@ export const register = newUser => {
         })
         .then(response => {
             console.log("Registered as User: " + response.data);
-            localStorage.setItem("usertoken", response.data);
-            //console.log();
+            localStorage.setItem(
+                "usertoken",
+                JSON.stringify(response.data.data)
+            );
+            console.log(JSON.parse(localStorage.getItem("usertoken")));
             return response.data;
         })
         .catch(err => {
@@ -95,10 +119,8 @@ export const vendorRegister = newUser => {
             vendor_name: newUser.name,
             description: newUser.description,
             contact: newUser.contact,
-            email: newUser.email,
-            website: newUser.website,
-            username: newUser.username,
-            account_status: newUser.status
+
+            website: newUser.website
         })
         .then(response => {
             console.log("Registered");
@@ -121,27 +143,6 @@ export const ngoRegister = newUser => {
         })
         .then(response => {
             console.log("Registered");
-        })
-        .catch(err => {
-            console.log(err);
-        });
-};
-
-export const userLogin = user => {
-    return axios
-        .post("/api/login", {
-            email: user.email,
-            password: user.password
-        })
-        .then(response => {
-            console.log("Login Successfull");
-            console.log(response.data.data);
-            localStorage.setItem(
-                "usertoken",
-                JSON.stringify(response.data.data)
-            );
-            console.log(JSON.parse(localStorage.getItem("usertoken")));
-            return response.data;
         })
         .catch(err => {
             console.log(err);

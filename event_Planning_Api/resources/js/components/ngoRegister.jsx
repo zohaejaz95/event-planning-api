@@ -169,7 +169,7 @@ class ngoRegister extends Component {
                                         }
                                     ]
                                 })(
-                                    <Input
+                                    <Input.Password
                                         prefix={
                                             <Icon
                                                 type="lock"

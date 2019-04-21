@@ -103,7 +103,7 @@ class CustomerForm extends Component {
                                     }
                                 ]
                             })(
-                                <Input
+                                <Input.Password
                                     prefix={
                                         <Icon
                                             type="lock"
