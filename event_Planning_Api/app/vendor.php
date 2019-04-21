@@ -32,6 +32,12 @@ public function location()
 public function category_event()
     {
         return $this->hasMany('App\category_event');
-    }   
+    } 
+public function services(){
+    return $this->hasMany('App\services');
+}
+public function packages(){
+    return $this->hasMany('App\packages');
+}      
 
 }

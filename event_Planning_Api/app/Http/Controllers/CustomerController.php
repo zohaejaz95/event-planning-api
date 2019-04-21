@@ -18,10 +18,13 @@ class CustomerController extends Controller
     public function index()
     {
         //show all customers (being used by admin open for use by others)
+        $user=User::findOrFail(Auth::guard('api')->id());
+        if(($user->user_type=="customer")||($user->user_type=="admin")){
+        
         $customers=customer::paginate(15);
 
         return customerResource::collection($customers);
-
+        }
     }
 
     /**
@@ -32,7 +35,10 @@ class CustomerController extends Controller
     public function create(request $request)
     {
         //create customer profile
+        
         $user=User::findOrFail(Auth::guard('api')->id());
+        if($user->user_type=="customer"){
+        
         $customer= customer::create([
             'first_name'=>$request->input('first_name'),
             'last_name'=>$request->input('last_name'),
@@ -42,7 +48,7 @@ class CustomerController extends Controller
             'username'=>$user->name
             
         ]);
-
+        }
 
     }
 
@@ -65,7 +71,10 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        //
+        $user=User::findOrFail(Auth::guard('api')->id());
+        if($user->user_type=="customer"){
+            return customer::findOrFail($id);
+        }
     }
 
     /**

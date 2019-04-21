@@ -25,5 +25,7 @@ class customer extends Model
     {
         return $this->hasMany('App\customer_event');
     }
-    //
+    public function orders(){
+        return $this->hasMany('App\orders');
+    }
 }

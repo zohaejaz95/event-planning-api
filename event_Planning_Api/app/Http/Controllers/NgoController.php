@@ -64,6 +64,9 @@ class NgoController extends Controller
         //set up profile for ngo
         
         $user=User::findOrFail(Auth::guard('api')->id());
+       
+        if($user->user_type=="ngo"){
+       
         $ngo= ngo::create([
             'ngo_name'=>$request->input('ngo_name'),
             'purpose'=>$request->input('purpose'),
@@ -73,6 +76,7 @@ class NgoController extends Controller
             'username'=>$user->name,
             'status'=>'pending',
         ]);
+        }
     }
 
     /**
@@ -95,6 +99,11 @@ class NgoController extends Controller
     public function show($id)
     {
         //
+        $user=User::findOrFail(Auth::guard('api')->id());
+        if($user->user_type=="admin"){
+        return ngo::findOrFail($id);
+        }
+
     }
 
     /**

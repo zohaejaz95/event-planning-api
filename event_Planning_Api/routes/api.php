@@ -30,8 +30,13 @@ Route::post('ngo/create', 'NgoController@create'  );
 Route::post('vendor/create','VendorController@create');
 Route::post('customer/create','CustomerController@create');
 Route::get('customers','CustomerController@index');
+Route::get('customers/{id}','CustomerController@show');
 Route::get('vendors','VendorController@index');
+Route::get('vendors/{id}','VendorController@show');
+
 Route::get('NGOs','NgoController@index');
+Route::get('NGOs/{id}','NgoController@show');
+
 Route::put('admin/vendor/update/{id}','VendorController@updateStatus');
 Route::put('admin/NGO/update/{id}','NgoController@updateStatus');
 Route::get('admin/NGO/approved/','NgoController@approved');
@@ -42,7 +47,19 @@ Route::get('admin/vendor/rejected/','VendorController@rejected');
 Route::get('admin/vendor/pending/','VendorController@pending');
 Route::post('customer/newevent/','customerEventController@store');
 Route::get('customer/events','customerEventController@index');
+Route::get('customer/events/{id}','customerEventController@show');
+Route::post('customer/orders/new','customerEventController@new_order');
+Route::get('customer/orders/{id}','customerEventController@get_order');
+Route::post('customers/orders/update/order/{id}','customerEventController@update_order_status');
+Route::post('customers/orders/update/payment/{id}','customerEventController@update_payment_status');
 Route::post('customer/newcontact/','ContactListController@store');
 Route::get('customer/contacts','ContactListController@index');
+
+Route::post('vendor/create/service','VendorController@create_service');
+Route::get('vendor/get/service/{id}','VendorController@get_service');
+Route::get('vendor/get/service/category/{cat}','VendorController@get_service_cat');
+Route::post('vendor/create/package','VendorController@create_package');
+Route::get('vendor/get/package/{id}','VendorController@get_package');
+
 });
 

@@ -30,6 +30,8 @@ class customer_event extends Model
     {
         return $this->belongsTo('App\customer');
     }
-
+    public function orders(){
+        return $this->hasMany('App\orders');
+    }
     
 }
