@@ -35,6 +35,7 @@ Route::get('customer/token/','CustomerController@show_token');
 
 Route::get('vendors','VendorController@index');
 Route::get('vendors/{id}','VendorController@show');
+Route::get('vendor/token','VendorController@show_token');
 
 Route::get('NGOs','NgoController@index');
 Route::get('NGOs/{id}','NgoController@show');

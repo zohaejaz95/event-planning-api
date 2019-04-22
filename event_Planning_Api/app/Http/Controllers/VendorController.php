@@ -310,6 +310,16 @@ public function delete_package(Request $request,$id){
             return vendor::findOrFail($id);
         }
     }
+    public function show_token()
+    {
+        $user=User::findOrFail(Auth::guard('api')->id());
+        if($user->user_type=="vendor"){
+            
+            $customer=DB::select("select * from vendors where username = '$user->name'");
+            return new vendorResource($customer);
+            //return $customer;
+        }
+    }
 
     /**
      * Show the form for editing the specified resource.
