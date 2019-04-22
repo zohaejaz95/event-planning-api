@@ -144,6 +144,11 @@ class ContactListController extends Controller
     public function destroy($id)
     {
         //
+        $user=User::findOrFail(Auth::guard('api')->id());
+        if($user->user_type=="customer"){
+        $contact = contact_list::find($id);
+        $contact->delete();
+        }
     }
     /////////////////guest list functions
 public function add_guest(Request $request){
