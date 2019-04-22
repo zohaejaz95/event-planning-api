@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { List, Avatar, Button, Icon, Card, Progress, Tooltip } from "antd";
 import avatar from "../../images/avatar.jpg";
+import { getEvents } from "./customerFunction";
 const ButtonGroup = Button.Group;
 const data = [
     {
@@ -26,9 +27,27 @@ class ViewEventCust extends Component {
         super();
         this.state = {
             list: true,
-            detail: false
+            detail: false,
+            events: [],
+            sel: []
         };
         this.toggleDetail = this.toggleDetail.bind(this);
+    }
+    componentDidMount() {
+        getEvents().then(res => {
+            if (res) {
+                console.log(res.data);
+                const lists = JSON.stringify(res.data);
+                const elist = JSON.parse(lists);
+                this.setState({
+                    events: elist
+                });
+                console.log(this.state.events);
+                console.log(this.state.events.length);
+                console.log(this.state.events[0]);
+                console.log(this.state.events[0].event_id);
+            }
+        });
     }
     toggleList() {
         this.setState({
@@ -36,12 +55,14 @@ class ViewEventCust extends Component {
             detail: false
         });
     }
-    toggleDetail() {
+    toggleDetail(item) {
         this.setState({
             list: false,
-            detail: true
+            detail: true,
+            sel: item
         });
     }
+
     render() {
         const custEventList = (
             <div>
@@ -49,18 +70,18 @@ class ViewEventCust extends Component {
                 <hr />
                 <List
                     itemLayout="horizontal"
-                    dataSource={data}
+                    dataSource={this.state.events}
                     renderItem={item => (
                         <div>
                             <List.Item>
                                 <List.Item.Meta
                                     avatar={<Avatar src={avatar} />}
-                                    title={<p>{item.title}</p>}
-                                    description="Event Type: Wedding"
+                                    title={<p>{item.event_name}</p>}
+                                    description={item.category}
                                 />
                                 <Button
                                     type="primary"
-                                    onClick={this.toggleDetail.bind(this)}
+                                    onClick={() => this.toggleDetail(item)}
                                 >
                                     View Details
                                 </Button>
@@ -95,26 +116,19 @@ class ViewEventCust extends Component {
                 <br />
                 <Avatar size={64} icon="user" />
                 <span>
-                    <h4>Customer Event Name</h4>
-                    <h5>Wedding Event</h5>
+                    <h4>{this.state.sel.event_name}</h4>
+                    <h5>{this.state.sel.category}</h5>
                 </span>
 
                 <br />
                 <p>Subject: </p>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Deleniti accusantium consequatur numquam, nulla at omnis
-                    iusto molestias facilis inventore nostrum tenetur beatae
-                    dolorum ad eligendi, maxime exercitationem sequi repudiandae
-                    obcaecati!
-                </p>
-                <p>Time: </p>
-                <p>Date:</p>
-                <p>Required Fund: </p>
+                <p>{this.state.sel.description}</p>
+                <p>Time: {this.state.sel.time}</p>
+                <p>Date: {this.state.sel.date}</p>
                 <br />
                 <hr />
                 <h4>Budget Manager</h4>
-                <p>Budget:</p>
+                <p>Budget: {this.state.sel.budget}</p>
                 <p>Expenses:</p>
                 <p>Budget Status:</p>
                 <br />
