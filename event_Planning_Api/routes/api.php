@@ -31,6 +31,8 @@ Route::post('vendor/create','VendorController@create');
 Route::post('customer/create','CustomerController@create');
 Route::get('customers','CustomerController@index');
 Route::get('customers/{id}','CustomerController@show');
+Route::get('customer/token/','CustomerController@show_token');
+
 Route::get('vendors','VendorController@index');
 Route::get('vendors/{id}','VendorController@show');
 
