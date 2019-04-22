@@ -57,6 +57,11 @@ Route::post('customers/orders/update/order/{id}','customerEventController@update
 Route::post('customers/orders/update/payment/{id}','customerEventController@update_payment_status');
 Route::post('customer/newcontact/','ContactListController@store');
 Route::get('customer/contacts','ContactListController@index');
+Route::delete('customer/contacts/delete/{id}','ContactListController@destroy');
+
+Route::post('customer/guest_list/add','ContactListController@add_guest');
+Route::get('customer/guest_list/get/{event_id}','ContactListController@get_guests');
+Route::delete('customer/guest_list/remove/{id}','ContactListController@remove_guest');
 
 Route::post('vendor/create/service','VendorController@create_service');
 Route::get('vendor/get/service/{id}','VendorController@get_service');
