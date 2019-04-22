@@ -77,12 +77,6 @@ class Home extends Component {
         };
         return (
             <div className="contents">
-                <Search
-                    className="fixed-search"
-                    placeholder="search any vendor"
-                    onSearch={value => console.log(value)}
-                    style={{ width: 200 }}
-                />
                 <Carousel autoplay>
                     <div>
                         <img
@@ -91,19 +85,25 @@ class Home extends Component {
                             className="img-fluid myImage"
                         />
                     </div>
-                    <div className="grape">
-                        <h3>Here is Website name</h3>
+                    <div>
+                        <img
+                            src={alter}
+                            alt={main}
+                            className="img-fluid myImage"
+                        />
                     </div>
                 </Carousel>
 
-                <div className="shell">
+                <div>
                     <h3>Events</h3>
                     <Row type="flex" justify="center">
                         {this.state.events.map((event, i) => (
                             <Col {...cardLayout} className="m-4" key={i}>
                                 <Card
                                     hoverable
-                                    style={{ width: 240 }}
+                                    style={{
+                                        width: 240
+                                    }}
                                     cover={
                                         <img alt="example" src={event.image} />
                                     }
@@ -121,7 +121,9 @@ class Home extends Component {
                             <Col {...cardLayout} className="m-4" key={i}>
                                 <Card
                                     hoverable
-                                    style={{ width: 240 }}
+                                    style={{
+                                        width: 240
+                                    }}
                                     cover={
                                         <img alt="example" src={serve.image} />
                                     }
@@ -145,3 +147,11 @@ class Home extends Component {
 }
 
 export default Home;
+/**
+ * <Search
+                    className="fixed-search"
+                    placeholder="search any vendor"
+                    onSearch={value => console.log(value)}
+                    style={{ width: 200 }}
+                />
+ */

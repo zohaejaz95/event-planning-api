@@ -23,12 +23,12 @@ class Header extends Component {
     }
     render() {
         return (
-            <div className="fixed-element grape">
+            <div className="fixed-element">
                 <Menu
                     onClick={this.handleClick}
                     selectedKeys={[this.state.current]}
                     mode="horizontal"
-                    className="grape"
+                    style={{ background: "#fff" }}
                 >
                     <Menu.Item key="home">
                         <a href="/">

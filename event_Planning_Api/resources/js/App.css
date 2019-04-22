@@ -38,7 +38,7 @@ link {
 .ant-carousel .slick-slide {
     height: 690px;
     overflow: hidden;
-    background: #94618e;
+    background: #fff;
 }
 
 /*
@@ -46,7 +46,7 @@ Color schemes
 */
 
 .grape {
-    background-color: #94618e;
+    background-color: #fff;
 }
 .eggplant {
     background-color: #49274a;

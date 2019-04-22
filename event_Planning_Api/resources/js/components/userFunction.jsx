@@ -22,7 +22,50 @@ export const register = newUser => {
             }
         });
 };
+export const getPendingVendors = () => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    return axios
+        .get("/api/admin/vendor/pending/", {
+            headers: { Authorization: "Bearer " + token.api_token }
+        })
+        .then(response => {
+            return response.data;
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
 
+export const getPendingNGOs = () => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    return axios
+        .get("/api/admin/NGO/pending/", {
+            headers: { Authorization: "Bearer " + token.api_token }
+        })
+        .then(response => {
+            return response.data;
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+
+export const updateVendorStatus = id => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //console.log(token.api_token);
+    console.log(id);
+    return axios
+        .put("/api/admin/vendor/update/${id}", {
+            headers: { Authorization: "Bearer " + token.api_token }
+        })
+        .then(response => {
+            console.log(response);
+            return response.data;
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
 export const customerRegister = newUser => {
     return axios
         .post(
@@ -92,7 +135,12 @@ export const userLogin = user => {
         })
         .then(response => {
             console.log("Login Successfull");
-            localStorage.setItem("usertoken", response.data);
+            console.log(response.data.data);
+            localStorage.setItem(
+                "usertoken",
+                JSON.stringify(response.data.data)
+            );
+            console.log(JSON.parse(localStorage.getItem("usertoken")));
             return response.data;
         })
         .catch(err => {

@@ -2,37 +2,58 @@ import React, { Component } from "react";
 import { List, Avatar, Button, Icon, Progress, Tooltip } from "antd";
 //import VendorDetail from "../admin/vendorDetail";
 import avatar from "../../images/avatar.jpg";
+import { getPendingVendors, updateVendorStatus } from "../userFunction";
 
 const ButtonGroup = Button.Group;
-const data = [
-    {
-        title: "Vendor 1"
-    },
-    {
-        title: "Vendor 2"
-    },
-    {
-        title: "Vendor 3"
-    },
-    {
-        title: "Vendor 4"
-    },
-    {
-        title: "Vendor 5"
-    }
-];
 
 class VendorInfo extends Component {
     constructor() {
         super();
         this.state = {
-            detail: false
+            detail: false,
+            vendors: [],
+            vendor_id: "",
+            arr: {}
         };
         this.toggleDetail = this.toggleDetail.bind(this);
     }
-    toggleDetail() {
+    toggleDetail(item) {
+        console.log(item);
+        //console.log.(e.target.key);
         this.setState({
-            detail: !this.state.detail
+            detail: true,
+            arr: item
+        });
+    }
+    toggleDetails() {
+        this.setState({
+            detail: false
+        });
+    }
+    componentDidMount() {
+        getPendingVendors().then(res => {
+            if (res) {
+                console.log(res.data);
+                const lists = JSON.stringify(res.data);
+                const list = JSON.parse(lists);
+                this.setState({
+                    vendors: list
+                });
+                console.log(this.state.vendors);
+                console.log(this.state.vendors.length);
+                console.log(this.state.vendors[0]);
+                console.log(this.state.vendors[0].vendor_id);
+            }
+        });
+    }
+
+    accepted() {
+        var v_id = this.state.arr.vendor_id;
+        console.log(this.state.arr.vendor_id);
+        updateVendorStatus(v_id).then(res => {
+            if (res) {
+                this.props.history.push("/admin");
+            }
         });
     }
     render() {
@@ -40,18 +61,19 @@ class VendorInfo extends Component {
             <div>
                 <List
                     itemLayout="horizontal"
-                    dataSource={data}
+                    dataSource={this.state.vendors}
                     renderItem={item => (
                         <div>
                             <List.Item>
                                 <List.Item.Meta
                                     avatar={<Avatar src={avatar} />}
-                                    title={<p>{item.title}</p>}
-                                    description="Category and Events"
+                                    title={<p>{item.vendor_name}</p>}
+                                    description={item.description}
                                 />
+                                <br />
                                 <Button
                                     type="primary"
-                                    onClick={this.toggleDetail.bind(this)}
+                                    onClick={() => this.toggleDetail(item)}
                                 >
                                     View Details
                                 </Button>
@@ -74,26 +96,62 @@ class VendorInfo extends Component {
         );
         const vendorDetail = (
             <div>
-                <Button type="primary" onClick={this.toggleDetail.bind(this)}>
+                <Button type="primary" onClick={this.toggleDetails.bind(this)}>
                     Back
                     <Icon type="left-circle" />
                 </Button>
                 <br />
                 <br />
-                <Avatar size={64} icon="user" />
-                <span>
-                    <h4>Vendor Name</h4>
-                </span>
+
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <td>
+                                <Avatar size={64} icon="user" />
+                            </td>
+                            <td>
+                                <h4>{this.state.arr.vendor_name}</h4>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Email</th>
+                            <td>
+                                <a href={"mailto:" + this.state.arr.email}>
+                                    {this.state.arr.email}
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Website</th>
+                            <td>
+                                <a href={this.state.arr.website}>
+                                    {this.state.arr.website}
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Contact</th>
+                            <td>
+                                <a href="tel:#">{this.state.arr.contact}</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td>{this.state.arr.description}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>Email: {this.state.arr.email}</p>
+                <p>Website: {this.state.arr.website}</p>
+                <p>Contact: {this.state.arr.contact}</p>
+                <p>Description: {this.state.arr.description}</p>
+
                 <br />
-                <p>Email: </p>
-                <p>Website: </p>
-                <p>Contact:</p>
-                <p>City/ies: </p>
-                <p>Events: </p>
-                <p>Payment Methods:</p>
-                <p>Description: </p>
-                <br />
-                <Button type="primary">Accept</Button>
+                <Button type="primary" onClick={this.accepted.bind(this)}>
+                    Accept
+                </Button>
                 <Button type="danger">Reject</Button>
             </div>
         );
