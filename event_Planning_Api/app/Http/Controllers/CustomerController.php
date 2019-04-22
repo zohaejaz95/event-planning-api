@@ -8,6 +8,8 @@ use App\User;
 use App\customer;
 use App\Http\Requests;
 use App\Http\Resources\Customer as customerResource;
+use Illuminate\Support\Facades\DB;
+
 class CustomerController extends Controller
 {
     /**
@@ -76,7 +78,16 @@ class CustomerController extends Controller
             return customer::findOrFail($id);
         }
     }
-
+    public function show_token()
+    {
+        $user=User::findOrFail(Auth::guard('api')->id());
+        if($user->user_type=="customer"){
+            
+            $customer=DB::select("select * from customers where username = '$user->name'");
+            return new customerResource($customer);
+            //return $customer;
+        }
+    }
     /**
      * Show the form for editing the specified resource.
      *
