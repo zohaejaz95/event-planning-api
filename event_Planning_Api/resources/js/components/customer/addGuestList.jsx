@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Form, Icon, Input, Button, Row, Col } from "antd";
+import { Form, Icon, Input, Button, Row, Col, message, Select } from "antd";
 //import loginImage from "../../images/form-img.jpg";
-
+import { createContact } from "./customerFunction";
 class GuestList extends Component {
     constructor() {
         super();
@@ -12,6 +12,13 @@ class GuestList extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log("Received values of form: ", values);
+                createContact(values).then(res => {
+                    if (res) {
+                        message.success("Contact Added");
+                    } else {
+                        message.error("Something went wrong!!");
+                    }
+                });
             }
         });
     }
@@ -22,14 +29,14 @@ class GuestList extends Component {
             <div className="contents">
                 <Row>
                     <Col span={12} offset={3}>
-                        <h4 className="text-to-left">Guest List</h4>
+                        <h4 className="text-to-left">Add a contact</h4>
                         <br />
                         <Form
                             onSubmit={this.handleSubmit}
                             className="login-form "
                         >
                             <Form.Item>
-                                {getFieldDecorator("firstName", {
+                                {getFieldDecorator("first_name", {
                                     rules: [
                                         {
                                             required: true,
@@ -53,7 +60,7 @@ class GuestList extends Component {
                             </Form.Item>
 
                             <Form.Item>
-                                {getFieldDecorator("lastName", {
+                                {getFieldDecorator("last_name", {
                                     rules: [
                                         {
                                             required: true,
@@ -149,6 +156,41 @@ class GuestList extends Component {
                                         placeholder="Address"
                                     />
                                 )}
+                            </Form.Item>
+                            <Form.Item>
+                                {getFieldDecorator("province", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: "Please Select Category!"
+                                        }
+                                    ]
+                                })(
+                                    <Select placeholder="Please select a province!">
+                                        <Select.Option value="punjab">
+                                            Punjab
+                                        </Select.Option>
+                                        <Select.Option value="sindh">
+                                            Sindh
+                                        </Select.Option>
+                                        <Select.Option value="balochistan">
+                                            Balochistan
+                                        </Select.Option>
+                                        <Select.Option value="kpk">
+                                            KPK
+                                        </Select.Option>
+                                    </Select>
+                                )}
+                            </Form.Item>
+                            <Form.Item>
+                                {getFieldDecorator("city", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: "Please Enter City!"
+                                        }
+                                    ]
+                                })(<Input placeholder="Enter City!" />)}
                             </Form.Item>
                             <Button
                                 type="primary"

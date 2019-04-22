@@ -10,6 +10,7 @@ import Messages from "./messages";
 import TodoList from "./customer/todoList";
 import GuestList from "./customer/addGuestList";
 import Contacts from "./customer/contacts";
+import Guests from "./customer/guestList";
 
 const { Header, Sider, Content } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -25,7 +26,8 @@ class Customer extends Component {
             messages: false,
             list: false,
             newGuest: false,
-            contact: false
+            contact: false,
+            guests: false
         };
         this.toggle = this.toggle.bind(this);
         this.cardCustomize = this.cardCustomize.bind(this);
@@ -49,7 +51,8 @@ class Customer extends Component {
             messages: false,
             list: false,
             newGuest: false,
-            contact: false
+            contact: false,
+            guests: false
         });
     }
     myEvents() {
@@ -61,7 +64,8 @@ class Customer extends Component {
             messages: false,
             list: false,
             newGuest: false,
-            contact: false
+            contact: false,
+            guests: false
         });
     }
     newEvent() {
@@ -73,7 +77,8 @@ class Customer extends Component {
             messages: false,
             list: false,
             newGuest: false,
-            contact: false
+            contact: false,
+            guests: false
         });
     }
     profiles() {
@@ -85,7 +90,8 @@ class Customer extends Component {
             messages: false,
             list: false,
             newGuest: false,
-            contact: false
+            contact: false,
+            guests: false
         });
     }
     message() {
@@ -97,7 +103,8 @@ class Customer extends Component {
             messages: true,
             list: false,
             newGuest: false,
-            contact: false
+            contact: false,
+            guests: false
         });
     }
     todoList() {
@@ -109,7 +116,8 @@ class Customer extends Component {
             messages: false,
             list: true,
             newGuest: false,
-            contact: false
+            contact: false,
+            guests: false
         });
     }
     addGuest() {
@@ -121,7 +129,8 @@ class Customer extends Component {
             messages: false,
             list: false,
             newGuest: true,
-            contact: false
+            contact: false,
+            guests: false
         });
     }
     contacts() {
@@ -133,7 +142,21 @@ class Customer extends Component {
             messages: false,
             list: false,
             newGuest: false,
-            contact: true
+            contact: true,
+            guests: false
+        });
+    }
+    guest() {
+        this.setState({
+            customize: false,
+            viewEvent: false,
+            eventForm: false,
+            profile: false,
+            messages: false,
+            list: false,
+            newGuest: false,
+            contact: false,
+            guests: true
         });
     }
     render() {
@@ -146,7 +169,7 @@ class Customer extends Component {
                         trigger={null}
                         collapsible
                         collapsed={this.state.collapsed}
-                        style={{ background: "#ff" }}
+                        style={{ background: "#fff" }}
                     >
                         <div className="logo">Dashboard</div>
                         <Menu
@@ -204,11 +227,17 @@ class Customer extends Component {
                                     key="5"
                                     onClick={this.contacts.bind(this)}
                                 >
-                                    Contacts
+                                    Invitaions
                                 </Menu.Item>
                                 <Menu.Item
                                     key="6"
                                     onClick={this.addGuest.bind(this)}
+                                >
+                                    Add Contact
+                                </Menu.Item>
+                                <Menu.Item
+                                    key="9"
+                                    onClick={this.guest.bind(this)}
                                 >
                                     Guest List
                                 </Menu.Item>
@@ -262,6 +291,8 @@ class Customer extends Component {
                                 <TodoList />
                             ) : this.state.newGuest ? (
                                 <GuestList />
+                            ) : this.state.guests ? (
+                                <Guests />
                             ) : this.state.contact ? (
                                 <Contacts />
                             ) : this.state.messages ? (

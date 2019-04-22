@@ -21,7 +21,7 @@ class Contacts extends Component {
                 <Select
                     showSearch
                     style={{ width: 200 }}
-                    placeholder="Select an event"
+                    placeholder="Select an event to invite"
                     optionFilterProp="children"
                     onChange={handleChange}
                     onFocus={handleFocus}
@@ -42,9 +42,11 @@ class Contacts extends Component {
                     <p>Izzah</p>
                     <Button>
                         <Icon type="plus" />
+                        Invite
                     </Button>
                     <Button type="danger">
                         <Icon type="delete" />
+                        Delete
                     </Button>
                 </Card>
                 <br />
@@ -52,9 +54,11 @@ class Contacts extends Component {
                     <p>Ramlah</p>
                     <Button>
                         <Icon type="plus" />
+                        Invite
                     </Button>
                     <Button type="danger">
                         <Icon type="delete" />
+                        Delete
                     </Button>
                 </Card>
                 <br />
@@ -62,9 +66,11 @@ class Contacts extends Component {
                     <p>Warda</p>
                     <Button>
                         <Icon type="plus" />
+                        Invite
                     </Button>
                     <Button type="danger">
                         <Icon type="delete" />
+                        Delete
                     </Button>
                 </Card>
             </div>

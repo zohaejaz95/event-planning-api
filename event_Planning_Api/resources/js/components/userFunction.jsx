@@ -23,19 +23,23 @@ export const userLogin = user => {
 
 export const register = newUser => {
     return axios
-        .post("/api/register", {
-            name: newUser.name,
-            email: newUser.email,
-            password: newUser.password,
-            user_type: newUser.user_type
-        })
+        .post("/api/register", newUser)
         .then(response => {
-            console.log("Registered as User: " + response.data);
-            localStorage.setItem(
-                "usertoken",
-                JSON.stringify(response.data.data)
-            );
-            console.log(JSON.parse(localStorage.getItem("usertoken")));
+            //console.log("Registered as User: " + response.data);
+            if (newUser.user_type == "customer") {
+                localStorage.setItem(
+                    "custtoken",
+                    JSON.stringify(response.data.data)
+                );
+                console.log(JSON.parse(localStorage.getItem("custtoken")));
+            } else {
+                localStorage.setItem(
+                    "usertoken",
+                    JSON.stringify(response.data.data)
+                );
+                console.log(JSON.parse(localStorage.getItem("usertoken")));
+            }
+
             return response.data;
         })
         .catch(err => {
@@ -44,6 +48,31 @@ export const register = newUser => {
             if (err.response) {
                 console.log(err.response);
             }
+        });
+};
+export const customerRegister = newUser => {
+    const token = JSON.parse(localStorage.getItem("custtoken"));
+    //newUser["api_token"] = token.api_token;
+    console.log(token.api_token);
+    return axios
+        .post("/api/customer/create", newUser, {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token
+            }
+        })
+        .then(response => {
+            console.log(response.data);
+            var cust = JSON.parse(localStorage.getItem("custtoken"));
+            localStorage.setItem("usertoken", JSON.stringify(cust));
+            console.log(localStorage.getItem("usertoken"));
+            localStorage.removeItem("custtoken");
+            console.log("Registeration Successful!");
+            return true;
+        })
+        .catch(err => {
+            console.log(err);
         });
 };
 export const getPendingVendors = () => {
@@ -85,28 +114,6 @@ export const updateVendorStatus = id => {
         .then(response => {
             console.log(response);
             return response.data;
-        })
-        .catch(err => {
-            console.log(err);
-        });
-};
-export const customerRegister = newUser => {
-    return axios
-        .post(
-            "/api/customer/create",
-            {
-                first_name: newUser.first_name,
-                last_name: newUser.last_name,
-                contact: newUser.contact,
-                address: newUser.address
-            },
-            {
-                headers: { Authorization: "Bearer ${localStorage.usertoken}" },
-                headers: { "Content-Type": "application/json" }
-            }
-        )
-        .then(response => {
-            console.log("Registeration Successful!");
         })
         .catch(err => {
             console.log(err);

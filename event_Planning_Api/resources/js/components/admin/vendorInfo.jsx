@@ -143,10 +143,6 @@ class VendorInfo extends Component {
                         </tr>
                     </tbody>
                 </table>
-                <p>Email: {this.state.arr.email}</p>
-                <p>Website: {this.state.arr.website}</p>
-                <p>Contact: {this.state.arr.contact}</p>
-                <p>Description: {this.state.arr.description}</p>
 
                 <br />
                 <Button type="primary" onClick={this.accepted.bind(this)}>

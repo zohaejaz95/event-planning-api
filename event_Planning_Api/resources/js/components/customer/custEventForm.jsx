@@ -9,26 +9,50 @@ import {
     Select,
     Button,
     Row,
-    Col
+    Col,
+    message
 } from "antd";
 import moment from "moment";
+import { createEvent } from "./customerFunction";
 //import loginImage from "../../images/form-img.jpg";
-
-function onChange(date, dateString, checkedValues, time, timeString) {
+var edate = "";
+var etime = "";
+function onChangeDate(date, dateString) {
+    console.log(dateString);
     console.log(date, dateString);
-    console.log("checked = ", checkedValues);
+    edate = dateString;
+    console.log(edate);
+}
+function onChangeTime(time, timeString) {
+    etime = timeString;
     console.log(time, timeString);
+    console.log(etime);
 }
 class CustEventForm extends Component {
     constructor() {
         super();
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+
     handleSubmit(e) {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log("Received values of form: ", values);
+                values["date"] = edate;
+                values["time"] = etime;
+                values["status"] = "active";
+                values["type"] = "private";
+                createEvent(values).then(res => {
+                    if (res) {
+                        this.setState({
+                            profile: JSON.parse(localStorage.getItem("profile"))
+                        });
+                        message.success("Event created!");
+                    } else {
+                        message.error("Something went wrong!");
+                    }
+                });
             }
         });
     }
@@ -37,14 +61,7 @@ class CustEventForm extends Component {
         const { getFieldDecorator } = this.props.form;
         const { TextArea } = Input;
         const Option = Select.Option;
-        const selectAfter = (
-            <Select defaultValue="Wedding" style={{ width: 100 }}>
-                <Option value="Wedding">Wedding</Option>
-                <Option value="Birthday">Birthday</Option>
-                <Option value="Corporate">Corporate</Option>
-                <Option value="Personal">Personal</Option>
-            </Select>
-        );
+
         return (
             <div className="contents">
                 <Row>
@@ -56,11 +73,11 @@ class CustEventForm extends Component {
                             className="login-form "
                         >
                             <Form.Item>
-                                {getFieldDecorator("Name", {
+                                {getFieldDecorator("event_name", {
                                     rules: [
                                         {
                                             required: true,
-                                            message: "Please Enter your Name!"
+                                            message: "Please Enter Event Name!"
                                         }
                                     ]
                                 })(
@@ -73,47 +90,99 @@ class CustEventForm extends Component {
                                                 }}
                                             />
                                         }
-                                        placeholder="Name"
+                                        placeholder="Event Name"
                                     />
                                 )}
                             </Form.Item>
 
                             <Form.Item>
-                                <Input
-                                    addonAfter={selectAfter}
-                                    placeholder="Select Category"
-                                />
+                                {getFieldDecorator("category", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: "Please Select Category!"
+                                        }
+                                    ]
+                                })(
+                                    <Select placeholder="Please select a category!">
+                                        <Option value="wedding">Wedding</Option>
+                                        <Option value="birthday">
+                                            Birthday
+                                        </Option>
+                                        <Option value="corporate">
+                                            Corporate
+                                        </Option>
+                                        <Option value="personal">
+                                            Personal
+                                        </Option>
+                                    </Select>
+                                )}
                             </Form.Item>
                             <Form.Item>
-                                <TimePicker
-                                    style={{ width: 300 }}
-                                    onChange={onChange}
-                                    defaultOpenValue={moment(
-                                        "00:00:00",
-                                        "HH:mm:ss"
-                                    )}
-                                />
+                                {getFieldDecorator("time", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: "Please Enter Time!"
+                                        }
+                                    ]
+                                })(
+                                    <TimePicker
+                                        style={{ width: 300 }}
+                                        onChange={onChangeTime}
+                                        defaultOpenValue={moment(
+                                            "00:00:00",
+                                            "HH:mm:ss"
+                                        )}
+                                    />
+                                )}
                             </Form.Item>
                             <Form.Item>
-                                <DatePicker
-                                    style={{ width: 300 }}
-                                    onChange={onChange}
-                                />
+                                {getFieldDecorator("date", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: "Please Enter Date!"
+                                        }
+                                    ]
+                                })(
+                                    <DatePicker
+                                        style={{ width: 300 }}
+                                        onChange={onChangeDate}
+                                    />
+                                )}
                             </Form.Item>
                             <Form.Item>
-                                <InputNumber
-                                    style={{ width: 300 }}
-                                    min={1}
-                                    max={1000000}
-                                    onChange={onChange}
-                                    placeholder="Budget"
-                                />
+                                {getFieldDecorator("budget", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: "Please Enter Budget!"
+                                        }
+                                    ]
+                                })(
+                                    <InputNumber
+                                        style={{ width: 300 }}
+                                        min={1}
+                                        max={1000000}
+                                        placeholder="Budget"
+                                    />
+                                )}
                             </Form.Item>
                             <Form.Item>
-                                <TextArea
-                                    rows={4}
-                                    placeholder="Enter Description"
-                                />
+                                {getFieldDecorator("description", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: "Please Enter Decsription!"
+                                        }
+                                    ]
+                                })(
+                                    <TextArea
+                                        rows={4}
+                                        placeholder="Enter Description"
+                                    />
+                                )}
                             </Form.Item>
 
                             <Button
