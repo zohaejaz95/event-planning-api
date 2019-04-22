@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Auth;
 use App\User;
+use App\guest_list;
 use App\Http\Requests;
 use App\Http\Resources\contactlist as clist;
 
@@ -144,4 +145,32 @@ class ContactListController extends Controller
     {
         //
     }
+    /////////////////guest list functions
+public function add_guest(Request $request){
+    $user=User::findOrFail(Auth::guard('api')->id());
+        if($user->user_type=="customer"){
+        $guest = guest_list::create([
+            'status' => $request->input('status'),
+            'event_id' => $request->input('event_id'),
+            'contact_list_id' => $request->input('contact_list_id')
+        ]);
+        }
+}
+public function remove_guest($id){
+    $user=User::findOrFail(Auth::guard('api')->id());
+        if($user->user_type=="customer"){
+            $guest = guest_list::find($id);
+            $guest->delete();
+        }
+}
+public function get_guests($event_id){
+    $user=User::findOrFail(Auth::guard('api')->id());
+        if($user->user_type=="customer"){
+        $guest = guest_list::where('event_id',$event_id)->paginate(10);
+        return $guest;
+        }
+
+}
+
+
 }
