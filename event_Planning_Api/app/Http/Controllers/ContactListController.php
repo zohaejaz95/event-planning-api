@@ -171,7 +171,7 @@ public function remove_guest($id){
 public function get_guests($event_id){
     $user=User::findOrFail(Auth::guard('api')->id());
         if($user->user_type=="customer"){
-        $guest = guest_list::where('event_id',$event_id)->paginate(10);
+        $guest = guest_list::where('event_id',$event_id)->join('contact_list','guest_list.contact_list_id','=','contact_list.id')->paginate(10);
         return $guest;
         }
 
