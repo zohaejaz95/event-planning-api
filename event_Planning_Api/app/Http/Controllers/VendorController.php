@@ -290,7 +290,7 @@ public function get_locations(){
     if($user->user_type=="vendor"){
     
         $venid=DB::select("select vendor_id from vendors where username = '$user->name'");
-        $locations= location::where('vendor_id',$venid)->get();
+        $locations= location::where('vendor_id',$venid[0]->vendor_id)->get();
         return $locations;
     
     }
@@ -301,7 +301,7 @@ public function get_categories(){
     if($user->user_type=="vendor"){
     
     $venid=DB::select("select vendor_id from vendors where username = '$user->name'");
-    $cat= category_event::where('vendor_id',$venid).get();
+    $cat= category_event::where('vendor_id',$venid[0]->vendor_id).get();
     return $cat;
     
     
