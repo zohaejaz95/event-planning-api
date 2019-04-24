@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { List, Avatar, Button, Icon, Progress, Tooltip } from "antd";
+import { List, Avatar, Button, Icon, Progress, Tooltip, message } from "antd";
 //import VendorDetail from "../admin/vendorDetail";
 import avatar from "../../images/avatar.jpg";
 import { getPendingVendors, updateVendorStatus } from "../userFunction";
@@ -16,6 +16,8 @@ class VendorInfo extends Component {
             arr: {}
         };
         this.toggleDetail = this.toggleDetail.bind(this);
+        this.toggleDetails = this.toggleDetails.bind(this);
+        this.pendingVendors = this.pendingVendors.bind(this);
     }
     toggleDetail(item) {
         console.log(item);
@@ -30,29 +32,55 @@ class VendorInfo extends Component {
             detail: false
         });
     }
-    componentDidMount() {
+    pendingVendors() {
         getPendingVendors().then(res => {
             if (res) {
-                console.log(res.data);
+                //console.log(res.data);
                 const lists = JSON.stringify(res.data);
                 const list = JSON.parse(lists);
                 this.setState({
                     vendors: list
                 });
-                console.log(this.state.vendors);
+                //console.log(this.state.vendors);
                 console.log(this.state.vendors.length);
-                console.log(this.state.vendors[0]);
-                console.log(this.state.vendors[0].vendor_id);
             }
         });
+    }
+    componentDidMount() {
+        this.pendingVendors();
     }
 
     accepted() {
         var v_id = this.state.arr.vendor_id;
         console.log(this.state.arr.vendor_id);
-        updateVendorStatus(v_id).then(res => {
+        updateVendorStatus("approved", v_id).then(res => {
             if (res) {
-                this.props.history.push("/admin");
+                this.setState({
+                    vendors: []
+                });
+                this.pendingVendors();
+                this.toggleDetails();
+                message.success("Vendor Account Accepted");
+                //this.props.history.push("/admin");
+            } else {
+                message.error("Something went wrong!!");
+            }
+        });
+    }
+    rejected() {
+        var v_id = this.state.arr.vendor_id;
+        console.log(this.state.arr.vendor_id);
+        updateVendorStatus("rejected", v_id).then(res => {
+            if (res) {
+                this.setState({
+                    vendors: []
+                });
+                this.pendingVendors();
+                this.toggleDetails();
+                message.success("Vendor Account Rejected");
+                //this.props.history.push("/admin");
+            } else {
+                message.error("Something went wrong!!");
             }
         });
     }
@@ -103,7 +131,7 @@ class VendorInfo extends Component {
                 <br />
                 <br />
 
-                <table class="table table-striped table-hover">
+                <table className="table table-striped table-hover">
                     <thead>
                         <tr>
                             <td>
@@ -143,16 +171,14 @@ class VendorInfo extends Component {
                         </tr>
                     </tbody>
                 </table>
-                <p>Email: {this.state.arr.email}</p>
-                <p>Website: {this.state.arr.website}</p>
-                <p>Contact: {this.state.arr.contact}</p>
-                <p>Description: {this.state.arr.description}</p>
 
                 <br />
                 <Button type="primary" onClick={this.accepted.bind(this)}>
                     Accept
                 </Button>
-                <Button type="danger">Reject</Button>
+                <Button type="danger" onClick={this.rejected.bind(this)}>
+                    Reject
+                </Button>
             </div>
         );
         return (

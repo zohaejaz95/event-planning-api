@@ -6,20 +6,33 @@ import Login from "./login";
 import CustomerRegister from "./customerRegister";
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
+//const token = JSON.parse(localStorage.getItem("usertoken"));
 class Header extends Component {
     constructor() {
         super();
         this.state = {
-            current: "mail"
+            current: "mail",
+            token: []
         };
         this.handleClick = this.handleClick.bind(this);
+        this.pageLoad = this.pageLoad.bind(this);
     }
-
+    pageLoad() {
+        var user = JSON.parse(localStorage.getItem("usertoken"));
+        this.setState({
+            token: user.user_type
+        });
+        console.log("hello");
+        console.log(user.user_type);
+    }
     handleClick(e) {
         console.log("click ", e);
         this.setState({
             current: e.key
         });
+    }
+    logOut(e) {
+        localStorage.removeItem("usertoken");
     }
     render() {
         return (
@@ -106,11 +119,30 @@ class Header extends Component {
                     </Menu.Item>
 
                     <Menu.Item key="loginForm" className="text-to-right">
-                        <Login />
+                        {localStorage.usertoken ? (
+                            <div>
+                                <a
+                                    href={this.state.token}
+                                    onClick={this.pageLoad}
+                                >
+                                    Dashboard
+                                </a>
+                            </div>
+                        ) : (
+                            <Login />
+                        )}
                     </Menu.Item>
 
                     <Menu.Item key="register" className="text-to-right">
-                        <CustomerRegister />
+                        {localStorage.usertoken ? (
+                            <div>
+                                <a href="/" onClick={this.logOut.bind()}>
+                                    Logout
+                                </a>
+                            </div>
+                        ) : (
+                            <CustomerRegister />
+                        )}
                     </Menu.Item>
                 </Menu>
             </div>

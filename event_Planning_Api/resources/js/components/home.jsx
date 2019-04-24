@@ -141,6 +141,7 @@ class Home extends Component {
                         <a href="/services">View more</a>
                     </div>
                 </div>
+                <br />
             </div>
         );
     }

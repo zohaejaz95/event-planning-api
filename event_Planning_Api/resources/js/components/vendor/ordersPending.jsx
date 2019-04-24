@@ -53,11 +53,11 @@ function showDeleteConfirm() {
         cancelText: "No",
         onOk() {
             console.log("OK");
-            message.success("Click on Yes");
+            message.success("marked as complete");
         },
         onCancel() {
             console.log("Cancel");
-            message.error("Click on No");
+            message.error("Still Pending");
         }
     });
 }

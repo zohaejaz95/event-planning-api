@@ -1,13 +1,93 @@
 import React, { Component } from "react";
-import { Select, Card, Button, Icon } from "antd";
-
+import { Select, Card, Button, Icon, message } from "antd";
+import {
+    getEvents,
+    getContacts,
+    addGuest,
+    deleteContact
+} from "./customerFunction";
 class Contacts extends Component {
+    constructor() {
+        super();
+        this.state = {
+            events: [],
+            contacts: [],
+            event_id: "",
+            status: "",
+            contact_list_id: ""
+        };
+        this.events = this.events.bind(this);
+        this.contact = this.contact.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.invitation = this.invitation.bind(this);
+        this.deleteC = this.deleteC.bind(this);
+    }
+    invitation(contact_id) {
+        var list = {
+            contact_list_id: contact_id,
+            event_id: this.state.event_id,
+            status: "invited"
+        };
+        addGuest(list).then(res => {
+            if (res) {
+                message.success("Guest Invited!");
+            } else {
+                message.error("Unable to invite!");
+            }
+        });
+    }
+    deleteC(contact_id) {
+        console.log(contact_id);
+        deleteContact(contact_id).then(res => {
+            if (res) {
+                message.success("Contact Deleted!");
+                this.setState({
+                    contacts: []
+                });
+                this.contact();
+            } else {
+                message.error("Unable to delete!");
+            }
+        });
+    }
+    events() {
+        getEvents().then(res => {
+            if (res) {
+                console.log(res.data);
+                const lists = JSON.stringify(res.data);
+                const list = JSON.parse(lists);
+                this.setState({
+                    events: list
+                });
+                console.log(this.state.events.length);
+            }
+        });
+    }
+    contact() {
+        getContacts().then(res => {
+            if (res) {
+                console.log(res.data);
+                const lists = JSON.stringify(res.data);
+                const list = JSON.parse(lists);
+                this.setState({
+                    contacts: list
+                });
+                console.log(this.state.contacts.length);
+            }
+        });
+    }
+    componentDidMount() {
+        this.events();
+        this.contact();
+    }
+    handleChange(value) {
+        console.log(`selected ${value}`);
+        this.setState({
+            event_id: value
+        });
+    }
     render() {
         const Option = Select.Option;
-
-        function handleChange(value) {
-            console.log(`selected ${value}`);
-        }
 
         function handleBlur() {
             console.log("blur");
@@ -18,12 +98,14 @@ class Contacts extends Component {
         }
         return (
             <div>
+                <h4>Contact List</h4>
+                <hr />
                 <Select
                     showSearch
                     style={{ width: 200 }}
-                    placeholder="Select an event"
+                    placeholder="Select an event to invite"
                     optionFilterProp="children"
-                    onChange={handleChange}
+                    onChange={this.handleChange}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
                     filterOption={(input, option) =>
@@ -32,41 +114,41 @@ class Contacts extends Component {
                             .indexOf(input.toLowerCase()) >= 0
                     }
                 >
-                    <Option value="jack">Jack</Option>
-                    <Option value="lucy">Lucy</Option>
-                    <Option value="tom">Tom</Option>
+                    {this.state.events.map((serve, i) => (
+                        <Option value={serve.event_id} key={i}>
+                            {serve.event_name}
+                        </Option>
+                    ))}
                 </Select>
 
                 <br />
-                <Card hoverable bordered={false}>
-                    <p>Izzah</p>
-                    <Button>
-                        <Icon type="plus" />
-                    </Button>
-                    <Button type="danger">
-                        <Icon type="delete" />
-                    </Button>
-                </Card>
                 <br />
-                <Card hoverable bordered={false}>
-                    <p>Ramlah</p>
-                    <Button>
-                        <Icon type="plus" />
-                    </Button>
-                    <Button type="danger">
-                        <Icon type="delete" />
-                    </Button>
-                </Card>
-                <br />
-                <Card hoverable bordered={false}>
-                    <p>Warda</p>
-                    <Button>
-                        <Icon type="plus" />
-                    </Button>
-                    <Button type="danger">
-                        <Icon type="delete" />
-                    </Button>
-                </Card>
+                {this.state.contacts.map((con, i) => (
+                    <div key={i}>
+                        <Card hoverable bordered={false}>
+                            <h6>{con.first_name + " " + con.last_name}</h6>
+                            <p>Email: {con.email}</p>
+                            <a
+                                href={
+                                    "mailto:" + con.email + "?Subject=Invitaion"
+                                }
+                            >
+                                <Button onClick={() => this.invitation(con.id)}>
+                                    <Icon type="plus" />
+                                    Invite
+                                </Button>
+                            </a>
+                            <Button
+                                type="danger"
+                                onClick={() => this.deleteC(con.id)}
+                            >
+                                <Icon type="delete" />
+                                Delete
+                            </Button>
+                        </Card>
+                        <br />
+                    </div>
+                ))}
             </div>
         );
     }

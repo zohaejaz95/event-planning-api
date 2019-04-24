@@ -139,56 +139,56 @@ public function create_service(Request $request){
         'description'=>$request->input('description'),
         'vendor_id'=>$vendor[0]->vendor_id
     ]);
-    if($request->input('category')=='venues'){
-        $venues=venues::create([
-            'Address'=>$request->input('Address'),
-            'start_time'=>$request->input('start_time'),
-            'end_time'=>$request->input('end_time'),
-            'service_id'=>$service->service_id
-        ]);
-    }
-    else if($request->input('category')=='photographs'){
-        $photo=photographs::create([
-            'photographer_name'=>$request->input('photographer_name'),
-            'contact'=>$request->input('contact'),
-            'max_pictures'=>$request->input('max_pictures'),
-            'service_id'=>$service->service_id
-        ]);
-    }
-    else if($request->input('category')=='makeup artists'){
-        $makeup=makeup_artists::create([
-            'name'=>$request->input('name'),
-            'service_id'=>$service->service_id
-        ]);
-    }
-    else if($request->input('category')=='entertainment'){
-        $enter=entertainments::create([
-            'bandname'=>$request->input('bandname'),
-            'hours'=>$request->input('hours'),
-            'service_id'=>$service->service_id
-        ]);
-    }
-    else if($request->input('category')=='car rental'){
-        $car=car_rentals::create([
-            'car_name'=>$request->input('car_name'),
-            'plate_no'=>$request->input('plate_no'),
-            'service_id'=>$service->service_id
-        ]);
-    }
-    else if($request->input('category')=='catering'){
-        $cat=caterings::create([
-            'start_time'=>$request->input('start_time'),
-            'end_time'=>$request->input('end_time'),
-            'service_id'=>$service->service_id
-        ]);
-        $dishes=$request->input('dishes.*');
-        foreach ($dishes as $dish){
-            $foodserivce=food_services::create([
-                'dishes'=>$dish['dish'],
-                'cater_id'=>$cat->id
-            ]);
-        }
-    }
+    // if($request->input('category')=='venues'){
+    //     $venues=venues::create([
+    //         'Address'=>$request->input('Address'),
+    //         'start_time'=>$request->input('start_time'),
+    //         'end_time'=>$request->input('end_time'),
+    //         'service_id'=>$service->service_id
+    //     ]);
+    // }
+    // else if($request->input('category')=='photographs'){
+    //     $photo=photographs::create([
+    //         'photographer_name'=>$request->input('photographer_name'),
+    //         'contact'=>$request->input('contact'),
+    //         'max_pictures'=>$request->input('max_pictures'),
+    //         'service_id'=>$service->service_id
+    //     ]);
+    // }
+    // else if($request->input('category')=='makeup artists'){
+    //     $makeup=makeup_artists::create([
+    //         'name'=>$request->input('name'),
+    //         'service_id'=>$service->service_id
+    //     ]);
+    // }
+    // else if($request->input('category')=='entertainment'){
+    //     $enter=entertainments::create([
+    //         'bandname'=>$request->input('bandname'),
+    //         'hours'=>$request->input('hours'),
+    //         'service_id'=>$service->service_id
+    //     ]);
+    // }
+    // else if($request->input('category')=='car rental'){
+    //     $car=car_rentals::create([
+    //         'car_name'=>$request->input('car_name'),
+    //         'plate_no'=>$request->input('plate_no'),
+    //         'service_id'=>$service->service_id
+    //     ]);
+    // }
+    // else if($request->input('category')=='catering'){
+    //     $cat=caterings::create([
+    //         'start_time'=>$request->input('start_time'),
+    //         'end_time'=>$request->input('end_time'),
+    //         'service_id'=>$service->service_id
+    //     ]);
+    //     $dishes=$request->input('dishes.*');
+    //     foreach ($dishes as $dish){
+    //         $foodserivce=food_services::create([
+    //             'dishes'=>$dish['dish'],
+    //             'cater_id'=>$cat->id
+    //         ]);
+    //     }
+    // }
     
 }
 
@@ -223,28 +223,28 @@ public function get_service(Request $request,$id){
 public function get_service_cat($cat){
     $user=User::findOrFail(Auth::guard('api')->id());
     if(($user->user_type=="vendor")||($user->user_type=="customer")){
-    if($cat=='venues'){
-        return services::where('category',$cat)->join('venues','services.id','=','venues.service_id')->paginate(15);
-    }
-    else if($cat=='photographs'){
-        //return services::findOrFail($id)->photographs()->get();
-          return services::where('category',$cat)->join('photographs','services.id','=','photographs.services_id')->paginate(15);
-    }
-    else if($cat=='makeup artists'){
-        return services::where('category',$cat)->join('makeup_artists','services.id','=','makeup_artists.service_id')->paginate(15);
-    }
-    else if($cat=='entertainment'){
-        return services::where('category',$cat)->join('entertainments','services.id','=','entertainments.service_id')->paginate(15);
-    }
-    else if($cat=='car rental'){
-        return services::where('category',$cat)->join('car_rentals','services.id','=','car_rentals.service_id')->paginate(15);
-    }
-    else if($cat=='catering'){
-        return services::where('category',$cat)->join('caterings','services.id','=','caterings.service_id')->join('food_services','caterings.id','=','food_services.cater_id')->paginate(15);
-    }
+        return services::where('category',$cat)->paginate(15);
+    // if($cat=='venues'){
+    //     return services::where('category',$cat)->join('venues','services.id','=','venues.service_id')->paginate(15);
+    // }
+    // else if($cat=='photographs'){
+    //     //return services::findOrFail($id)->photographs()->get();
+    //       return services::where('category',$cat)->join('photographs','services.id','=','photographs.services_id')->paginate(15);
+    // }
+    // else if($cat=='makeup artists'){
+    //     return services::where('category',$cat)->join('makeup_artists','services.id','=','makeup_artists.service_id')->paginate(15);
+    // }
+    // else if($cat=='entertainment'){
+    //     return services::where('category',$cat)->join('entertainments','services.id','=','entertainments.service_id')->paginate(15);
+    // }
+    // else if($cat=='car rental'){
+    //     return services::where('category',$cat)->join('car_rentals','services.id','=','car_rentals.service_id')->paginate(15);
+    // }
+    // else if($cat=='catering'){
+    //     return services::where('category',$cat)->join('caterings','services.id','=','caterings.service_id')->join('food_services','caterings.id','=','food_services.cater_id')->paginate(15);
+    // }
     }
 }
-
 public function update_service(Request $request,$id){
 
 }
@@ -284,8 +284,30 @@ public function update_package(Request $request,$id){
 public function delete_package(Request $request,$id){
 
 }
-
-    /**
+public function get_locations(){
+    $user=User::findOrFail(Auth::guard('api')->id());
+    
+    if($user->user_type=="vendor"){
+    
+        $venid=DB::select("select vendor_id from vendors where username = '$user->name'");
+        $locations= location::where('vendor_id',$venid)->get();
+        return $locations;
+    
+    }
+}
+public function get_categories(){
+    $user=User::findOrFail(Auth::guard('api')->id());
+    
+    if($user->user_type=="vendor"){
+    
+    $venid=DB::select("select vendor_id from vendors where username = '$user->name'");
+    $cat= category_event::where('vendor_id',$venid).get();
+    return $cat;
+    
+    
+    }  
+} 
+/**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -355,3 +377,9 @@ public function delete_package(Request $request,$id){
         //
     }
 }
+ 
+
+    
+
+
+
