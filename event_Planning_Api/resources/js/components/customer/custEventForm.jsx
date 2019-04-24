@@ -45,9 +45,6 @@ class CustEventForm extends Component {
                 values["type"] = "private";
                 createEvent(values).then(res => {
                     if (res) {
-                        this.setState({
-                            profile: JSON.parse(localStorage.getItem("profile"))
-                        });
                         message.success("Event created!");
                     } else {
                         message.error("Something went wrong!");
