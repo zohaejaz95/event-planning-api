@@ -74,6 +74,15 @@ Route::put('vendor/update/package/{id}','VendorController@update_package');
 Route::delete('vendor/delete/package/{id}','VendorController@delete_package');
 Route::get('vendor/locations','VendorController@get_locations');
 Route::get('vendor/categories','VendorController@get_categories');
+//feedbacks
+Route::get('customer/feedbacks/service/{id}','feedback_controller@show_cust_service');
+Route::get('customer/feedbacks/package/{id}','feedback_controller@show_cust_package');
+Route::get('feedbacks/service/{id}','feedback_controller@show_service');
+Route::get('feedbacks/package/{id}','feedback_controller@show_package');
+Route::delete('customer/delete/{id}','feedback_controller@destroy');
+Route::post('customer/feedback/new','feedback_controller@store');
+Route::put('customer/feedback/update/{id}','feedback_controller@update');
+
 
 });
 

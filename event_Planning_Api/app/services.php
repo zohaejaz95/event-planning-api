@@ -52,4 +52,7 @@ class services extends Model
     public function car_rentals(){
         return $this->hasMany('App\car_rentals');
     }
+    public function feedbacks(){
+        return $this->hasMany('App\feedbacks');
+    }
 }

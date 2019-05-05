@@ -28,4 +28,7 @@ class customer extends Model
     public function orders(){
         return $this->hasMany('App\orders');
     }
+    public function feedbacks(){
+        return $this->hasMany('App\feedbacks');
+    }
 }

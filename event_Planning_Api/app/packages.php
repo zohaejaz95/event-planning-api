@@ -24,5 +24,8 @@ class packages extends Model
     public function orders(){
         return $this->belongsTo('App\orders');
     }
+    public function feedbacks(){
+        return $this->hasMany('App\feedbacks');
+    }
 }
 
