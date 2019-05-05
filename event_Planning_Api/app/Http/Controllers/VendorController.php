@@ -194,6 +194,82 @@ public function create_service(Request $request){
 
 }
 
+public function update_service(Request $request,$id){
+    $user=User::findOrFail(Auth::guard('api')->id());
+    if($user->user_type=="vendor"){
+        $vendor=DB::select("select vendor_id from vendors where username = '$user->name'");
+        $service=services::findOrFail($id);
+        $service->update([
+        'service_name'=>$request->input('service_name'),
+        'category'=>$request->input('category'),
+        'event_type'=>$request->input('event_type'),
+        'price'=>$request->input('price'),
+        'description'=>$request->input('description'),
+        'vendor_id'=>$vendor[0]->vendor_id
+    ]);
+    if($request->input('category')=='venues'){
+        $venues=venues::where('event_id',$id)->get();
+        $venues->update([
+            'Address'=>$request->input('Address'),
+            'start_time'=>$request->input('start_time'),
+            'end_time'=>$request->input('end_time'),
+            'service_id'=>$service->service_id
+        ]);
+    }
+    else if($request->input('category')=='photographs'){
+        $photo=photographs::where('event_id',$id)->get();
+        $photo->update([
+            'photographer_name'=>$request->input('photographer_name'),
+            'contact'=>$request->input('contact'),
+            'max_pictures'=>$request->input('max_pictures'),
+            'service_id'=>$service->service_id
+        ]);
+    }
+    else if($request->input('category')=='makeup artists'){
+        $makeup=makeup_artists::where('event_id',$id)->get();
+        $makeup->update([
+            'name'=>$request->input('name'),
+            'service_id'=>$service->service_id
+        ]);
+    }
+    else if($request->input('category')=='entertainment'){
+        $enter=entertainments::where('event_id',$id)->get();
+        $enter->update([
+            'bandname'=>$request->input('bandname'),
+            'hours'=>$request->input('hours'),
+            'service_id'=>$service->service_id
+        ]);
+    }
+    else if($request->input('category')=='car rental'){
+        $car=car_rentals::where('event_id',$id)->get();
+        $car->update([
+            'car_name'=>$request->input('car_name'),
+            'plate_no'=>$request->input('plate_no'),
+            'service_id'=>$service->service_id
+        ]);
+    }
+    else if($request->input('category')=='catering'){
+        $cat=caterings::where('event_id',$id)->get();
+        $cat->update([
+            'start_time'=>$request->input('start_time'),
+            'end_time'=>$request->input('end_time'),
+            'service_id'=>$service->service_id
+        ]);
+        $dishes=$request->input('dishes.*');
+        $foodserivce=food_services::where('cater_id',$cat->id)->delete();
+        foreach ($dishes as $dish){
+            $foodserivce=food_services::create([
+                'dishes'=>$dish['dish'],
+                'cater_id'=>$cat->id
+            ]);
+        }
+    }
+    
+}
+
+}
+
+
 public function get_service(Request $request,$id){
     $user=User::findOrFail(Auth::guard('api')->id());
     if(($user->user_type=="vendor")||($user->user_type=="customer")){
@@ -245,11 +321,33 @@ public function get_service_cat($cat){
     }
     }
 }
-public function update_service(Request $request,$id){
 
-}
 public function delete_service(Request $request,$id){
-
+    $user=User::findOrFail(Auth::guard('api')->id());
+    if($user->user_type=="vendor"){
+    $service=services::findOrFail($id);
+    if($service->category=='venues'){
+        $venues=venues::where('service_id',$id)->delete();
+    }
+    else if($service->category=='photographs'){
+        $photographs=photographs::where('service_id',$id)->delete();
+    }
+    else if($service->category=='makeup artists'){
+        $makeup=makeup_artists::where('service_id',$id)->delete();
+    }
+    else if($service->category=='entertainment'){
+        $enter=entertainments::where('service_id',$id)->delete();
+    }
+    else if($service->category=='car rental'){
+        $car=car_rentals::where('service_id',$id)->delete();
+    }
+    else if($service->category=='catering'){
+        $cater=caterings::where('service_id',$id)->get();
+        $food=food_services::where('cater_id',$cater->id)->delete();
+        $cater->delete();
+    }
+    $service->delete();
+    }
 }
 public function create_package(Request $request){
     $user=User::findOrFail(Auth::guard('api')->id());
@@ -279,10 +377,33 @@ public function get_package(Request $request,$id){
     }
 }
 public function update_package(Request $request,$id){
+    $user=User::findOrFail(Auth::guard('api')->id());
+    if($user->user_type=="vendor"){
+        $vendor=DB::select("select vendor_id from vendors where username = '$user->name'");
+        $package=packages::findOrFail($id);
+        $package->update([
+            'name'=>$request->input('name'),
+            'description'=>$request->input('description'),
+            'vendor_id'=>$vendor[0]->vendor_id
+        ]);
+        $services=$request->input('services.*');
+        $pksr=package_services::where('package_id',$id)->delete();
+        foreach($services as $service){
+            $pkgser=package_services::create([
+                'package_id'=>$package->p_id,
+                'discount'=>$service['discount'],
+                'service_id'=>$service['service_id']
+            ]);
 
+        }
+    } 
 }
 public function delete_package(Request $request,$id){
-
+    $user=User::findOrFail(Auth::guard('api')->id());
+    if($user->user_type=="vendor"){
+        $pksr=package_services::where('package_id',$id)->delete();
+        $package=packages::findOrFail($id)->delete();
+    }
 }
 public function get_locations(){
     $user=User::findOrFail(Auth::guard('api')->id());

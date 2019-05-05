@@ -66,8 +66,12 @@ Route::delete('customer/guest_list/remove/{id}','ContactListController@remove_gu
 Route::post('vendor/create/service','VendorController@create_service');
 Route::get('vendor/get/service/{id}','VendorController@get_service');
 Route::get('vendor/get/service/category/{cat}','VendorController@get_service_cat');
+Route::put('vendor/update/serivce/{id}','VendorController@update_service');
+Route::delete('vendor/delete/serivce/{id}','VendorController@delete_service');
 Route::post('vendor/create/package','VendorController@create_package');
 Route::get('vendor/get/package/{id}','VendorController@get_package');
+Route::put('vendor/update/package/{id}','VendorController@update_package');
+Route::delete('vendor/delete/package/{id}','VendorController@delete_package');
 Route::get('vendor/locations','VendorController@get_locations');
 Route::get('vendor/categories','VendorController@get_categories');
 
