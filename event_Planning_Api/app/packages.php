@@ -13,6 +13,7 @@ class packages extends Model
     protected $fillable = [
         'name',
         'description',
+        'expiration_date',
         'vendor_id'
     ];
     public function vendor(){
