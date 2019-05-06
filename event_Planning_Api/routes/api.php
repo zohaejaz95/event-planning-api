@@ -66,11 +66,27 @@ Route::delete('customer/guest_list/remove/{id}','ContactListController@remove_gu
 Route::post('vendor/create/service','VendorController@create_service');
 Route::get('vendor/get/service/{id}','VendorController@get_service');
 Route::get('vendor/get/service/category/{cat}','VendorController@get_service_cat');
+Route::put('vendor/update/serivce/{id}','VendorController@update_service');
+Route::delete('vendor/delete/serivce/{id}','VendorController@delete_service');
 Route::post('vendor/create/package','VendorController@create_package');
 Route::get('vendor/get/package/{id}','VendorController@get_package');
+Route::put('vendor/update/package/{id}','VendorController@update_package');
+Route::delete('vendor/delete/package/{id}','VendorController@delete_package');
 Route::get('vendor/locations','VendorController@get_locations');
 Route::get('vendor/categories','VendorController@get_categories');
 Route::get('vendor/get/services','VendorController@get_vendor_services');
 
+//feedbacks
+Route::get('customer/feedbacks/service/{id}','feedback_controller@show_cust_service');
+Route::get('customer/feedbacks/package/{id}','feedback_controller@show_cust_package');
+Route::get('feedbacks/service/{id}','feedback_controller@show_service');
+Route::get('feedbacks/package/{id}','feedback_controller@show_package');
+Route::delete('customer/delete/{id}','feedback_controller@destroy');
+Route::post('customer/feedback/new','feedback_controller@store');
+Route::put('customer/feedback/update/{id}','feedback_controller@update');
+
+
 });
+
+
 
