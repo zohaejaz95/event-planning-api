@@ -355,6 +355,7 @@ public function create_package(Request $request){
         $vendor=DB::select("select vendor_id from vendors where username = '$user->name'");
         $package=packages::create([
             'name'=>$request->input('name'),
+            'expiration_date'=>$request->input('expiration_date'),
             'description'=>$request->input('description'),
             'vendor_id'=>$vendor[0]->vendor_id
         ]);
@@ -376,6 +377,16 @@ public function get_package(Request $request,$id){
         return packages::findOrFail($id)->join('package_services','packages.p_id','=','package_services.package_id')->get();
     }
 }
+
+public function get_ven_package(){
+    $user=User::findOrFail(Auth::guard('api')->id());
+    if($user->user_type=="vendor"){
+        $venid=DB::select("select vendor_id from vendors where username = '$user->name'");
+        $pack=packages::where('vendor_id',$venid[0]->vendor_id)->paginate(15);
+        return $pack;
+    }
+}
+
 public function update_package(Request $request,$id){
     $user=User::findOrFail(Auth::guard('api')->id());
     if($user->user_type=="vendor"){
@@ -383,6 +394,7 @@ public function update_package(Request $request,$id){
         $package=packages::findOrFail($id);
         $package->update([
             'name'=>$request->input('name'),
+            'expiration_date'=>$request->input('expiration_date'),
             'description'=>$request->input('description'),
             'vendor_id'=>$vendor[0]->vendor_id
         ]);
