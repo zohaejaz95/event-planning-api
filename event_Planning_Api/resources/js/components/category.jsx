@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 //import { Link } from "react-router-dom";
-import { Card, Col, Row, Menu, Icon, Switch } from "antd";
-
+import ReactPlayer from "react-player";
+import Order from "./order";
+import { Card, Col, Row, Button, Select, Icon } from "antd";
+import { getServicesCat } from "./vendor/vendorFunctions";
 //service images
+import avatar from "../images/avatar.jpg";
 import makeup from "../images/makeup.jpg";
 import designer from "../images/suit-and-tie.jpg";
 import photography from "../images/photography.jpg";
@@ -16,6 +19,8 @@ class Category extends Component {
     constructor() {
         super();
         this.state = {
+            detail: false,
+            category: "photographs",
             service: [
                 {
                     name: "Vendor Name",
@@ -61,15 +66,62 @@ class Category extends Component {
                     name: "Vendor Name",
                     image: personal
                 }
-            ]
+            ],
+            services: [],
+            show: []
         };
+        this.vendor = this.vendor.bind(this);
+        this.toggleDetail = this.toggleDetail.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+    }
+    toggleDetail(item) {
+        this.setState({
+            detail: true,
+            show: item
+        });
+    }
+    toggleDetails() {
+        this.setState({
+            detail: false
+        });
+    }
+    handleChange(value) {
+        console.log(`selected ${value}`);
+        this.setState({
+            category: value
+        });
+
+        getServicesCat(value).then(res => {
+            if (res) {
+                console.log(res.data);
+                const lists = JSON.stringify(res.data);
+                const elist = JSON.parse(lists);
+                this.setState({
+                    services: elist
+                });
+            }
+        });
+    }
+    componentDidMount() {
+        getServicesCat("photographs").then(res => {
+            if (res) {
+                console.log(res.data);
+                const lists = JSON.stringify(res.data);
+                const elist = JSON.parse(lists);
+                this.setState({
+                    services: elist
+                });
+            }
+        });
     }
     viewService() {
         this.props.history.push("/services/photography/vendor-name");
     }
+    vendor(value) {
+        console.log(value);
+    }
     render() {
         const { Meta } = Card;
-        const { SubMenu } = Menu;
         const cardLayout = {
             labelcol: {
                 xs: { span: 24 },
@@ -80,52 +132,113 @@ class Category extends Component {
                 sm: { span: 4 }
             }
         };
+        const Option = Select.Option;
+
+        function handleBlur() {
+            console.log("blur");
+        }
+
+        function handleFocus() {
+            console.log("focus");
+        }
+        const serviceList = (
+            <Row>
+                <Select
+                    showSearch
+                    style={{ width: 200 }}
+                    placeholder="Select category to search"
+                    optionFilterProp="children"
+                    onChange={this.handleChange}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
+                    filterOption={(input, option) =>
+                        option.props.children
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                    }
+                >
+                    <Option value="photographs">Photography</Option>
+                    <Option value="videography">Videography</Option>
+                    <Option value="makeup artists">Makeup Artist</Option>
+                    <Option value="decorators">Decorators</Option>
+                    <Option value="designers">Designers</Option>
+                    <Option value="venues">Venues</Option>
+                    <Option value="cards">Invitations and Cards</Option>
+                    <Option value="catering">Food and Catering Services</Option>
+                    <Option value="entertainment">
+                        Music and Entertainment
+                    </Option>
+                    <Option value="car rental">Car Rental Services</Option>
+                    <Option value="event planners">Event Planners</Option>
+                </Select>
+                <br />
+
+                <Row type="flex" justify="center">
+                    {this.state.services.map((serve, i) => (
+                        <Col {...cardLayout} className="m-4" key={i}>
+                            <Card
+                                hoverable
+                                style={{ width: 240 }}
+                                cover={<img alt="example" src={photography} />}
+                                key={i}
+                                onClick={() => this.toggleDetail(serve)}
+                            >
+                                <Meta title={serve.service_name} />
+                            </Card>
+                        </Col>
+                    ))}
+                </Row>
+            </Row>
+        );
+        const serviceDetail = (
+            <div>
+                <Button
+                    type="primary"
+                    onClick={this.toggleDetails.bind(this)}
+                    className="text-to-left"
+                >
+                    Back
+                    <Icon type="left-circle" />
+                </Button>
+                <br />
+                <br />
+                <Row type="flex">
+                    <Col span={16} offset={2}>
+                        <img
+                            alt="example"
+                            src={photography}
+                            style={{ width: "100%" }}
+                        />
+                        <div className="text-to-left">
+                            <span>
+                                <h4>{this.state.show.service_name}</h4>
+                            </span>
+                            <br />
+                            <ReactPlayer
+                                url="https://www.youtube.com/watch?v=lqx5ocbekWA"
+                                playing
+                            />
+                            <br />
+                            <h6>Event Type: </h6> {this.state.show.event_type}
+                            <h6>Category: </h6> {this.state.show.category}
+                            <h6>Price: </h6> {this.state.show.price}
+                            <h6>Description: </h6>
+                            <p>{this.state.show.description}</p>
+                        </div>
+
+                        <br />
+                    </Col>
+                </Row>
+                <Order />
+            </div>
+        );
         return (
             <div>
                 <br />
                 <br />
                 <br />
-                <Row>
-                    <Col {...cardLayout}>
-                        <Menu
-                            defaultSelectedKeys={["1"]}
-                            mode="horizontal"
-                            theme="light"
-                        >
-                            <Menu.Item key="1">Photography</Menu.Item>
-                            <Menu.Item key="2">Videography</Menu.Item>
-                            <Menu.Item key="3">Makeup Artist</Menu.Item>
-                            <Menu.Item key="4">Decorators</Menu.Item>
-                            <Menu.Item key="5">Designers</Menu.Item>
-                            <Menu.Item key="6">Venues</Menu.Item>
-                            <Menu.Item key="7">Invitations and Cards</Menu.Item>
-                            <Menu.Item key="8">Food and Catering</Menu.Item>
-                            <Menu.Item key="9">
-                                Music and Entertainment
-                            </Menu.Item>
-                            <Menu.Item key="10">Car Rental Services</Menu.Item>
-                            <Menu.Item key="11">Event Planners</Menu.Item>
-                        </Menu>
-                    </Col>
-                    <h4>Photography</h4>
-                    <Row type="flex" justify="center">
-                        {this.state.service.map((serve, i) => (
-                            <Col {...cardLayout} className="m-4" key={i}>
-                                <Card
-                                    hoverable
-                                    style={{ width: 240 }}
-                                    cover={
-                                        <img alt="example" src={serve.image} />
-                                    }
-                                    key={i}
-                                    onClick={this.viewService.bind(this)}
-                                >
-                                    <Meta title={serve.name} />
-                                </Card>
-                            </Col>
-                        ))}
-                    </Row>
-                </Row>
+                <br />
+                {this.state.detail ? serviceDetail : serviceList}
             </div>
         );
     }

@@ -12,6 +12,7 @@ class Footer extends Component {
                         <Col span={6}>
                             <div>
                                 <p>Are you a vendor?</p>
+
                                 <button
                                     type="button"
                                     className="btn btn-outline-success"

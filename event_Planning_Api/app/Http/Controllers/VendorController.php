@@ -301,12 +301,24 @@ public function get_categories(){
     if($user->user_type=="vendor"){
     
     $venid=DB::select("select vendor_id from vendors where username = '$user->name'");
-    $cat= category_event::where('vendor_id',$venid[0]->vendor_id).get();
+    $cat= category_event::where('vendor_id',$venid[0]->vendor_id)->get();
     return $cat;
     
     
     }  
 } 
+public function get_vendor_services(){
+    $user=User::findOrFail(Auth::guard('api')->id());
+    
+    if($user->user_type=="vendor"){
+    
+    $venid=DB::select("select vendor_id from vendors where username = '$user->name'");
+    $cat= services::where('vendor_id',$venid[0]->vendor_id)->get();
+    return $cat;
+    
+    
+    }
+}
 /**
      * Store a newly created resource in storage.
      *

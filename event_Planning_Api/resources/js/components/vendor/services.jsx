@@ -2,26 +2,9 @@ import React, { Component } from "react";
 import { List, Avatar, Button, Icon, Select, message } from "antd";
 import ReactPlayer from "react-player";
 import avatar from "../../images/avatar.jpg";
-import { getServicesCat, getServices } from "./vendorFunctions";
+import { getServicesCat, getVendorServices } from "./vendorFunctions";
 
 const ButtonGroup = Button.Group;
-const data = [
-    {
-        title: "Service 1"
-    },
-    {
-        title: "Service 2"
-    },
-    {
-        title: "Service 3"
-    },
-    {
-        title: "Service 4"
-    },
-    {
-        title: "Service 5"
-    }
-];
 
 class Services extends Component {
     constructor() {

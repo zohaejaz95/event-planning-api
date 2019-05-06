@@ -70,6 +70,7 @@ Route::post('vendor/create/package','VendorController@create_package');
 Route::get('vendor/get/package/{id}','VendorController@get_package');
 Route::get('vendor/locations','VendorController@get_locations');
 Route::get('vendor/categories','VendorController@get_categories');
+Route::get('vendor/get/services','VendorController@get_vendor_services');
 
 });
 

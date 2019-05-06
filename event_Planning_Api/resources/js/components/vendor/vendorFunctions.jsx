@@ -101,6 +101,24 @@ export const getServicesCat = cat => {
             console.log(err);
         });
 };
+export const getVendorServices = () => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    return axios
+        .get("/api/vendor/get/services", {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token
+            }
+        })
+        .then(response => {
+            console.log(response.data);
+            return response.data;
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
 export const getServices = id => {
     const token = JSON.parse(localStorage.getItem("usertoken"));
     return axios

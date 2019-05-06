@@ -4,6 +4,7 @@ import { Card, Row, Col, Input, Carousel } from "antd";
 //main images
 import main from "../images/event-planning.jpg";
 import alter from "../images/chopping.jpg";
+import eventImage from "../images/event-image.jpg";
 //event type images
 import wedding from "../images/gift-and-roses.jpg";
 import corporate from "../images/urban-street.jpg";
@@ -80,7 +81,7 @@ class Home extends Component {
                 <Carousel autoplay>
                     <div>
                         <img
-                            src={main}
+                            src={eventImage}
                             alt={alter}
                             className="img-fluid myImage"
                         />

@@ -26,19 +26,19 @@ class VendorProfile extends Component {
                 });
             }
         });
-        getCategory().then(res => {
-            if (res) {
-                console.log(res.data[0]);
+        getCategory().then(resp => {
+            if (resp) {
+                console.log(resp);
                 this.setState({
-                    category: res.data
+                    category: resp
                 });
             }
         });
-        getLocation().then(res => {
-            if (res) {
-                console.log(res.data[0]);
+        getLocation().then(response => {
+            if (response) {
+                console.log(response);
                 this.setState({
-                    locations: res.data
+                    locations: response
                 });
             }
         });
@@ -59,9 +59,21 @@ class VendorProfile extends Component {
                         <h6>Email:</h6> {this.state.profile.email}
                         <h6>Website:</h6> {this.state.profile.website}
                         <h6>Contact:</h6> {this.state.profile.contact}
-                        <h6>City/ies:</h6>
+                        <h6>Locations:</h6>
+                        {this.state.locations.map((con, i) => (
+                            <div key={i}>
+                                <p>
+                                    {i + 1}. City: {con.city}
+                                </p>
+                                <p>Address: {con.address}</p>
+                            </div>
+                        ))}
                         <h6>Category:</h6>
-                        <h6>Payment Methods:</h6>
+                        {this.state.category.map((con, i) => (
+                            <div key={i}>
+                                <p>{con.category}</p>
+                            </div>
+                        ))}
                         <h6>Description:</h6>
                         <p>{this.state.profile.description}</p>
                     </Col>
