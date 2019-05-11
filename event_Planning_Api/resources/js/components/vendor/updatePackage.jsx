@@ -11,11 +11,11 @@ import {
     message,
     DatePicker
 } from "antd";
-import { getVendorServices, createPackages } from "./vendorFunctions";
+import { getVendorServices, updatePackage } from "./vendorFunctions";
 
 const dateFormat = "YYYY-MM-DD";
 //import loginImage from "../../images/Pakistani-Wedding.png";
-class AddPackages extends Component {
+class UpdatePackage extends Component {
     constructor() {
         super();
         this.state = {
@@ -264,6 +264,6 @@ class AddPackages extends Component {
     }
 }
 
-const WrappedAddPackages = Form.create({ name: "normal_login" })(AddPackages);
+const WrappedAddPackages = Form.create({ name: "normal_login" })(UpdatePackage);
 export default WrappedAddPackages;
 //export default VendorRegister;

@@ -1,40 +1,60 @@
 import React, { Component } from "react";
-import { List, Avatar, Button, Icon } from "antd";
+import { List, Avatar, Button, Icon, message } from "antd";
 import ReactPlayer from "react-player";
 
 //import VendorDetail from "../admin/vendorDetail";
 import avatar from "../../images/avatar.jpg";
-
+import { getPackages, deletePackages } from "./vendorFunctions";
 const ButtonGroup = Button.Group;
-const data = [
-    {
-        title: "Package 1"
-    },
-    {
-        title: "Package 2"
-    },
-    {
-        title: "Package 3"
-    },
-    {
-        title: "Package 4"
-    },
-    {
-        title: "Package 5"
-    }
-];
 
 class Packages extends Component {
     constructor() {
         super();
         this.state = {
-            detail: false
+            detail: false,
+            packages: [],
+            pack: []
         };
         this.toggleDetail = this.toggleDetail.bind(this);
+        this.paginatePackage = this.paginatePackage.bind(this);
+        this.toggleDetails = this.toggleDetails.bind(this);
+        this.deletePackage = this.deletePackage.bind(this);
+    }
+    paginatePackage() {
+        getPackages().then(res => {
+            if (res) {
+                console.log(res);
+                this.setState({
+                    packages: res.data
+                });
+            }
+        });
+    }
+    componentDidMount() {
+        this.paginatePackage();
     }
     toggleDetail() {
         this.setState({
-            detail: !this.state.detail
+            detail: false
+        });
+    }
+    toggleDetails(item) {
+        this.setState({
+            detail: true,
+            pack: item
+        });
+    }
+    deletePackage(id) {
+        deletePackages(id).then(res => {
+            if (res) {
+                message.success("Package Deleted!");
+            } else {
+                message.error("Unable to delete package!");
+            }
+        });
+        this.paginatePackage();
+        this.setState({
+            detail: false
         });
     }
     render() {
@@ -44,18 +64,18 @@ class Packages extends Component {
                 <hr />
                 <List
                     itemLayout="horizontal"
-                    dataSource={data}
+                    dataSource={this.state.packages}
                     renderItem={item => (
                         <div>
                             <List.Item>
                                 <List.Item.Meta
                                     avatar={<Avatar src={avatar} />}
-                                    title={<p>{item.title}</p>}
-                                    description="Category and Events"
+                                    title={<p>{item.name}</p>}
+                                    description={item.description}
                                 />
                                 <Button
                                     type="primary"
-                                    onClick={this.toggleDetail.bind(this)}
+                                    onClick={() => this.toggleDetails(item)}
                                 >
                                     View Detail
                                 </Button>
@@ -86,7 +106,7 @@ class Packages extends Component {
                 <br />
                 <Avatar size={64} icon="user" />
                 <span>
-                    <h4>Package Name</h4>
+                    <h4>{this.state.pack.name}</h4>
                 </span>
                 <br />
                 <ReactPlayer
@@ -94,16 +114,17 @@ class Packages extends Component {
                     playing
                 />
                 <br />
-                <p>Service: </p>
-                <p>Price: </p>
-
+                <p>Expiration date:</p>
+                <p className="m-4">{this.state.pack.expiration_date}</p>
                 <p>Description: </p>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Saepe numquam eveniet quo esse debitis mollitia, ratione
-                    maiores, quidem deleniti quam inventore voluptatum cumque
-                    vitae commodi nobis reprehenderit natus provident dolores.
-                </p>
+                <p>{this.state.pack.description}</p>
+                <Button type="primary">Update</Button>
+                <Button
+                    type="danger"
+                    onClick={() => this.deletePackage(this.state.pack.p_id)}
+                >
+                    Delete
+                </Button>
                 <br />
             </div>
         );

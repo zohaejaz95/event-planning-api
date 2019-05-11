@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { List, Avatar, Button, Icon, Select, message } from "antd";
 import ReactPlayer from "react-player";
 import avatar from "../../images/avatar.jpg";
-import { getServicesCat, getVendorServices } from "./vendorFunctions";
+import { getServicesCat, deleteServices } from "./vendorFunctions";
 
 const ButtonGroup = Button.Group;
 
@@ -18,6 +18,8 @@ class Services extends Component {
         };
         this.toggleDetail = this.toggleDetail.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.paginateService = this.paginateService.bind(this);
+        this.deleteService = this.deleteService.bind(this);
     }
     toggleDetail(item) {
         this.setState({
@@ -37,7 +39,9 @@ class Services extends Component {
             profile: JSON.parse(localStorage.getItem("profile"))
         });
         var id = this.state.profile.vendor_id;
-
+        this.paginateService(value);
+    }
+    paginateService(value) {
         getServicesCat(value).then(res => {
             if (res) {
                 console.log(res.data);
@@ -50,6 +54,19 @@ class Services extends Component {
                 console.log(this.state.service.length);
                 console.log(this.state.service[0]);
                 //console.log(this.state.service[0]);
+            }
+        });
+    }
+    deleteService(id) {
+        deleteServices(id).then(res => {
+            if (res) {
+                message.success("Service Deleted!");
+                this.setState({
+                    detail: false,
+                    show: []
+                });
+            } else {
+                message.error("Unable to delete service!");
             }
         });
     }
@@ -153,6 +170,13 @@ class Services extends Component {
                 <h6>Price: </h6> {this.state.show.price}
                 <h6>Description: </h6>
                 <p>{this.state.show.description}</p>
+                <Button type="primary">Update</Button>
+                <Button
+                    type="danger"
+                    onClick={() => this.deleteService(this.state.show.id)}
+                >
+                    Delete
+                </Button>
                 <br />
             </div>
         );
