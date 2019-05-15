@@ -15,7 +15,7 @@ class photographs extends Model
         'photographer_name',
         'contact',
         'max_pictures',
-        'service_id'
+        'services_id'
     ];
     public function service(){
         return $this->belongsTo('App\services');

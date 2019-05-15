@@ -144,7 +144,7 @@ public function create_service(Request $request){
             'Address'=>$request->input('Address'),
             'start_time'=>$request->input('start_time'),
             'end_time'=>$request->input('end_time'),
-            'service_id'=>$service->service_id
+            'service_id'=>$service->id
         ]);
     }
     else if($request->input('category')=='photographs'){
@@ -152,34 +152,34 @@ public function create_service(Request $request){
             'photographer_name'=>$request->input('photographer_name'),
             'contact'=>$request->input('contact'),
             'max_pictures'=>$request->input('max_pictures'),
-            'service_id'=>$service->service_id
+            'services_id'=>$service->id
         ]);
     }
     else if($request->input('category')=='makeup artists'){
         $makeup=makeup_artists::create([
             'name'=>$request->input('name'),
-            'service_id'=>$service->service_id
+            'service_id'=>$service->id
         ]);
     }
     else if($request->input('category')=='entertainment'){
         $enter=entertainments::create([
             'bandname'=>$request->input('bandname'),
             'hours'=>$request->input('hours'),
-            'service_id'=>$service->service_id
+            'service_id'=>$service->id
         ]);
     }
     else if($request->input('category')=='car rental'){
         $car=car_rentals::create([
             'car_name'=>$request->input('car_name'),
             'plate_no'=>$request->input('plate_no'),
-            'service_id'=>$service->service_id
+            'service_id'=>$service->id
         ]);
     }
     else if($request->input('category')=='catering'){
         $cat=caterings::create([
             'start_time'=>$request->input('start_time'),
             'end_time'=>$request->input('end_time'),
-            'service_id'=>$service->service_id
+            'service_id'=>$service->id
         ]);
         $dishes=$request->input('dishes.*');
         foreach ($dishes as $dish){
@@ -213,7 +213,7 @@ public function update_service(Request $request,$id){
             'Address'=>$request->input('Address'),
             'start_time'=>$request->input('start_time'),
             'end_time'=>$request->input('end_time'),
-            'service_id'=>$service->service_id
+            'service_id'=>$service->id
         ]);
     }
     else if($request->input('category')=='photographs'){
@@ -222,14 +222,14 @@ public function update_service(Request $request,$id){
             'photographer_name'=>$request->input('photographer_name'),
             'contact'=>$request->input('contact'),
             'max_pictures'=>$request->input('max_pictures'),
-            'service_id'=>$service->service_id
+            'services_id'=>$service->id
         ]);
     }
     else if($request->input('category')=='makeup artists'){
         $makeup=makeup_artists::where('event_id',$id)->get();
         $makeup->update([
             'name'=>$request->input('name'),
-            'service_id'=>$service->service_id
+            'service_id'=>$service->id
         ]);
     }
     else if($request->input('category')=='entertainment'){
@@ -237,7 +237,7 @@ public function update_service(Request $request,$id){
         $enter->update([
             'bandname'=>$request->input('bandname'),
             'hours'=>$request->input('hours'),
-            'service_id'=>$service->service_id
+            'service_id'=>$service->id
         ]);
     }
     else if($request->input('category')=='car rental'){
@@ -245,7 +245,7 @@ public function update_service(Request $request,$id){
         $car->update([
             'car_name'=>$request->input('car_name'),
             'plate_no'=>$request->input('plate_no'),
-            'service_id'=>$service->service_id
+            'service_id'=>$service->id
         ]);
     }
     else if($request->input('category')=='catering'){
@@ -253,7 +253,7 @@ public function update_service(Request $request,$id){
         $cat->update([
             'start_time'=>$request->input('start_time'),
             'end_time'=>$request->input('end_time'),
-            'service_id'=>$service->service_id
+            'service_id'=>$service->id
         ]);
         $dishes=$request->input('dishes.*');
         $foodserivce=food_services::where('cater_id',$cat->id)->delete();
