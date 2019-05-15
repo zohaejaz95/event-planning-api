@@ -152,7 +152,7 @@ public function create_service(Request $request){
             'photographer_name'=>$request->input('photographer_name'),
             'contact'=>$request->input('contact'),
             'max_pictures'=>$request->input('max_pictures'),
-            'service_id'=>$service->id
+            'services_id'=>$service->id
         ]);
     }
     else if($request->input('category')=='makeup artists'){
