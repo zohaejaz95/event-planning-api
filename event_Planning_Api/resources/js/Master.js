@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import "./css/index.css";
 import "antd/dist/antd.css";
@@ -32,19 +32,14 @@ export default class App extends Component {
                 <div className="App">
                     <Header />
                     <Route exact path="/" component={Home} />
-                    <div>
+                    <Switch>
                         <Route exact path="/ngos" component={NGO} />
                         <Route exact path="/contact-us" component={Contact} />
                         <Route exact path="/admin" component={Admin} />
-                        <Route exact path="/services" component={Services} />
+                        <Route exact path="/services" component={Category} />
                         <Route
                             exact
-                            path="/services/photography"
-                            component={Category}
-                        />
-                        <Route
-                            exact
-                            path="/services/photography/vendor-name"
+                            path="/services/category"
                             component={Order}
                         />
 
@@ -63,7 +58,7 @@ export default class App extends Component {
                         <Route exact path="/ngo" component={NGOSidebar} />
 
                         <Route exact path="/customer" component={Customer} />
-                    </div>
+                    </Switch>
                     <Footer />
                 </div>
             </Router>
@@ -72,3 +67,4 @@ export default class App extends Component {
 }
 
 ReactDOM.render(<App />, document.getElementById("app"));
+//                        <Route exact path="/services" component={Services} />

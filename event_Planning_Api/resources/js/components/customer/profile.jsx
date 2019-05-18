@@ -33,7 +33,7 @@ class CustProfile extends Component {
                     <Col
                         span={19}
                         offset={1}
-                        style={{ background: "#ECECEC", padding: "30px" }}
+                        style={{ background: "#EEE1EE", padding: "30px" }}
                     >
                         <h4>
                             {this.state.profile.first_name +
@@ -49,7 +49,7 @@ class CustProfile extends Component {
                 <br />
                 <h4 className="text-to-center">Event Progress</h4>
                 <br />
-                <div style={{ background: "#ECECEC", padding: "30px" }}>
+                <div style={{ background: "#EEE1EE", padding: "30px" }}>
                     <Row gutter={16}>
                         <Col span={8}>
                             <Card>

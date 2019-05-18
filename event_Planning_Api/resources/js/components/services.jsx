@@ -61,7 +61,7 @@ class Services extends Component {
         };
     }
     viewService() {
-        this.props.history.push("/services/photography");
+        this.props.history.push("/services/category");
     }
     render() {
         const { Meta } = Card;
@@ -81,6 +81,7 @@ class Services extends Component {
                 <br />
                 <br />
                 <br />
+
                 <h4>Services</h4>
 
                 <Row type="flex" justify="center">

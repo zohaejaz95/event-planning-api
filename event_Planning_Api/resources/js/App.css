@@ -46,7 +46,7 @@ Color schemes
 */
 
 .grape {
-    background-color: #fff;
+    background-color: #94618e;
 }
 .eggplant {
     background-color: #49274a;
@@ -57,7 +57,46 @@ Color schemes
 .shell {
     background-color: #f8eee7;
 }
+.darkpink {
+    background-color: #ff3355;
+}
 
+.grape-text {
+    color: #94618e;
+}
+.eggplant-text {
+    color: #49274a;
+}
+.sand-text {
+    color: #f4decb;
+}
+.shell-text {
+    color: #f8eee7;
+}
+
+.darkpink-text {
+    color: #ff3355;
+}
+
+/* unvisited link */
+a:link {
+    color: #ff3355;
+}
+
+/* visited link */
+a:visited {
+    color: #ff3355;
+}
+
+/* mouse over link */
+a:hover {
+    color: hotpink;
+}
+
+/* selected link */
+a:active {
+    color: #49274a;
+}
 /*
 End of color schemes
 */

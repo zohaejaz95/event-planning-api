@@ -1,15 +1,44 @@
 import React, { Component } from "react";
 import { Row, Col, Icon } from "antd";
 import { Link } from "react-router-dom";
-
+import Background from "../images/bg-petals.jpg";
 class Footer extends Component {
     render() {
+        var sectionStyle = {
+            width: "100%",
+            //backgroundImage: `url(${Background})`,
+            /* Add the blur effect */
+            filter: blur("8px"),
+            WebkitFilter: blur("8px"),
+            //height: "500px",
+            /* Center and scale the image nicely */
+            backgroundPosition: "center",
+            backgroundRepeat: "no - repeat",
+            backgroundSize: "cover"
+        };
+        /* Position text in the middle of the page/image */
+        var bgText = {
+            backgroundColor: "rgb(0, 0, 0)" /* Fallback color */,
+            backgroundColor:
+                "rgba(0,0,0, 0.2)" /* Black w/opacity/see-through */,
+            color: "white",
+            //fontWeight: "bold",
+            border: "3px solid #f1f1f1",
+            position: "relative",
+            //top: "50%",
+            //left: "50%",
+            //transform: "translate(-50%, -50%)",
+            zIndex: "2",
+            width: "100%",
+            padding: "20px",
+            textAlign: "center"
+        };
         return (
-            <div style={{ width: "100%" }}>
+            <footer style={{ width: "100%" }}>
                 <br />
-                <footer>
-                    <Row type="flex" justify="space-around">
-                        <Col span={6}>
+                <div style={sectionStyle}>
+                    <Row type="flex" justify="space-around" style={bgText}>
+                        <Col span={6} offset={2}>
                             <div>
                                 <p>Are you a vendor?</p>
 
@@ -23,7 +52,7 @@ class Footer extends Component {
                             <br />
                             <br />
                             <div>
-                                <h6>Event Era</h6>
+                                <h6 className="eggplant-text">Event Era</h6>
                                 <small>
                                     A website where you can plan your events
                                     virtually. We offer you a platform where you
@@ -31,8 +60,9 @@ class Footer extends Component {
                                 </small>
                             </div>
                         </Col>
-                        <Col span={6}>
-                            <h6>Important Links</h6>
+                        <Col span={6} offset={2} className="text-to-left">
+                            <h6 className="eggplant-text">Important Links</h6>
+
                             <Link to="/">Photography</Link>
                             <br />
                             <Link to="/">Videography</Link>
@@ -56,27 +86,39 @@ class Footer extends Component {
                             <Link to="/">Event Planners</Link>
                         </Col>
 
-                        <Col span={8}>
+                        <Col span={8} className="text-to-left">
                             <div>
-                                <h6>Follow us on:</h6>
-                                <Link to="">
+                                <h6 className="eggplant-text">Follow us on:</h6>
+                                <a
+                                    href="https://www.facebook.com/"
+                                    style={{ color: "dodgerblue" }}
+                                    target="_blank"
+                                >
                                     <Icon
                                         type="facebook"
                                         className="m-2 social-icon"
                                     />
-                                </Link>
-                                <Link to="">
+                                </a>
+                                <a
+                                    href="https://twitter.com/"
+                                    style={{ color: "deepskyblue" }}
+                                    target="_blank"
+                                >
                                     <Icon
                                         type="twitter"
                                         className="m-2 social-icon"
                                     />
-                                </Link>
-                                <Link to="">
+                                </a>
+                                <a
+                                    href="https://www.instagram.com/"
+                                    target="_blank"
+                                    style={{ color: "hotpink" }}
+                                >
                                     <Icon
                                         type="instagram"
                                         className="m-2 social-icon"
                                     />
-                                </Link>
+                                </a>
                             </div>
                             <br />
                             <div>
@@ -92,6 +134,7 @@ class Footer extends Component {
                                 <Icon type="phone" />:
                                 <a href="tel:#">+92 3214905067</a>
                                 <br />
+                                <br />
                                 <a href="/contact-us">About Us</a>
                                 <br />
                                 <a href="/contact-us">Contact Us</a>
@@ -99,15 +142,13 @@ class Footer extends Component {
                             </div>
                         </Col>
                     </Row>
-                    <hr />
-                    <div>
-                        <br />
-                        Event Era ©2019 Created by COMSATS Students
-                    </div>
-                </footer>
-                <br />
-                <br />
-            </div>
+                </div>
+                <div className="end-footer">
+                    <br />
+                    <p> Event Era ©2019 Created by COMSATS Students</p>
+                    <br />
+                </div>
+            </footer>
         );
     }
 }

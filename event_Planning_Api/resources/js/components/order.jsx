@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { Avatar, Row, Col, Button } from "antd";
+import { Row, Col, Button } from "antd";
 import OrderForm from "./custOrderForm";
 import Feedbacks from "./feedbacks";
 class Order extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             show: false
         };
@@ -17,15 +17,11 @@ class Order extends Component {
     render() {
         return (
             <div>
-                <br />
-                <br />
-                <br />
-                <br />
                 <Row>
                     <Col span={14} offset={2}>
                         {this.state.show ? (
                             <div>
-                                <OrderForm />
+                                <OrderForm order={this.props.order} />
                             </div>
                         ) : (
                             <div />
@@ -43,6 +39,7 @@ class Order extends Component {
                         </Button>
                     </Col>
                 </Row>
+                <br />
                 <Row>
                     <Col span={14} offset={2}>
                         <Feedbacks />

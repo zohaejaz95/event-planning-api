@@ -41,16 +41,16 @@ class Header extends Component {
                     onClick={this.handleClick}
                     selectedKeys={[this.state.current]}
                     mode="horizontal"
-                    style={{ background: "#fff" }}
+                    style={{ background: "#94618E", color: "white" }}
                 >
                     <Menu.Item key="home">
-                        <a href="/">
+                        <a href="/" style={{ color: "white" }}>
                             <Icon type="home" />
                             Home
                         </a>
                     </Menu.Item>
                     <Menu.Item key="ngo">
-                        <a href="/ngos">
+                        <a href="/ngos" style={{ color: "white" }}>
                             <Icon type="team" />
                             NGOs
                         </a>
@@ -102,17 +102,17 @@ class Header extends Component {
                         <MenuItemGroup>
                             <Menu.Item>
                                 Are you a Vendor?
-                                <Link to="/vendor/register">
+                                <a href="/vendor/register">
                                     <Button type="primary" className="m-2">
                                         Register Now
                                     </Button>
-                                </Link>
+                                </a>
                             </Menu.Item>
                         </MenuItemGroup>
                     </SubMenu>
 
                     <Menu.Item key="contact">
-                        <a href="/contact-us">
+                        <a href="/contact-us" style={{ color: "white" }}>
                             <Icon type="mail" />
                             Contact Us
                         </a>
@@ -124,6 +124,7 @@ class Header extends Component {
                                 <a
                                     href={this.state.token}
                                     onClick={this.pageLoad}
+                                    style={{ color: "white" }}
                                 >
                                     Dashboard
                                 </a>
@@ -136,7 +137,11 @@ class Header extends Component {
                     <Menu.Item key="register" className="text-to-right">
                         {localStorage.usertoken ? (
                             <div>
-                                <a href="/" onClick={this.logOut.bind()}>
+                                <a
+                                    href="/"
+                                    onClick={this.logOut.bind()}
+                                    style={{ color: "white" }}
+                                >
                                     Logout
                                 </a>
                             </div>

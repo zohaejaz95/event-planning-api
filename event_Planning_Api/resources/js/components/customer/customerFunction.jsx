@@ -191,13 +191,11 @@ export const deleteGuest = guest => {
         });
 };
 
-//Incomplete
-export const addTodoList = items => {
+export const newOrder = items => {
     const token = JSON.parse(localStorage.getItem("usertoken"));
-    //newUser["api_token"] = token.api_token;
-    console.log(token.api_token);
+    //console.log(token.api_token);
     return axios
-        .post("/api/customer/newcontact", items, {
+        .post("/api/customer/orders/new", items, {
             headers: {
                 "Content-Type": "application/json",
                 Access: "application/json",
@@ -212,4 +210,3 @@ export const addTodoList = items => {
             console.log(err);
         });
 };
-//end of incomplete request

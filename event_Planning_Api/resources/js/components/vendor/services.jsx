@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { List, Avatar, Button, Icon, Select, message } from "antd";
-import ReactPlayer from "react-player";
+import { List, Avatar, Button, Icon, Select, message, Row, Col } from "antd";
+//import ReactPlayer from "react-player";
+import ServiceDetails from "./serviceDetails";
 import avatar from "../../images/avatar.jpg";
 import { getServicesCat, deleteServices } from "./vendorFunctions";
 
@@ -149,34 +150,31 @@ class Services extends Component {
         );
         const serviceDetail = (
             <div>
-                <Button type="primary" onClick={this.toggleDetails.bind(this)}>
-                    Back
-                    <Icon type="left-circle" />
-                </Button>
-                <br />
-                <br />
-                <Avatar size={64} icon="user" />
-                <span>
-                    <h4>{this.state.show.service_name}</h4>
-                </span>
-                <br />
-                <ReactPlayer
-                    url="https://www.youtube.com/watch?v=lqx5ocbekWA"
-                    playing
-                />
-                <br />
-                <h6>Event Type: </h6> {this.state.show.event_type}
-                <h6>Category: </h6> {this.state.show.category}
-                <h6>Price: </h6> {this.state.show.price}
-                <h6>Description: </h6>
-                <p>{this.state.show.description}</p>
-                <Button type="primary">Update</Button>
-                <Button
-                    type="danger"
-                    onClick={() => this.deleteService(this.state.show.id)}
-                >
-                    Delete
-                </Button>
+                <Row>
+                    <Col span={14}>
+                        <Button
+                            type="primary"
+                            onClick={this.toggleDetails.bind(this)}
+                        >
+                            Back
+                            <Icon type="left-circle" />
+                        </Button>
+                        <br />
+                        <br />
+
+                        <ServiceDetails service={this.state.show} />
+
+                        <Button type="primary">Update</Button>
+                        <Button
+                            type="danger"
+                            onClick={() =>
+                                this.deleteService(this.state.show.id)
+                            }
+                        >
+                            Delete
+                        </Button>
+                    </Col>
+                </Row>
                 <br />
             </div>
         );
