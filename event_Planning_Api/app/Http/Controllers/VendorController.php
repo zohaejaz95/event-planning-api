@@ -374,7 +374,7 @@ public function create_package(Request $request){
 
 public function get_package(Request $request,$id){
     $user=User::findOrFail(Auth::guard('api')->id());
-    if($user->user_type=="vendor"){
+    if($user->user_type=="vendor"||$user->user_type=="customer"){
         return packages::findOrFail($id)->join('package_services','packages.p_id','=','package_services.package_id')->get();
     }
 }
