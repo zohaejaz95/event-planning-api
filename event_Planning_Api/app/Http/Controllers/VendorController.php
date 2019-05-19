@@ -383,7 +383,7 @@ public function get_ven_package(){
     $user=User::findOrFail(Auth::guard('api')->id());
     if($user->user_type=="vendor"){
         $venid=DB::select("select vendor_id from vendors where username = '$user->name'");
-        $pack=packages::where('vendor_id',$venid[0]->vendor_id)->paginate(15);
+        $pack=packages::where('vendor_id',$venid[0]->vendor_id)->join('package_services','packages.p_id','=','package_services.package_id')->paginate(15);
         return $pack;
     }
 }

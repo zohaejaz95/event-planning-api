@@ -70,7 +70,7 @@ Route::put('vendor/update/serivce/{id}','VendorController@update_service');
 Route::delete('vendor/delete/serivce/{id}','VendorController@delete_service');
 Route::post('vendor/create/package','VendorController@create_package');
 Route::get('vendor/get/package/{id}','VendorController@get_package');
-Route::get('vendor/get/package/token','VendorController@get_ven_package');
+Route::get('vendor/get/packages/token','VendorController@get_ven_package');
 Route::get('vendor/get/orders/approved/{type}','VendorController@get_order_approved');
 Route::get('vendor/get/orders/pending/{type}','VendorController@get_order_pending');
 Route::put('vendor/update/orders/{id}/{status}','VendorController@update_order_status');
