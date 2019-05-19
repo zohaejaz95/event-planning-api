@@ -5,6 +5,7 @@ import Order from "./order";
 import { Card, Col, Row, Button, Select, Icon } from "antd";
 import { getServicesCat, getPackages } from "./vendor/vendorFunctions";
 import ServiceDetails from "./vendor/serviceDetails";
+import PackageDetails from "./vendor/packageDetails";
 //import onlineShopping from "../images/online-shopping.jpg";
 //import waterLily from "../images/water-lily.png";
 import texture from "../images/texture.jpg";
@@ -20,11 +21,12 @@ import bday from "../images/purple-balloons.jpg";
 import personal from "../images/gift-bag-wrap.jpg";
 
 class Category extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             detail: false,
             pack: false,
+            display: false,
             category: "photographs",
             service: [
                 {
@@ -89,15 +91,28 @@ class Category extends Component {
     toggleDetail(item) {
         this.setState({
             detail: true,
-            show: item
+            pack: false,
+            show: item,
+            display: false
         });
         this.state.order.id = item.id;
         this.state.order.type = "service";
     }
+    togglePackageDetail(item) {
+        this.setState({
+            detail: false,
+            pack: false,
+            display: true,
+            show: item
+        });
+        this.state.order.id = item.package_id;
+        this.state.order.type = "package";
+    }
     toggleDetails() {
         this.setState({
             detail: false,
-            pack: false
+            pack: false,
+            display: false
         });
     }
     handleChange(value) {
@@ -118,6 +133,16 @@ class Category extends Component {
         });
     }
     componentDidMount() {
+        if (this.props.location.state.service) {
+            this.setState({
+                detail: true,
+                show: this.props.location.state.service
+            });
+        } else {
+            this.setState({
+                detail: false
+            });
+        }
         getServicesCat("photographs").then(res => {
             if (res) {
                 console.log(res.data);
@@ -189,7 +214,6 @@ class Category extends Component {
                         alt={texture}
                         style={{ maxHeight: "200px", width: "100%" }}
                     />
-
                     <div style={paraStyle}>
                         <h3 style={{ color: "white" }}>Avail Services</h3>
                         <Button type="primary" onClick={this.toggleDetails}>
@@ -206,7 +230,7 @@ class Category extends Component {
                                 style={{ width: 240 }}
                                 cover={<img alt="example" src={photography} />}
                                 key={i}
-                                onClick={() => this.toggleDetail(pack)}
+                                onClick={() => this.togglePackageDetail(pack)}
                             >
                                 <Meta title={pack.name} />
                             </Card>
@@ -315,11 +339,28 @@ class Category extends Component {
                 <Row type="flex">
                     <Col span={14} offset={2}>
                         <ServiceDetails service={this.state.show} />
-
-                        <br />
                     </Col>
-                    <Col span={6} offset={1}>
-                        <div>hello evenryone</div>
+                </Row>
+                <Order order={this.state.order} />
+            </div>
+        );
+        const packageDetail = (
+            <div>
+                <br />
+                <br />
+                <Button
+                    type="primary"
+                    onClick={this.toggleDetails.bind(this)}
+                    className="text-to-left"
+                >
+                    Back
+                    <Icon type="left-circle" />
+                </Button>
+                <br />
+                <br />
+                <Row type="flex">
+                    <Col span={14} offset={2}>
+                        <PackageDetails package={this.state.show} />
                     </Col>
                 </Row>
                 <Order order={this.state.order} />
@@ -333,6 +374,8 @@ class Category extends Component {
                     ? serviceDetail
                     : this.state.pack
                     ? packageList
+                    : this.state.display
+                    ? packageDetail
                     : serviceList}
             </div>
         );

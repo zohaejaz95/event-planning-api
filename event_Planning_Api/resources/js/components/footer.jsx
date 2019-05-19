@@ -41,13 +41,14 @@ class Footer extends Component {
                         <Col span={6} offset={2}>
                             <div>
                                 <p>Are you a vendor?</p>
-
-                                <button
-                                    type="button"
-                                    className="btn btn-outline-success"
-                                >
-                                    Register Here
-                                </button>
+                                <a href="/vendor-register">
+                                    <button
+                                        type="button"
+                                        className="btn btn-outline-success"
+                                    >
+                                        Register Here
+                                    </button>
+                                </a>
                             </div>
                             <br />
                             <br />

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-//import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Card, Row, Col, Input, Carousel } from "antd";
 //main images
 import main from "../images/event-planning.jpg";
@@ -139,7 +139,14 @@ class Home extends Component {
                         className="text-to-right"
                         style={{ paddingRight: "10%" }}
                     >
-                        <a href="/services">View more</a>
+                        <Link
+                            to={{
+                                pathname: "/services",
+                                state: { service: false }
+                            }}
+                        >
+                            View more
+                        </Link>
                     </div>
                 </div>
                 <br />

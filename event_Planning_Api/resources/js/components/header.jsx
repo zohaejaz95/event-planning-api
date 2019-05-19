@@ -101,8 +101,8 @@ class Header extends Component {
                         </MenuItemGroup>
                         <MenuItemGroup>
                             <Menu.Item>
-                                Are you a Vendor?
-                                <a href="/vendor/register">
+                                <a href="/vendor-register">
+                                    Are you a Vendor?
                                     <Button type="primary" className="m-2">
                                         Register Now
                                     </Button>

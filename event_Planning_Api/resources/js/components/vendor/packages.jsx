@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { List, Avatar, Button, Icon, message } from "antd";
-import ReactPlayer from "react-player";
-
-//import VendorDetail from "../admin/vendorDetail";
+import { List, Avatar, Button, Icon, message, Row, Col, Card } from "antd";
+//import ReactPlayer from "react-player";
+import { Link } from "react-router-dom";
+import photography from "../../images/photography.jpg";
+import PackageDetails from "./packageDetails";
 import avatar from "../../images/avatar.jpg";
-import { getPackages, deletePackages } from "./vendorFunctions";
+import { getPackages, deletePackages, getServicesCat } from "./vendorFunctions";
 const ButtonGroup = Button.Group;
 
 class Packages extends Component {
@@ -13,7 +14,8 @@ class Packages extends Component {
         this.state = {
             detail: false,
             packages: [],
-            pack: []
+            pack: [],
+            services: []
         };
         this.toggleDetail = this.toggleDetail.bind(this);
         this.paginatePackage = this.paginatePackage.bind(this);
@@ -43,6 +45,16 @@ class Packages extends Component {
             detail: true,
             pack: item
         });
+        getServicesCat("photographs").then(res => {
+            if (res) {
+                console.log(res.data);
+                const lists = JSON.stringify(res.data);
+                const elist = JSON.parse(lists);
+                this.setState({
+                    services: elist
+                });
+            }
+        });
     }
     deletePackage(id) {
         deletePackages(id).then(res => {
@@ -58,6 +70,17 @@ class Packages extends Component {
         });
     }
     render() {
+        const { Meta } = Card;
+        const cardLayout = {
+            labelcol: {
+                xs: { span: 24 },
+                sm: { span: 4 }
+            },
+            wrappercol: {
+                xs: { span: 24 },
+                sm: { span: 4 }
+            }
+        };
         const packageList = (
             <div>
                 <h4>Packages</h4>
@@ -98,26 +121,48 @@ class Packages extends Component {
         );
         const packageDetail = (
             <div>
-                <Button type="primary" onClick={this.toggleDetail.bind(this)}>
-                    Back
-                    <Icon type="left-circle" />
-                </Button>
-                <br />
-                <br />
-                <Avatar size={64} icon="user" />
-                <span>
-                    <h4>{this.state.pack.name}</h4>
-                </span>
-                <br />
-                <ReactPlayer
-                    url="https://www.youtube.com/watch?v=lqx5ocbekWA"
-                    playing
-                />
-                <br />
-                <p>Expiration date:</p>
-                <p className="m-4">{this.state.pack.expiration_date}</p>
-                <p>Description: </p>
-                <p>{this.state.pack.description}</p>
+                <Row>
+                    <Col span={14}>
+                        <Button
+                            type="primary"
+                            onClick={this.toggleDetail.bind(this)}
+                        >
+                            Back
+                            <Icon type="left-circle" />
+                        </Button>
+                        <br />
+                        <br />
+
+                        <PackageDetails package={this.state.pack} />
+                    </Col>
+                </Row>
+
+                <Row type="flex" justify="center">
+                    {this.state.services.map((serve, i) => (
+                        <Col {...cardLayout} className="m-4" key={i}>
+                            <Link
+                                to={{
+                                    pathname: "/services",
+                                    search: "?id=" + serve.id,
+                                    state: { service: serve }
+                                }}
+                            >
+                                <Card
+                                    hoverable
+                                    style={{ width: 240 }}
+                                    cover={
+                                        <img alt="example" src={photography} />
+                                    }
+                                    key={i}
+                                    onClick={() => this.toggleDetail(serve)}
+                                >
+                                    <Meta title={serve.service_name} />
+                                </Card>
+                            </Link>
+                        </Col>
+                    ))}
+                </Row>
+
                 <Button type="primary">Update</Button>
                 <Button
                     type="danger"
@@ -125,6 +170,7 @@ class Packages extends Component {
                 >
                     Delete
                 </Button>
+
                 <br />
             </div>
         );

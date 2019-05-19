@@ -1,45 +1,149 @@
 import React, { Component } from "react";
-import { Form, Icon, Select, Input, Button, Checkbox, Row, Col } from "antd";
-
+import {
+    Form,
+    Icon,
+    Input,
+    Button,
+    Checkbox,
+    Row,
+    Col,
+    Select,
+    message
+} from "antd";
+import { register, vendorRegister } from "./userFunction";
 import loginImage from "../images/form-img.jpg";
+//import { element } from "prop-types";
 
 class VendorRegister extends Component {
     constructor() {
         super();
         this.state = {
             location: [],
-            isb: false,
-            lhr: false,
-            khi: false
+            cities: [],
+            sel: [],
+            address: [],
+            cat: []
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.selectKeys = this.selectKeys.bind(this);
+        this.selectCat = this.selectCat.bind(this);
+        this.setAddress = this.setAddress.bind(this);
     }
     handleSubmit(e) {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log("Received values of form: ", values);
+                console.log(this.state.address);
+                var reg = {
+                    name: values["userName"],
+                    email: values["email"],
+                    password: values["password"],
+                    user_type: "vendor"
+                };
+                var ven = {
+                    vendor_name: values["vendor_name"],
+                    contact: values["contact"],
+                    website: values["website"],
+                    description: values["description"],
+                    locations: {},
+                    payment_methods: {},
+                    categories: {}
+                };
+                var loc = [];
+                var i, prev, curr;
+                console.log(this.state.address.length);
+                for (i = 0; i < this.state.address.length; i++) {
+                    curr = this.state.address[i];
+                    if (i == 0) {
+                        loc.push(curr);
+                    } else {
+                        prev = this.state.address[i - 1];
+                        if (curr.city == prev.city) {
+                            loc.pop();
+                            loc.push(curr);
+                        } else {
+                            loc.push(curr);
+                        }
+                    }
+                }
+                var serve = {};
+                for (i = 0; i < loc.length; i++) {
+                    serve["location" + (i + 1)] = loc[i];
+                }
+                ven.locations = serve;
+                serve = {};
+                for (i = 0; i < this.state.cat.length; i++) {
+                    var cate = this.state.cat[i];
+                    var gory = { category: cate.key };
+                    serve["category" + (i + 1)] = gory;
+                }
+                ven.categories = serve;
+                serve = {};
+                for (i = 0; i < values.payment_methods.length; i++) {
+                    var pay = values.payment_methods[i];
+                    var pay_met = { method: pay.key };
+                    serve["method" + (i + 1)] = pay_met;
+                }
+                ven.payment_methods = serve;
+                console.log(ven);
+
+                register(reg).then(res => {
+                    if (res) {
+                        vendorRegister(ven).then(res => {
+                            if (res) {
+                                message.success(
+                                    "Account created Successfully!"
+                                );
+                            } else {
+                                message.error("Unable to create Account!");
+                            }
+                        });
+                    } else {
+                        message.error("Unable to create Account!");
+                    }
+                });
+            } else {
+                message.warn("Incorrect information!");
             }
         });
     }
     onChange(checkedValues) {
         console.log("checked = ", checkedValues);
         console.log(checkedValues[0]);
+        this.setState({
+            cities: checkedValues
+        });
+    }
+    selectKeys(value) {
+        //console.log(`selected ${value}`);
+        console.log(value);
+        this.setState({
+            sel: value
+        });
+    }
+    selectCat(value) {
+        console.log(value);
+        this.setState({
+            cat: value
+        });
+    }
+    setAddress(e, cities) {
+        //console.log(this.state.address);
+        var val = e.target.value;
+        console.log(cities + " : " + val);
+        var add = {
+            city: cities,
+            address: val
+        };
+        this.state.address.push(add);
     }
     render() {
         const { getFieldDecorator } = this.props.form;
         const { TextArea } = Input;
         const Option = Select.Option;
-        const InputGroup = Input.Group;
-        const selectAfterW = (
-            <Select defaultValue=".com" style={{ width: 80 }}>
-                <Option value=".com">.com</Option>
-                <Option value=".pk">.pk</Option>
-                <Option value=".dev">.dev</Option>
-                <Option value=".org">.org</Option>
-            </Select>
-        );
         const bgForm = {
             backgroundImage: "url(" + loginImage + "})",
             backgroundPosition: "center",
@@ -63,12 +167,12 @@ class VendorRegister extends Component {
                             className="login-form "
                         >
                             <Form.Item>
-                                {getFieldDecorator("firstName", {
+                                {getFieldDecorator("vendor_name", {
                                     rules: [
                                         {
                                             required: true,
                                             message:
-                                                "Please input your First Name!"
+                                                "Please input your Company Name!"
                                         }
                                     ]
                                 })(
@@ -81,64 +185,9 @@ class VendorRegister extends Component {
                                                 }}
                                             />
                                         }
-                                        placeholder="First Name"
+                                        placeholder="Company Name"
                                     />
                                 )}
-                            </Form.Item>
-
-                            <Form.Item>
-                                {getFieldDecorator("lastName", {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message:
-                                                "Please input your Last Name!"
-                                        }
-                                    ]
-                                })(
-                                    <Input
-                                        prefix={
-                                            <Icon
-                                                type="user"
-                                                style={{
-                                                    color: "rgba(0,0,0,.25)"
-                                                }}
-                                            />
-                                        }
-                                        placeholder="Last Name"
-                                    />
-                                )}
-                            </Form.Item>
-
-                            <Form.Item>
-                                {getFieldDecorator("contact", {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message:
-                                                "Please input your Contact No.!"
-                                        }
-                                    ]
-                                })(
-                                    <Input
-                                        prefix={
-                                            <Icon
-                                                type="phone"
-                                                style={{
-                                                    color: "rgba(0,0,0,.25)"
-                                                }}
-                                            />
-                                        }
-                                        placeholder="Contact No."
-                                    />
-                                )}
-                            </Form.Item>
-
-                            <Form.Item>
-                                <Input
-                                    addonAfter={selectAfterW}
-                                    placeholder="mysite"
-                                />
                             </Form.Item>
 
                             <Form.Item>
@@ -168,69 +217,6 @@ class VendorRegister extends Component {
                                     />
                                 )}
                             </Form.Item>
-
-                            <Form.Item>
-                                <TextArea
-                                    rows={4}
-                                    placeholder="Enter Description"
-                                />
-                            </Form.Item>
-
-                            <Form.Item>
-                                <InputGroup compact>
-                                    <Input defaultValue="Islamabad" />
-                                    {getFieldDecorator("address", {
-                                        rules: [
-                                            {
-                                                required: true,
-                                                message:
-                                                    "Please input your address!"
-                                            }
-                                        ]
-                                    })(
-                                        <Input
-                                            prefix={
-                                                <Icon
-                                                    type="home"
-                                                    style={{
-                                                        color: "rgba(0,0,0,.25)"
-                                                    }}
-                                                />
-                                            }
-                                            placeholder="Address"
-                                        />
-                                    )}
-                                </InputGroup>
-                            </Form.Item>
-                            <Form.Item>
-                                <div className="text-to-left">
-                                    <label>Cities:</label>
-                                    <br />{" "}
-                                </div>
-                                <Checkbox.Group
-                                    style={{ width: "100%" }}
-                                    onChange={this.onChange.bind}
-                                >
-                                    <Row>
-                                        <Col span={8}>
-                                            <Checkbox value="Islamabad">
-                                                Islamabad
-                                            </Checkbox>
-                                        </Col>
-                                        <Col span={8}>
-                                            <Checkbox value="Lahore">
-                                                Lahore
-                                            </Checkbox>
-                                        </Col>
-                                        <Col span={8}>
-                                            <Checkbox value="Karachi">
-                                                Karachi
-                                            </Checkbox>
-                                        </Col>
-                                    </Row>
-                                </Checkbox.Group>
-                            </Form.Item>
-
                             <Form.Item>
                                 {getFieldDecorator("userName", {
                                     rules: [
@@ -278,6 +264,175 @@ class VendorRegister extends Component {
                                     />
                                 )}
                             </Form.Item>
+
+                            <Form.Item>
+                                {getFieldDecorator("contact", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message:
+                                                "Please input your Contact No.!"
+                                        }
+                                    ]
+                                })(
+                                    <Input
+                                        prefix={
+                                            <Icon
+                                                type="phone"
+                                                style={{
+                                                    color: "rgba(0,0,0,.25)"
+                                                }}
+                                            />
+                                        }
+                                        placeholder="Contact No."
+                                    />
+                                )}
+                            </Form.Item>
+
+                            <Form.Item>
+                                {getFieldDecorator("website", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: "Please input website!"
+                                        }
+                                    ]
+                                })(<Input placeholder="mysite" />)}
+                            </Form.Item>
+
+                            <Form.Item>
+                                {getFieldDecorator("category", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: "Please Select Category!"
+                                        }
+                                    ]
+                                })(
+                                    <Select
+                                        mode="multiple"
+                                        labelInValue
+                                        onChange={this.selectCat}
+                                        placeholder="Select Category"
+                                    >
+                                        <Option value="photographs">
+                                            Photography
+                                        </Option>
+                                        <Option value="videography">
+                                            Videography
+                                        </Option>
+                                        <Option value="makeup artists">
+                                            Makeup Artist
+                                        </Option>
+                                        <Option value="decorators">
+                                            Decorators
+                                        </Option>
+                                        <Option value="designers">
+                                            Designers
+                                        </Option>
+                                        <Option value="venues">Venues</Option>
+                                        <Option value="cards">
+                                            Invitations and Cards
+                                        </Option>
+                                        <Option value="catering">
+                                            Food and Catering Services
+                                        </Option>
+                                        <Option value="entertainment">
+                                            Music and Entertainment
+                                        </Option>
+                                        <Option value="car rental">
+                                            Car Rental Services
+                                        </Option>
+                                        <Option value="event planners">
+                                            Event Planners
+                                        </Option>
+                                    </Select>
+                                )}
+                            </Form.Item>
+
+                            <Form.Item>
+                                {getFieldDecorator("description", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: "Please input description!"
+                                        }
+                                    ]
+                                })(
+                                    <TextArea
+                                        rows={4}
+                                        placeholder="Enter Description"
+                                    />
+                                )}
+                            </Form.Item>
+
+                            <Form.Item>
+                                {getFieldDecorator("payment_methods", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message:
+                                                "Please select your payment methods!"
+                                        }
+                                    ]
+                                })(
+                                    <Select
+                                        labelInValue
+                                        mode="multiple"
+                                        style={{ width: "100%" }}
+                                        placeholder="Select payment methods"
+                                        onChange={this.selectKeys}
+                                    >
+                                        <Option value="cash">Cash</Option>
+                                        <Option value="credit card">
+                                            Credit Card
+                                        </Option>
+                                        <Option value="debit card">
+                                            Debit Card
+                                        </Option>
+                                    </Select>
+                                )}
+                            </Form.Item>
+
+                            <Form.Item>
+                                <div className="text-to-left">
+                                    <label>Cities:</label>
+                                    <br />
+                                </div>
+                                <Checkbox.Group
+                                    style={{ width: "100%" }}
+                                    onChange={this.onChange}
+                                >
+                                    <Row>
+                                        <Col span={8}>
+                                            <Checkbox value="Islamabad">
+                                                Islamabad
+                                            </Checkbox>
+                                        </Col>
+                                        <Col span={8}>
+                                            <Checkbox value="Lahore">
+                                                Lahore
+                                            </Checkbox>
+                                        </Col>
+                                        <Col span={8}>
+                                            <Checkbox value="Karachi">
+                                                Karachi
+                                            </Checkbox>
+                                        </Col>
+                                    </Row>
+                                </Checkbox.Group>
+                            </Form.Item>
+
+                            {this.state.cities.map((city, i) => (
+                                <Form.Item key={i}>
+                                    {city + ": "}
+                                    <Input
+                                        placeholder="Enter Address"
+                                        onChange={e => this.setAddress(e, city)}
+                                    />
+                                </Form.Item>
+                            ))}
+
                             <Form.Item className="text-to-left">
                                 {getFieldDecorator("remember", {
                                     valuePropName: "checked",

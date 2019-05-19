@@ -131,19 +131,25 @@ export const updateVendorStatus = (res, id) => {
 };
 
 export const vendorRegister = newUser => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
     return axios
-        .post("/api/vendor/create", {
-            vendor_name: newUser.name,
-            description: newUser.description,
-            contact: newUser.contact,
-
-            website: newUser.website
+        .post("/api/vendor/create", newUser, {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token
+            }
         })
         .then(response => {
-            console.log("Registered");
+            console.log("Registered!" + response);
+            return true;
         })
         .catch(err => {
             console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
         });
 };
 

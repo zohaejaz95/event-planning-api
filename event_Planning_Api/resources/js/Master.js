@@ -45,7 +45,7 @@ export default class App extends Component {
 
                         <Route
                             exact
-                            path="/vendor/register"
+                            path="/vendor-register"
                             component={VendorSignup}
                         />
                         <Route exact path="/vendor" component={Vendor} />
