@@ -19,7 +19,8 @@ class orders extends Model
         'customer_id',
         'service_id',
         'package_id',
-        'event_id'
+        'event_id',
+        'vendor_id'
     ];
     public function customer_events (){
         return $this->belongsTo('App\customer_event');

@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\DB;
 use Auth;
 use App\User;
 use App\orders;
+use App\services;
+use App\packages;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Resources\customerEvents as cevent;
@@ -121,7 +123,9 @@ public function new_order(Request $request){
         $customer=DB::select("select customer_id from customers where username = '$user->name'");
             
         if($request->input('order_type')=='service'){
-        $order=orders::create([
+            $service=services::findOrFail($request->input('service_id'));
+
+            $order=orders::create([
             'order_status'=> 'pending',
             'payment_method'=> $request->input('payment_method'),
             'payment_status' => 'pending',
@@ -129,10 +133,12 @@ public function new_order(Request $request){
             'order_type' => $request->input('order_type'),
             'service_id' => $request->input('service_id'),
             'customer_id' => $customer[0]->customer_id,
-            'event_id' => $request->input('event_id')
+            'event_id' => $request->input('event_id'),
+            'vendor_id'=>$service->vendor_id
         ]);
         }
         else if($request->input('order_type')=='package'){
+            $package=packages::findOrFail($request->input('package_id'));
             $order=orders::create([
                 'order_status'=> 'pending',
                 'payment_method'=> $request->input('payment_method'),
@@ -141,7 +147,8 @@ public function new_order(Request $request){
                 'order_type' => $request->input('order_type'),
                 'package_id' => $request->input('package_id'),
                 'customer_id' => $customer[0]->customer_id,
-                'event_id' => $request->input('event_id')
+                'event_id' => $request->input('event_id'),
+                'vendor_id'=>$package->vendor_id
             ]);
             }
     }
@@ -176,7 +183,7 @@ public function update_order_status (Request $request,$id){
         $order=orders::findOrFail($id);
         if(($order->customer_id)==($customer[0]->customer_id)){
             $status=$request->input('order_status');
-            $order->update(["order_status" => "$status"]);        
+            $order->update(["order_status" => $status]);        
         }
     }
 }

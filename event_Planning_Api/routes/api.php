@@ -73,6 +73,7 @@ Route::get('vendor/get/package/{id}','VendorController@get_package');
 Route::get('vendor/get/package/token','VendorController@get_ven_package');
 Route::get('vendor/get/orders/approved/{type}','VendorController@get_order_approved');
 Route::get('vendor/get/orders/pending/{type}','VendorController@get_order_pending');
+Route::put('vendor/update/orders/{id}/{status}','VendorController@update_order_status');
 
 Route::put('vendor/update/package/{id}','VendorController@update_package');
 Route::delete('vendor/delete/package/{id}','VendorController@delete_package');
