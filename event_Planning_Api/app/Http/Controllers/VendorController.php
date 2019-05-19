@@ -439,7 +439,48 @@ public function get_categories(){
     
     
     }  
-} 
+}
+
+public function get_order_pending(Request $request,$type){
+    $user=User::findOrFail(Auth::guard('api')->id());
+    
+    if($user->user_type=="vendor"){
+        $venid=DB::select("select vendor_id from vendors where username = '$user->name'");
+    
+    if($type=="services"){
+        $services=services::select('o_id','order_status','payment_method','payment_status','description','order_type',
+        'service_id','customer_id','event_id')->where('order_status','pending')->where('service_id','!=','null')
+        ->where('vendor_id',$venid[0]->vendor_id)->paginate(15);
+    }
+    else if($type=="packages"){
+        $services=services::select('o_id','order_status','payment_method','payment_status','description','order_type',
+        'package_id','customer_id','event_id')->where('order_status','pending')->where('package_id','!=','null')
+        ->where('vendor_id',$venid[0]->vendor_id)->paginate(15);
+    }
+}
+}
+public function get_order_approved(Request $request,$type){
+    $user=User::findOrFail(Auth::guard('api')->id());
+    
+    if($user->user_type=="vendor"){
+        $venid=DB::select("select vendor_id from vendors where username = '$user->name'");
+    
+        if($type=="services"){
+        $services=services::select('o_id','order_status','payment_method','payment_status','description','order_type',
+        'service_id','customer_id','event_id')->where('order_status','pending')->where('service_id','!=','null')
+        ->where('vendor_id',$venid[0]->vendor_id)->paginate(15);
+    }
+    else if($type=="packages"){
+        $services=services::select('o_id','order_status','payment_method','payment_status','description','order_type',
+        'package_id','customer_id','event_id')->where('order_status','pending')->where('package_id','!=','null')
+        ->where('vendor_id',$venid[0]->vendor_id)->paginate(15);
+    }
+}   
+}
+public function update_order_status(){
+
+}
+
 /**
      * Store a newly created resource in storage.
      *
