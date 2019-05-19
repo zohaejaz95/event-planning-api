@@ -5,6 +5,8 @@ use Auth;
 use Illuminate\Http\Request;
 use App\User;
 use App\ngo;
+use App\ngo_events;
+use App\sponsorships;
 use App\Http\Requests;
 use App\Http\Resources\NGO as ngoResource;
 class NgoController extends Controller
@@ -139,4 +141,107 @@ class NgoController extends Controller
     {
         //
     }
+//NGo EVents
+public function create_event(Request $request){
+    $user=User::findOrFail(Auth::guard('api')->id());
+    if($user->user_type=="ngo"){
+        $ngo= ngo::where('username',$user->name)->get();
+    $ngoe= ngo_events::create([
+        'subject' => $request->input('subject'),
+        'start_time' => $request->input('start_time'),
+        'end_time' => $request->input('end_time'),
+        'date' => $request->input('date'),
+        'fund' => $request->input('fund'),
+        'status' => $request->input('status'),
+        'ngo_id' =>$ngo->ngo_id
+    ]);
+    }
+    
+}
+
+public function update_event(Request $request,$id){
+    $user=User::findOrFail(Auth::guard('api')->id());
+    if($user->user_type=="ngo"){
+        $ngo= ngo::where('username',$user->name)->get();
+        $ngoe= ngo_events::where('ngo_id',$ngo->ngo_id)->where('event_id',$id)->get();
+    $ngoe->update([
+        'subject' => $request->input('subject'),
+        'start_time' => $request->input('start_time'),
+        'end_time' => $request->input('end_time'),
+        'date' => $request->input('date'),
+        'fund' => $request->input('fund'),
+        'status' => $request->input('status'),
+        'ngo_id' =>$ngo->ngo_id
+    ]);
+    }
+    
+}
+public function delete_event(Request $request,$id){
+    $user=User::findOrFail(Auth::guard('api')->id());
+    if($user->user_type=="ngo"){
+        $ngo= ngo::where('username',$user->name)->get();
+        $ngoe= ngo_events::where('ngo_id',$ngo->ngo_id)->where('event_id',$id)->get();
+    $ngoe->delete();
+    }
+    
+}
+
+public function get_events_token(){
+    $user=User::findOrFail(Auth::guard('api')->id());
+    if($user->user_type=="ngo"){
+        $ngo= ngo::where('username',$user->name)->get();
+        $events=ngo_events::where('ngo_id',$ngo->ngo_id)->paginate(15);
+        return $events;
+    }
+}
+
+public function get_events(){
+    $user=User::findOrFail(Auth::guard('api')->id());
+    if($user->user_type=="ngo"||$user->user_type=="vendor"){
+        
+        $events=ngo_events::paginate(15);
+        return $events;
+    }
+}
+public function get_event($id){
+    $user=User::findOrFail(Auth::guard('api')->id());
+    if($user->user_type=="ngo"){
+        $ngo= ngo::where('username',$user->name)->get();
+        $events=ngo_events::where('ngo_id',$ngo->ngo_id)->where('event_id',$id)->get();
+        return $events;
+    }
+}
+
+//sponsorships 
+public function create_sponsorship(Request $request){
+    $user=User::findOrFail(Auth::guard('api')->id());
+    if($user->user_type=="vendor"){
+        $vendor= vendor::where('username',$user->name)->get();
+
+        $spon=sponsorships::create([
+            'type'=> $request->input('type'),
+            'donation'=> $request->input('donation'),
+            'status' =>'pending',
+            'vendor_id' => $vendor->vendor_id,
+            'ngo_id' => $request->input('ngo_id'),
+            'service_id' => $request->input('service_id')
+        ]);
+    }
+}
+
+public function accept_sponsorship($id){
+    $user=User::findOrFail(Auth::guard('api')->id());
+    if($user->user_type=="ngo"){
+        $ngo= ngo::where('username',$user->name)->get();
+        $ngoe= ngo_events::where('event_id',$id)->where('ngo_id',$ngo->ngo_id)->get();
+        $ngoe->update([
+            'status' => 'accepted'
+        ]);
+    }
+    
+}
+
+
+
+
 }

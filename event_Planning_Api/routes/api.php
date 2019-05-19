@@ -39,6 +39,16 @@ Route::get('vendor/token','VendorController@show_token');
 
 Route::get('NGOs','NgoController@index');
 Route::get('NGOs/{id}','NgoController@show');
+Route::post('NGOs/create/event','NgoController@create_event');
+Route::put('NGOs/update/event/{id}','NgoController@update_event');
+Route::delete('NGOs/delete/event/{id}','NgoController@delete_event');
+Route::get('NGOs/get/events/token','NgoController@get_events_token');
+Route::get('NGOs/get/events','NgoController@get_events');
+Route::get('NGOs/get/event/{id}','NgoController@get_event');
+Route::post('NGOs/create/sponsorship','NgoController@create_sponsorship');
+Route::put('NGOs/sponsorships/accept/{id}','NgoController@accept_sponsorship');
+
+
 
 Route::put('admin/vendor/update/{id}','VendorController@updateStatus');
 Route::put('admin/NGO/update/{id}','NgoController@updateStatus');
