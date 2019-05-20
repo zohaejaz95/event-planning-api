@@ -3,7 +3,7 @@ import React, { Component } from "react";
 //import ReactPlayer from "react-player";
 import Order from "./order";
 import { Card, Col, Row, Button, Select, Icon } from "antd";
-import { getServicesCat, getPackages } from "./vendor/vendorFunctions";
+import { getServicesCat, getAllPackages } from "./vendor/vendorFunctions";
 import ServiceDetails from "./vendor/serviceDetails";
 import PackageDetails from "./vendor/packageDetails";
 //import onlineShopping from "../images/online-shopping.jpg";
@@ -25,6 +25,7 @@ class Category extends Component {
         super(props);
         this.state = {
             detail: false,
+            age: [],
             pack: false,
             display: false,
             category: "photographs",
@@ -161,14 +162,16 @@ class Category extends Component {
         console.log(value);
     }
     getPackage() {
-        getPackages().then(res => {
+        getAllPackages().then(res => {
             if (res) {
                 console.log(res.data);
                 const lists = JSON.stringify(res.data);
                 const elist = JSON.parse(lists);
                 this.setState({
                     package: elist,
-                    pack: true
+                    pack: true,
+                    detail: false,
+                    display: false
                 });
                 this.state.order.type = "package";
             }

@@ -124,6 +124,25 @@ export const getPackages = () => {
             console.log(err);
         });
 };
+export const getAllPackages = () => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    return axios
+        .get("/api/vendor/get/packages/all", {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+
+                Authorization: "Bearer " + token.api_token
+            }
+        })
+        .then(response => {
+            //console.log(response.data.data);
+            return response.data;
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
 
 export const deletePackages = id => {
     const token = JSON.parse(localStorage.getItem("usertoken"));

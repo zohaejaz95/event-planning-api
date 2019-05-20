@@ -388,6 +388,11 @@ public function get_ven_package(){
     }
 }
 
+public function get_all_package(){
+    $pack=packages::join('package_services','packages.p_id','=','package_services.package_id')->paginate(15);
+    return $pack;
+}
+
 public function update_package(Request $request,$id){
     $user=User::findOrFail(Auth::guard('api')->id());
     if($user->user_type=="vendor"){

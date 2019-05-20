@@ -117,8 +117,8 @@ class CustOrderForm extends Component {
                             })(
                                 <Select
                                     showSearch
-                                    style={{ width: 200 }}
-                                    placeholder="Select a person"
+                                    style={{ width: "100%" }}
+                                    placeholder="Select an event"
                                     optionFilterProp="children"
                                     filterOption={(input, option) =>
                                         option.props.children

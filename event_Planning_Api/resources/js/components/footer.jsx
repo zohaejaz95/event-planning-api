@@ -21,7 +21,7 @@ class Footer extends Component {
             backgroundColor: "rgb(0, 0, 0)" /* Fallback color */,
             backgroundColor:
                 "rgba(0,0,0, 0.2)" /* Black w/opacity/see-through */,
-            color: "white",
+            color: "black",
             //fontWeight: "bold",
             border: "3px solid #f1f1f1",
             position: "relative",
