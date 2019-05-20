@@ -109,12 +109,16 @@ class CustomerEventController extends Controller
     {
         $user=User::findOrFail(Auth::guard('api')->id());
         if($user->user_type=="customer"){
-        $cust= customer::where('username',$user->name)->get();
-        $custevent= customer_event::where('event_id',$request->input('id'))->where('customer_id',$cust->customer_id)->get();
-        $custevent->update([
+        //$cust=customer::where('username',$user->name)->get();
+        $customer=DB::select("select customer_id from customers where username = '$user->name'");
+           
+        $custevent= customer_event::where('event_id',$request->input('id'))->where('customer_id',$customer[0]->customer_id)->get();
+        
+        $custevent->first()->update([
             'status' => $request->input('status')
         ]);   
         }
+
     }
 
     /**
