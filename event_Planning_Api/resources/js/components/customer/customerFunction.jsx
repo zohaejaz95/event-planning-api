@@ -62,12 +62,47 @@ export const createContact = contact => {
             console.log(err);
         });
 };
-export const getEvents = () => {
+
+export const updateEventStatus = (id, status) => {
     const token = JSON.parse(localStorage.getItem("usertoken"));
     //newUser["api_token"] = token.api_token;
     console.log(token.api_token);
+    var input = {
+        id: id,
+        status: status
+    };
     return axios
-        .get("/api/customer/events", {
+        .put(
+            "/api/customer/events/update/status",
+            { id: id, status: status },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Access: "application/json",
+                    Authorization: "Bearer " + token.api_token
+                }
+            }
+        )
+        .then(response => {
+            console.log(response);
+            return true;
+        })
+        .catch(err => {
+            console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
+        });
+};
+
+export const getEvents = stat => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //newUser["api_token"] = token.api_token;
+    console.log(token.api_token);
+
+    return axios
+        .get("/api/customer/events/" + stat, {
             headers: {
                 "Content-Type": "application/json",
                 Access: "application/json",

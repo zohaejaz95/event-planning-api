@@ -1,27 +1,21 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { List, Avatar, Button, Icon, Card, Progress, Tooltip } from "antd";
+import {
+    List,
+    Avatar,
+    Button,
+    Icon,
+    Card,
+    Progress,
+    Tooltip,
+    Switch,
+    Modal,
+    message
+} from "antd";
 import avatar from "../../images/avatar.jpg";
-import { getEvents } from "./customerFunction";
+import { getEvents, updateEventStatus } from "./customerFunction";
 const ButtonGroup = Button.Group;
-const data = [
-    {
-        title: "Customer Event 1"
-    },
-    {
-        title: "Customer Event 2"
-    },
-    {
-        title: "Customer Event 3"
-    },
-    {
-        title: "Customer Event 4"
-    },
-    {
-        title: "Customer Event 5"
-    }
-];
-
+const confirm = Modal.confirm;
 class ViewEventCust extends Component {
     constructor() {
         super();
@@ -29,12 +23,69 @@ class ViewEventCust extends Component {
             list: true,
             detail: false,
             events: [],
-            sel: []
+            sel: [],
+            type: "",
+            filter: true
         };
         this.toggleDetail = this.toggleDetail.bind(this);
+        this.initEvents = this.initEvents.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.showConfirm = this.showConfirm.bind(this);
+        this.updateStatus = this.updateStatus.bind(this);
     }
-    componentDidMount() {
-        getEvents().then(res => {
+    showConfirm() {
+        var stat = "";
+        if (this.state.type == "active") {
+            stat = "inactive";
+        } else {
+            stat = "active";
+        }
+        this.updateStatus();
+        confirm({
+            title: "Do you want to mark event as " + stat + "?",
+            content:
+                "When clicked the OK button, the event status will be changed!",
+            onOk() {
+                //this.updateStatus();
+                return new Promise((resolve, reject) => {
+                    setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+                }).catch(() => console.log("Oops errors!"));
+            },
+            onCancel() {}
+        });
+    }
+    updateStatus() {
+        updateEventStatus(this.state.sel.event_id, "inactive").then(res => {
+            if (res) {
+                console.log(res.data);
+                message.success("Event status changed!");
+            } else {
+                message.error("Unable to change status");
+            }
+        });
+    }
+    onChange(checked) {
+        console.log(`switch to ${checked}`);
+        this.setState({
+            filter: !this.state.filter,
+            events: []
+        });
+        var stat = "";
+        if (!this.state.filter) {
+            this.setState({
+                type: "active"
+            });
+            stat = "active";
+        } else {
+            this.setState({
+                type: "inactive"
+            });
+            stat = "inactive";
+        }
+        this.initEvents(stat);
+    }
+    initEvents(status) {
+        getEvents(status).then(res => {
             if (res) {
                 console.log(res.data);
                 const lists = JSON.stringify(res.data);
@@ -43,11 +94,11 @@ class ViewEventCust extends Component {
                     events: elist
                 });
                 console.log(this.state.events);
-                console.log(this.state.events.length);
-                console.log(this.state.events[0]);
-                console.log(this.state.events[0].event_id);
             }
         });
+    }
+    componentDidMount() {
+        this.initEvents("active");
     }
     toggleList() {
         this.setState({
@@ -66,6 +117,9 @@ class ViewEventCust extends Component {
     render() {
         const custEventList = (
             <div>
+                {"Inactive "}
+                <Switch defaultChecked onChange={this.onChange} />
+                {" Active"}
                 <h4>Events</h4>
                 <hr />
                 <List
@@ -108,10 +162,11 @@ class ViewEventCust extends Component {
                     Back
                     <Icon type="left-circle" />
                 </Button>
-                <Button type="primary">
-                    Guest List
-                    <Icon type="user" />
+
+                <Button type="primary" onClick={this.showConfirm}>
+                    Change Status
                 </Button>
+
                 <br />
                 <br />
                 <Avatar size={64} icon="user" />

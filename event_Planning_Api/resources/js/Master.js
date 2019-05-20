@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { createBrowserHistory } from "history";
 import "./App.css";
 import "./css/index.css";
 import "antd/dist/antd.css";
@@ -27,8 +28,9 @@ import NGOSidebar from "./components/ngoSidebar";
 
 export default class App extends Component {
     render() {
+        const { browserHistory } = createBrowserHistory();
         return (
-            <Router>
+            <Router history={browserHistory}>
                 <div className="App">
                     <Header />
                     <Route exact path="/" component={Home} />
@@ -50,15 +52,15 @@ export default class App extends Component {
                         />
                         <Route exact path="/vendor" component={Vendor} />
 
-                        <Route
-                            exact
-                            path="/ngos/register"
-                            component={NGORegister}
-                        />
                         <Route exact path="/ngo" component={NGOSidebar} />
 
                         <Route exact path="/customer" component={Customer} />
                     </Switch>
+                    <Route
+                        exact
+                        path="/ngos/register"
+                        component={NGORegister}
+                    />
                     <Footer />
                 </div>
             </Router>
