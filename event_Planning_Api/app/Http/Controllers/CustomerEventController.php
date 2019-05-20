@@ -8,6 +8,7 @@ use App\User;
 use App\orders;
 use App\services;
 use App\packages;
+use App\customer;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Resources\customerEvents as cevent;
@@ -19,13 +20,15 @@ class CustomerEventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(request $request)
+    public function index(request $request,$status)
     {
         //retreive all events of a given user
         $user=User::findOrFail(Auth::guard('api')->id());
+        if($user->user_type=="customer"){
         $customer=DB::select("select customer_id from customers where username = '$user->name'");
-        $cevents=customer_event::where('customer_id',$customer[0]->customer_id)->paginate(15);
+        $cevents=customer_event::where('customer_id',$customer[0]->customer_id)->where('status',$status)->paginate(15);
         return cevent::collection($cevents);
+        }
     }
 
     /**
@@ -102,9 +105,16 @@ class CustomerEventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update_event_status(Request $request)
     {
-        //
+        $user=User::findOrFail(Auth::guard('api')->id());
+        if($user->user_type=="customer"){
+        $cust= customer::where('umername',$user->name);   
+        $custevent= customer_event::where('event_id',$request->input('id'))->where('customer_id',$cust->customer_id)->get();
+        $custevent->update([
+            'status' => $request->input('status')
+        ]);   
+        }
     }
 
     /**
@@ -115,7 +125,13 @@ class CustomerEventController extends Controller
      */
     public function destroy($id)
     {
-        //
+    $user=User::findOrFail(Auth::guard('api')->id());
+    if($user->user_type=="customer"){
+    $cust= customer::where('umername',$user->name);   
+    $custevent= customer_event::where('event_id',$id)->where('customer_id',$cust->customer_id)->get();
+    $custevent->delete();
+    }
+
     }
 public function new_order(Request $request){
     $user=User::findOrFail(Auth::guard('api')->id());

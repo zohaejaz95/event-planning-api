@@ -59,7 +59,10 @@ Route::get('admin/vendor/approved/','VendorController@approved');
 Route::get('admin/vendor/rejected/','VendorController@rejected');
 Route::get('admin/vendor/pending/','VendorController@pending');
 Route::post('customer/newevent/','customerEventController@store');
-Route::get('customer/events','customerEventController@index');
+Route::get('customer/events/{status}','customerEventController@index');
+Route::delete('customer/events/delete/{id}','customerEventController@destroy');
+Route::put('customer/events/update/status','customerEventController@update_event_status');
+
 Route::get('customer/events/{id}','customerEventController@show');
 Route::post('customer/orders/new','customerEventController@new_order');
 Route::get('customer/orders/{id}','customerEventController@get_order');
