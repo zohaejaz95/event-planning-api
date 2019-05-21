@@ -61,6 +61,8 @@ Route::get('admin/vendor/pending/','VendorController@pending');
 
 Route::post('customer/newevent/','customerEventController@store');
 Route::get('customer/events/{status}','customerEventController@index');
+Route::get('customer/events/expenses/{id}','customerEventController@get_expenses');
+Route::get('vendor/package/cost/{id}','customerEventController@get_package_cost');
 Route::delete('customer/events/delete/{id}','customerEventController@destroy');
 Route::post('customer/events/update/status','customerEventController@update_event_status');
 
