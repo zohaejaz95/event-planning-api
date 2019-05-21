@@ -37,7 +37,12 @@ export default class App extends Component {
                     <Switch>
                         <Route exact path="/ngos" component={NGO} />
                         <Route exact path="/contact-us" component={Contact} />
-                        <Route exact path="/admin" component={Admin} />
+                        <Route
+                            history={browserHistory}
+                            exact
+                            path="/admin"
+                            component={Admin}
+                        />
                         <Route exact path="/services" component={Category} />
                         <Route
                             exact
@@ -50,11 +55,21 @@ export default class App extends Component {
                             path="/vendor-register"
                             component={VendorSignup}
                         />
-                        <Route exact path="/vendor" component={Vendor} />
+                        <Route
+                            history={browserHistory}
+                            exact
+                            path="/vendor"
+                            component={Vendor}
+                        />
 
                         <Route exact path="/ngo" component={NGOSidebar} />
 
-                        <Route exact path="/customer" component={Customer} />
+                        <Route
+                            history={browserHistory}
+                            exact
+                            path="/customer"
+                            component={Customer}
+                        />
                     </Switch>
                     <Route
                         exact

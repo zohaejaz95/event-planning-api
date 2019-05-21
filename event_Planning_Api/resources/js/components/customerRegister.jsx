@@ -20,12 +20,24 @@ class CustomerRegister extends Component {
             visible: false,
             done: false,
             user_type: "customer",
-            msg: false
+            msg: false,
+            display: ""
         };
         this.showModal = this.showModal.bind(this);
         this.handleOk = this.handleOk.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.usernameLength = this.usernameLength.bind(this);
+    }
+
+    usernameLength(e) {
+        var val = e.target.value;
+        console.log(val);
+        if (val.length == 0 || val.length >= 20) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     showModal() {
@@ -53,25 +65,48 @@ class CustomerRegister extends Component {
             if (!err) {
                 values["user_type"] = this.state.user_type;
                 console.log("Received values of form: ", values);
-                register(values).then(res => {
-                    if (res) {
-                        console.log(res.data.user_type);
-                        this.setState({
-                            done: true,
-                            visible: false
-                        });
-                    } else {
-                        //e.preventDefault();
-                        this.setState({
-                            msg: true
-                        });
-                    }
-                });
+                register(values)
+                    .then(res => {
+                        if (res) {
+                            console.log(res.data.user_type);
+                            this.setState({
+                                done: true,
+                                visible: false
+                            });
+                        } else {
+                            //e.preventDefault();
+                            this.setState({
+                                msg: true
+                            });
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        console.log(typeof err);
+                        if (err.response) {
+                            console.log(err.response);
+                            if (err.response.status == 422) {
+                                this.setState({
+                                    display:
+                                        "The email or username has already been taken",
+                                    msg: true
+                                });
+                            } else {
+                                this.setState({
+                                    display:
+                                        "The username has already been taken.",
+                                    msg: true
+                                });
+                            }
+                            //console.log(err.response.data.errors);
+                        }
+                    });
             }
         });
     }
     render() {
         const { getFieldDecorator } = this.props.form;
+        //const errors=this.
         return (
             <div>
                 <div onClick={this.showModal}>
@@ -150,6 +185,11 @@ class CustomerRegister extends Component {
                                                     required: true,
                                                     message:
                                                         "Please input your username!"
+                                                },
+                                                {
+                                                    max: 20,
+                                                    message:
+                                                        "Username out of range!"
                                                 }
                                             ]
                                         })(
@@ -220,7 +260,7 @@ class CustomerRegister extends Component {
                         {this.state.msg ? (
                             <Alert
                                 message="Error"
-                                description="Invalid Email or Username"
+                                description={this.state.display}
                                 type="error"
                                 showIcon
                             />

@@ -90,21 +90,30 @@ class VendorRegister extends Component {
                 ven.payment_methods = serve;
                 console.log(ven);
 
-                register(reg).then(res => {
-                    if (res) {
-                        vendorRegister(ven).then(res => {
-                            if (res) {
-                                message.success(
-                                    "Account created Successfully!"
-                                );
-                            } else {
-                                message.error("Unable to create Account!");
-                            }
-                        });
-                    } else {
-                        message.error("Unable to create Account!");
-                    }
-                });
+                register(reg)
+                    .then(res => {
+                        if (res) {
+                            vendorRegister(ven).then(res => {
+                                if (res) {
+                                    message.success(
+                                        "Account created Successfully!"
+                                    );
+                                } else {
+                                    message.error("Unable to create Account!");
+                                }
+                            });
+                        } else {
+                            message.error("Unable to create Account!");
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        console.log(typeof err);
+                        if (err.response) {
+                            console.log(err.response);
+                            console.log(err.response.data.errors);
+                        }
+                    });
             } else {
                 message.warn("Incorrect information!");
             }

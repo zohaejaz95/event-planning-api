@@ -6,6 +6,7 @@ import {
     Button,
     Icon,
     Card,
+    Checkbox,
     Progress,
     Tooltip,
     Switch,
@@ -13,7 +14,7 @@ import {
     message
 } from "antd";
 import avatar from "../../images/avatar.jpg";
-import { getEvents, updateEventStatus } from "./customerFunction";
+import { getEvents, updateEventStatus, deleteEvent } from "./customerFunction";
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
 class ViewEventCust extends Component {
@@ -25,37 +26,77 @@ class ViewEventCust extends Component {
             events: [],
             sel: [],
             type: "",
+            e_id: [],
             filter: true
         };
         this.toggleDetail = this.toggleDetail.bind(this);
         this.initEvents = this.initEvents.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.onCheck = this.onCheck.bind(this);
         this.showConfirm = this.showConfirm.bind(this);
         this.updateStatus = this.updateStatus.bind(this);
+        this.changeStatus = this.changeStatus.bind(this);
+        this.deleteEvents = this.deleteEvents.bind(this);
     }
     showConfirm() {
         var stat = "";
-        if (this.state.type == "active") {
+        if (this.state.sel.status == "active") {
             stat = "inactive";
         } else {
             stat = "active";
         }
-        this.updateStatus();
-        confirm({
-            title: "Do you want to mark event as " + stat + "?",
-            content:
-                "When clicked the OK button, the event status will be changed!",
-            onOk() {
-                //this.updateStatus();
-                return new Promise((resolve, reject) => {
-                    setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
-                }).catch(() => console.log("Oops errors!"));
-            },
-            onCancel() {}
+        this.updateStatus(stat);
+    }
+
+    onCheck(value) {
+        console.log(`checked = ${value}`);
+        this.setState({
+            e_id: value
         });
     }
-    updateStatus() {
-        updateEventStatus(this.state.sel.event_id, "inactive").then(res => {
+
+    deleteEvents() {
+        var value = this.state.e_id;
+        var val = [];
+        for (var i = 0; i < value.length; i++) {
+            val = value[i];
+            console.log(val);
+            deleteEvent(val.event_id).then(res => {
+                if (res) {
+                    console.log(res.data);
+                    message.success("Event deleted!");
+                    this.initEvents(val.status);
+                } else {
+                    message.error("Unable to delete event");
+                }
+            });
+        }
+    }
+    changeStatus() {
+        var value = this.state.e_id;
+        var stat = "",
+            val = [];
+        for (var i = 0; i < value.length; i++) {
+            val = value[i];
+            if (val.status == "active") {
+                stat = "inactive";
+            } else {
+                stat = "active";
+            }
+            updateEventStatus(val.event_id, stat).then(res => {
+                if (res) {
+                    console.log(res.data);
+                    message.success("Event status changed!");
+                    this.initEvents(stat);
+                } else {
+                    message.error("Unable to change status");
+                }
+            });
+        }
+    }
+    updateStatus(stat) {
+        console.log(this.state.sel.event_id);
+        updateEventStatus(this.state.sel.event_id, stat).then(res => {
             if (res) {
                 console.log(res.data);
                 message.success("Event status changed!");
@@ -121,28 +162,41 @@ class ViewEventCust extends Component {
                 <Switch defaultChecked onChange={this.onChange} />
                 {" Active"}
                 <h4>Events</h4>
+                <Button type="primary" onClick={this.changeStatus}>
+                    Change Status
+                </Button>
+                <Button type="primary" onClick={this.deleteEvents}>
+                    Delete
+                </Button>
                 <hr />
-                <List
-                    itemLayout="horizontal"
-                    dataSource={this.state.events}
-                    renderItem={item => (
-                        <div>
-                            <List.Item>
-                                <List.Item.Meta
-                                    avatar={<Avatar src={avatar} />}
-                                    title={<p>{item.event_name}</p>}
-                                    description={item.category}
-                                />
-                                <Button
-                                    type="primary"
-                                    onClick={() => this.toggleDetail(item)}
-                                >
-                                    View Details
-                                </Button>
-                            </List.Item>
-                        </div>
-                    )}
-                />
+                <Checkbox.Group
+                    style={{ width: "100%" }}
+                    onChange={this.onCheck}
+                >
+                    <List
+                        itemLayout="horizontal"
+                        dataSource={this.state.events}
+                        renderItem={item => (
+                            <div>
+                                <List.Item>
+                                    <Checkbox value={item} />
+                                    <List.Item.Meta
+                                        avatar={<Avatar src={avatar} />}
+                                        title={<p>{item.event_name}</p>}
+                                        description={item.category}
+                                    />
+
+                                    <Button
+                                        type="primary"
+                                        onClick={() => this.toggleDetail(item)}
+                                    >
+                                        View Details
+                                    </Button>
+                                </List.Item>
+                            </div>
+                        )}
+                    />
+                </Checkbox.Group>
                 <br />
                 <ButtonGroup>
                     <Button type="primary">

@@ -131,9 +131,9 @@ class CustomerEventController extends Controller
     {
     $user=User::findOrFail(Auth::guard('api')->id());
     if($user->user_type=="customer"){
-    $cust= customer::where('umername',$user->name);   
-    $custevent= customer_event::where('event_id',$id)->where('customer_id',$cust->customer_id)->get();
-    $custevent->delete();
+    $cust= customer::where('username',$user->name)->get();   
+    $custevent= customer_event::where('event_id',$id)->where('customer_id',$cust->first()->customer_id)->get();
+    $custevent->first()->delete();
     }
 
     }

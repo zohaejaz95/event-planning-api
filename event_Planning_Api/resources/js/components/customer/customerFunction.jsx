@@ -72,7 +72,7 @@ export const updateEventStatus = (id, status) => {
         status: status
     };
     return axios
-        .put(
+        .post(
             "/api/customer/events/update/status",
             { id: id, status: status },
             {
@@ -223,6 +223,33 @@ export const deleteGuest = guest => {
         })
         .catch(err => {
             console.log(err);
+        });
+};
+
+export const deleteEvent = id => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //newUser["api_token"] = token.api_token;
+    console.log(token.api_token);
+    //console.log(guest);
+
+    return axios
+        .delete("api/customer/events/delete/" + id, {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token
+            }
+        })
+        .then(response => {
+            console.log(response.data);
+            return true;
+        })
+        .catch(err => {
+            console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
         });
 };
 
