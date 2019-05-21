@@ -446,6 +446,17 @@ public function get_categories(){
     
     }  
 }
+
+public function get_payment_methods($id){
+    $user=User::findOrFail(Auth::guard('api')->id());
+    
+    if($user->user_type=="vendor"||$user->user_type=="customer"){
+    $methods= payment_method::where('vendor_id',$id)->get();
+    return $methods;
+    }
+}
+
+
 public function get_vendor_services(){
     $user=User::findOrFail(Auth::guard('api')->id());
     

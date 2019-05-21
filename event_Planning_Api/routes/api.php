@@ -58,6 +58,7 @@ Route::get('admin/NGO/pending/','NgoController@pending');
 Route::get('admin/vendor/approved/','VendorController@approved');
 Route::get('admin/vendor/rejected/','VendorController@rejected');
 Route::get('admin/vendor/pending/','VendorController@pending');
+
 Route::post('customer/newevent/','customerEventController@store');
 Route::get('customer/events/{status}','customerEventController@index');
 Route::delete('customer/events/delete/{id}','customerEventController@destroy');
@@ -66,6 +67,9 @@ Route::post('customer/events/update/status','customerEventController@update_even
 Route::get('customer/events/{id}','customerEventController@show');
 Route::post('customer/orders/new','customerEventController@new_order');
 Route::get('customer/orders/{id}','customerEventController@get_order');
+Route::get('customer/orders/approved/{type}','customerEventController@get_order_pending');
+Route::get('customer/orders/pending/{type}','customerEventController@get_order_approved');
+
 Route::post('customers/orders/update/order/{id}','customerEventController@update_order_status');
 Route::post('customers/orders/update/payment/{id}','customerEventController@update_payment_status');
 Route::post('customer/newcontact/','ContactListController@store');
@@ -79,6 +83,7 @@ Route::delete('customer/guest_list/remove/{id}','ContactListController@remove_gu
 Route::post('vendor/create/service','VendorController@create_service');
 Route::get('vendor/get/service/{id}','VendorController@get_service');
 Route::get('vendor/get/service/category/{cat}','VendorController@get_service_cat');
+
 Route::put('vendor/update/serivce/{id}','VendorController@update_service');
 Route::delete('vendor/delete/serivce/{id}','VendorController@delete_service');
 Route::post('vendor/create/package','VendorController@create_package');
@@ -93,6 +98,7 @@ Route::put('vendor/update/package/{id}','VendorController@update_package');
 Route::delete('vendor/delete/package/{id}','VendorController@delete_package');
 Route::get('vendor/locations','VendorController@get_locations');
 Route::get('vendor/categories','VendorController@get_categories');
+Route::get('vendor/payment_methods/{id}','VendorController@get_payment_methods');
 Route::get('vendor/get/services','VendorController@get_vendor_services');
 
 //feedbacks
