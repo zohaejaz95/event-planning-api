@@ -9,6 +9,7 @@ use App\orders;
 use App\services;
 use App\packages;
 use App\customer;
+use App\package_services;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Resources\customerEvents as cevent;
@@ -225,10 +226,43 @@ public function get_order_approved(Request $request,$type){
 }
 
 public function get_expenses($id){
+    $user=User::findOrFail(Auth::guard('api')->id());
+    
     if($user->user_type=="customer"){
         $customer=DB::select("select customer_id from customers where username = '$user->name'");
-        $events= 
+        $events= orders::where('customer_id',$customer[0]->customer_id)->where('event_id',$id)->get();
+        $expenses=0;
+        foreach($events as $event){
+            if($event->order_type=='service'){
+                $service= services::findOrFail($event->service_id);
+                $expenses= $expenses+ $service->price;
+            }
+            else if($event->order_type=='package'){
+                $pkgs= package_services::where('package_id',$event->package_id)->get();
+                foreach ($pkgs as $pkg){
+                    $service= services::findOrFail($pkg->service_id);
+                    $expenses= $expenses+ (($service->price)-(($service->price)*($pkg->discount/100)));
+                }
+            }
+        }
+        $exp=array('expenses'=>$expenses);
+        return json_encode($exp);
     }
+}
+public function get_package_cost($id){
+    $user=User::findOrFail(Auth::guard('api')->id());
+    
+    if($user->user_type=="customer"||$user->user_type=="vendor"){
+        $pkgs= package_services::where('package_id',$id)->get();
+        $expenses= 0;        
+        foreach ($pkgs as $pkg){
+                    $service= services::findOrFail($pkg->service_id);
+                    $expenses= $expenses+ (($service->price)-(($service->price)*($pkg->discount/100)));
+                }
+                
+                $exp=array('price'=>$expenses);
+                return json_encode($exp);
+}
 }
 
 public function update_payment_status (Request $request,$id){
