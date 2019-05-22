@@ -193,15 +193,19 @@ public function get_order_pending(Request $request,$type){
         $customer=DB::select("select customer_id from customers where username = '$user->name'");
        
     if($type=="services"){
+<<<<<<< HEAD
         $services=orders::select('o_id','order_status','payment_method','payment_status','description','order_type','service_id','customer_id','event_id')
         ->where('order_status','pending')->where('order_type','service')
         ->where('customer_id',$customer[0]->customer_id)->paginate(15);
+=======
+        $services=orders::select('o_id','order_status','payment_method','payment_status','description','order_type','service_id','customer_id','event_id')->where('order_status','pending')->where('order_type','service')->where('customer_id',$customer[0]->customer_id)->where('event_id',$request->input('event_id'))->paginate(15);
+>>>>>>> 49cdb6dd6849b932e0f3450938f08c5ea311f0f8
         return $services;
     }
     else if($type=="packages"){
         $services=orders::select('o_id','order_status','payment_method','payment_status','description','order_type',
         'package_id','customer_id','event_id')->where('order_status','pending')->where('order_type','package')
-        ->where('customer_id',$customer[0]->customer_id)->paginate(15);
+        ->where('customer_id',$customer[0]->customer_id)->where('event_id',$request->input('event_id'))->paginate(15);
         return $services;
     }
 }
@@ -215,13 +219,13 @@ public function get_order_approved(Request $request,$type){
         if($type=="services"){
         $services=orders::select('o_id','order_status','payment_method','payment_status','description','order_type',
         'service_id','customer_id','event_id')->where('order_status','pending')->where('order_type','service')
-        ->where('customer_id',$customer[0]->customer_id)->paginate(15);
+        ->where('customer_id',$customer[0]->customer_id)->where('event_id',$request->input('event_id'))->paginate(15);
         return $services;
     }
     else if($type=="packages"){
         $services=orders::select('o_id','order_status','payment_method','payment_status','description','order_type',
         'package_id','customer_id','event_id')->where('order_status','pending')->where('order_type','package')
-        ->where('customer_id',$customer[0]->customer_id)->paginate(15);
+        ->where('customer_id',$customer[0]->customer_id)->where('event_id',$request->input('event_id'))->paginate(15);
         return $services;
     }
 }
