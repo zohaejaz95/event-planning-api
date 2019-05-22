@@ -159,6 +159,53 @@ export const getGuests = id => {
         });
 };
 
+export const getPendingOrders = type => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    console.log(token);
+    return axios
+        .get("/api/customer/orders/pending/" + type, {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token
+            }
+        })
+        .then(response => {
+            console.log(response.data);
+            return response;
+        })
+        .catch(err => {
+            console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
+        });
+};
+
+export const getApprovedOrders = type => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    return axios
+        .get("/api/customer/orders/approved/" + type, {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token
+            }
+        })
+        .then(response => {
+            console.log(response.data);
+            return response;
+        })
+        .catch(err => {
+            console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
+        });
+};
+
 export const addGuest = guest => {
     const token = JSON.parse(localStorage.getItem("usertoken"));
     //newUser["api_token"] = token.api_token;

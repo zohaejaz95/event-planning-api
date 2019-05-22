@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import EventOrders from "./eventOrders";
 import {
     List,
     Avatar,
@@ -11,6 +11,8 @@ import {
     Tooltip,
     Switch,
     Modal,
+    Row,
+    Col,
     message
 } from "antd";
 import avatar from "../../images/avatar.jpg";
@@ -27,6 +29,10 @@ class ViewEventCust extends Component {
             sel: [],
             type: "",
             e_id: [],
+            services: [
+                { id: 56, name: "Johar Shaadi Hall" },
+                { id: 11, name: "Junoon Band" }
+            ],
             filter: true
         };
         this.toggleDetail = this.toggleDetail.bind(this);
@@ -238,48 +244,29 @@ class ViewEventCust extends Component {
                 <hr />
                 <h4>Budget Manager</h4>
                 <p>Budget: {this.state.sel.budget}</p>
-                <p>Expenses:</p>
-                <p>Budget Status:</p>
+                <p>Expenses: NaN</p>
+                <p>Budget Status: </p>
+                <p style={{ color: "green" }}>Within Budget</p>
                 <br />
-                <Tooltip placement="topLeft" title="Total Budget">
-                    <Progress percent={30} />
-                </Tooltip>
-                <Tooltip placement="topLeft" title="Used Budget">
-                    <Progress percent={50} status="active" />
-                </Tooltip>
-                <Tooltip placement="topLeft" title="Exceeding Budget">
-                    <Progress percent={70} status="exception" />
-                </Tooltip>
-                <Tooltip placement="topLeft" title="Within Budget">
-                    <Progress percent={100} />
-                </Tooltip>
-                <Tooltip placement="topLeft" title="Status">
-                    <Progress percent={50} />
-                </Tooltip>
+                <div>
+                    <Tooltip placement="topLeft" title="Total Budget">
+                        <Progress percent={100} />
+                    </Tooltip>
+                    <Tooltip placement="topLeft" title="Used Budget">
+                        <Progress percent={0} status="active" />
+                    </Tooltip>
+                    <Tooltip placement="topLeft" title="Exceeding Budget">
+                        <Progress percent={0} status="exception" />
+                    </Tooltip>
+                    <Tooltip placement="topLeft" title="Within Budget">
+                        <Progress percent={100} />
+                    </Tooltip>
+                </div>
+
                 <br />
                 <br />
                 <hr />
-                <h4>Services</h4>
-                <h5>Category 1</h5>
-
-                <Link to="/">
-                    <Card hoverable bordered={false}>
-                        <h6>Service Name</h6>
-                    </Card>
-                </Link>
-                <br />
-                <Link to="/">
-                    <Card hoverable bordered={false}>
-                        <h6>Service Name</h6>
-                    </Card>
-                </Link>
-                <br />
-                <h5>Category 2</h5>
-                <Link to="/">
-                    <Card hoverable bordered={false}>
-                        <h6>Service Name</h6>
-                    </Card>
-                </Link>
+                <EventOrders event_id={this.state.sel.event_id} />
                 <br />
             </div>
         );

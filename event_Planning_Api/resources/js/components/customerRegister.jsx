@@ -187,7 +187,7 @@ class CustomerRegister extends Component {
                                                         "Please input your username!"
                                                 },
                                                 {
-                                                    max: 20,
+                                                    max: 30,
                                                     message:
                                                         "Username out of range!"
                                                 }
@@ -214,6 +214,11 @@ class CustomerRegister extends Component {
                                                     required: true,
                                                     message:
                                                         "Please input your Password!"
+                                                },
+                                                {
+                                                    min: 6,
+                                                    message:
+                                                        "Password must be atleast 6 characters!"
                                                 }
                                             ]
                                         })(

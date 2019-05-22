@@ -149,11 +149,6 @@ class CustomerForm extends Component {
                                                     "Please input your Contact No.!"
                                             },
                                             {
-                                                len: 12,
-                                                message:
-                                                    "Invalid Contact Number!"
-                                            },
-                                            {
                                                 pattern: "[9][2][0-9]{10}",
                                                 message:
                                                     "Invalid Contact Number!"
