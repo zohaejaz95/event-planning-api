@@ -176,6 +176,14 @@ public function get_guests($event_id){
         }
 
 }
+public function get_guests_status($event_id,$status){
+    $user=User::findOrFail(Auth::guard('api')->id());
+        if($user->user_type=="customer"){
+        $guest = guest_list::where('event_id',$event_id)->where('status',$status)->join('contact_list','guest_lists.contact_list_id','=','contact_list.id')->paginate(10);
+        return $guest;
+        }
+
+}
 
 
 }

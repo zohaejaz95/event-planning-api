@@ -80,6 +80,7 @@ Route::delete('customer/contacts/delete/{id}','ContactListController@destroy');
 
 Route::post('customer/guest_list/add','ContactListController@add_guest');
 Route::get('customer/guest_list/get/{event_id}','ContactListController@get_guests');
+Route::get('customer/guest_list/get/{event_id}/{status}','ContactListController@get_guests_status');
 Route::delete('customer/guest_list/remove/{id}','ContactListController@remove_guest');
 
 Route::post('vendor/create/service','VendorController@create_service');
