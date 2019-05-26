@@ -170,8 +170,8 @@ class ViewEventCust extends Component {
                 <h4>Events</h4>
                 <Button type="primary" onClick={this.changeStatus}>
                     Change Status
-                </Button>
-                <Button type="primary" onClick={this.deleteEvents}>
+                </Button>{" "}
+                <Button type="danger" onClick={this.deleteEvents}>
                     Delete
                 </Button>
                 <hr />
@@ -221,12 +221,10 @@ class ViewEventCust extends Component {
                 <Button type="primary" onClick={this.toggleList.bind(this)}>
                     Back
                     <Icon type="left-circle" />
-                </Button>
-
+                </Button>{" "}
                 <Button type="primary" onClick={this.showConfirm}>
                     Change Status
                 </Button>
-
                 <br />
                 <br />
                 <Avatar size={64} icon="user" />
@@ -234,7 +232,6 @@ class ViewEventCust extends Component {
                     <h4>{this.state.sel.event_name}</h4>
                     <h5>{this.state.sel.category}</h5>
                 </span>
-
                 <br />
                 <p>Subject: </p>
                 <p>{this.state.sel.description}</p>
@@ -262,7 +259,6 @@ class ViewEventCust extends Component {
                         <Progress percent={100} />
                     </Tooltip>
                 </div>
-
                 <br />
                 <br />
                 <hr />

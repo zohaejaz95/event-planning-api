@@ -10,7 +10,11 @@ class EventOrders extends Component {
                 { id: 56, name: "Johar Shaadi Hall" },
                 { id: 11, name: "Junoon Band" }
             ],
-            id: ""
+            id: "",
+            p_services: [],
+            p_packages: [],
+            a_services: [],
+            a_packages: []
         };
         this.approvedServices = this.approvedServices.bind(this);
         this.approvedPackages = this.approvedPackages.bind(this);
@@ -19,30 +23,50 @@ class EventOrders extends Component {
     }
     approvedServices() {
         getApprovedOrders(this.props.event_id, "services").then(response => {
-            console.log(response);
+            if (response) {
+                this.setState({
+                    a_services: response.data.data
+                });
+            }
+            //console.log(response);
         });
     }
     approvedPackages() {
         getApprovedOrders(this.props.event_id, "packages").then(response => {
-            console.log(response);
+            if (response) {
+                this.setState({
+                    a_packages: response.data.data
+                });
+            }
+            //console.log(response);
         });
     }
     pendingServices() {
         getPendingOrders(this.props.event_id, "services").then(response => {
             if (response) {
-                console.log(response);
+                this.setState({
+                    p_services: response.data.data
+                });
+                //console.log(response.data.data);
             }
         });
     }
     pendingPackages() {
         getPendingOrders(this.props.event_id, "packages").then(response => {
-            console.log(response);
+            if (response) {
+                this.setState({
+                    p_packages: response.data.data
+                });
+            }
+
+            //console.log(response);
         });
     }
     componentDidMount() {
         this.setState({
             id: this.props.event_id
         });
+        console.log(this.props.event_id);
         this.approvedPackages();
         this.approvedServices();
         this.pendingPackages();
@@ -55,17 +79,17 @@ class EventOrders extends Component {
                 <Row>
                     <Col span={10} offset={1}>
                         <h5>Approved Orders</h5>
-                        {this.state.services.map((serve, i) => (
+                        {this.state.a_services.map((serve, i) => (
                             <div key={i}>
                                 <Link
                                     to={{
                                         pathname: "/services",
-                                        search: "?id=" + serve.id,
+                                        search: "?id=" + serve.service_id,
                                         state: { service: serve }
                                     }}
                                 >
                                     <Card hoverable bordered={true}>
-                                        <p>{serve.name}</p>
+                                        <p>{serve.description}</p>
                                     </Card>
                                 </Link>
                                 <br />
@@ -74,17 +98,17 @@ class EventOrders extends Component {
                     </Col>
                     <Col span={10} offset={1}>
                         <h5>Pending Orders</h5>
-                        {this.state.services.map((serve, i) => (
+                        {this.state.p_services.map((serve, i) => (
                             <div key={i}>
                                 <Link
                                     to={{
                                         pathname: "/services",
-                                        search: "?id=" + serve.id,
+                                        search: "?id=" + serve.service_id,
                                         state: { service: serve }
                                     }}
                                 >
                                     <Card hoverable bordered={true}>
-                                        <p>{serve.name}</p>
+                                        <p>{serve.description}</p>
                                     </Card>
                                 </Link>
                                 <br />
@@ -97,17 +121,17 @@ class EventOrders extends Component {
                 <Row>
                     <Col span={10} offset={1}>
                         <h5>Approved Orders</h5>
-                        {this.state.services.map((serve, i) => (
+                        {this.state.a_packages.map((serve, i) => (
                             <div key={i}>
                                 <Link
                                     to={{
                                         pathname: "/services",
-                                        search: "?id=" + serve.id,
+                                        search: "?id=" + serve.package_id,
                                         state: { service: serve }
                                     }}
                                 >
                                     <Card hoverable bordered={true}>
-                                        <p>{serve.name}</p>
+                                        <p>{serve.description}</p>
                                     </Card>
                                 </Link>
                                 <br />
@@ -116,17 +140,17 @@ class EventOrders extends Component {
                     </Col>
                     <Col span={10} offset={1}>
                         <h5>Pending Orders</h5>
-                        {this.state.services.map((serve, i) => (
+                        {this.state.p_packages.map((serve, i) => (
                             <div key={i}>
                                 <Link
                                     to={{
                                         pathname: "/services",
-                                        search: "?id=" + serve.id,
+                                        search: "?id=" + serve.service_id,
                                         state: { service: serve }
                                     }}
                                 >
                                     <Card hoverable bordered={true}>
-                                        <p>{serve.name}</p>
+                                        <p>{serve.description}</p>
                                     </Card>
                                 </Link>
                                 <br />

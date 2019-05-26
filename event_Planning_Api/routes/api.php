@@ -69,8 +69,8 @@ Route::post('customer/events/update/status','customerEventController@update_even
 Route::get('customer/events/{id}','customerEventController@show');
 Route::post('customer/orders/new','customerEventController@new_order');
 Route::get('customer/orders/{id}','customerEventController@get_order');
-Route::get('customer/orders/approved/{type}','customerEventController@get_order_pending');
-Route::get('customer/orders/pending/{type}','customerEventController@get_order_approved');
+Route::get('customer/orders/pending/{type}/{id}','customerEventController@get_order_pending');
+Route::get('customer/orders/approved/{type}/{id}','customerEventController@get_order_approved');
 
 Route::post('customers/orders/update/order/{id}','customerEventController@update_order_status');
 Route::post('customers/orders/update/payment/{id}','customerEventController@update_payment_status');

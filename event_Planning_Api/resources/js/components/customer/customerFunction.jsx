@@ -13,7 +13,7 @@ export const customerProfile = () => {
             }
         })
         .then(response => {
-            //console.log(response.data.data);
+            console.log(response);
             return response.data;
         })
         .catch(err => {
@@ -159,19 +159,29 @@ export const getGuests = id => {
         });
 };
 
-export const getPendingOrders = type => {
+export const getPendingOrders = (id, type) => {
     const token = JSON.parse(localStorage.getItem("usertoken"));
-    console.log(token);
+    console.log(id, type);
+    var event = { id: id };
     return axios
-        .get("/api/customer/orders/pending/" + type, {
-            headers: {
-                "Content-Type": "application/json",
-                Access: "application/json",
-                Authorization: "Bearer " + token.api_token
+        .get(
+            "/api/customer/orders/pending/" +
+                type +
+                "/" +
+                id +
+                "?api_token=" +
+                token.api_token,
+            event,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Access: "application/json",
+                    Authorization: "Bearer " + token.api_token
+                }
             }
-        })
+        )
         .then(response => {
-            console.log(response.data);
+            console.log(response);
             return response;
         })
         .catch(err => {
@@ -183,18 +193,30 @@ export const getPendingOrders = type => {
         });
 };
 
-export const getApprovedOrders = type => {
+export const getApprovedOrders = (id, order_type) => {
     const token = JSON.parse(localStorage.getItem("usertoken"));
+    var event = {
+        id: id
+    };
     return axios
-        .get("/api/customer/orders/approved/" + type, {
-            headers: {
-                "Content-Type": "application/json",
-                Access: "application/json",
-                Authorization: "Bearer " + token.api_token
+        .get(
+            "/api/customer/orders/approved/" +
+                order_type +
+                "/" +
+                id +
+                "?api_token=" +
+                token.api_token,
+            event,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Access: "application/json",
+                    Authorization: "Bearer " + token.api_token
+                }
             }
-        })
+        )
         .then(response => {
-            console.log(response.data);
+            console.log(response);
             return response;
         })
         .catch(err => {
