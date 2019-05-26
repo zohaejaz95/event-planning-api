@@ -277,23 +277,26 @@ public function get_service(Request $request,$id){
     $service=services::findOrFail($id);
     //return $service;
     if($service->category=='venues'){
-        return services::findOrFail($id)->join('venues','services.id','=','venues.service_id')->get();
+        return services::where('services.id',$id)->join('venues','services.id','=','venues.service_id')->get();
     }
     else if($service->category=='photographs'){
-        //return services::findOrFail($id)->photographs()->get();
-          return services::findOrFail($id)->join('photographs','services.id','=','photographs.services_id')->get();
+        //return services::where('services.id',$id)->photographs()->get();
+          return services::where('services.id',$id)->join('photographs','services.id','=','photographs.services_id')->get();
     }
     else if($service->category=='makeup artists'){
-        return services::findOrFail($id)->join('makeup_artists','services.id','=','makeup_artists.service_id')->get();
+        return services::where('services.id',$id)->join('makeup_artists','services.id','=','makeup_artists.service_id')->get();
     }
     else if($service->category=='entertainment'){
-        return services::findOrFail($id)->join('entertainments','services.id','=','entertainments.service_id')->get();
+        return services::where('services.id',$id)->join('entertainments','services.id','=','entertainments.service_id')->get();
     }
     else if($service->category=='car rental'){
-        return services::findOrFail($id)->join('car_rentals','services.id','=','car_rentals.service_id')->get();
+        return services::where('services.id',$id)->join('car_rentals','services.id','=','car_rentals.service_id')->get();
     }
     else if($service->category=='catering'){
-        return services::findOrFail($id)->join('caterings','services.id','=','caterings.service_id')->join('food_services','caterings.id','=','food_services.cater_id')->get();
+        return services::where('services.id',$id)->join('caterings','services.id','=','caterings.service_id')->join('food_services','caterings.id','=','food_services.cater_id')->get();
+    }
+    else{
+        return services::where('services.id',$id)->get();
     }
     }
 }
@@ -375,10 +378,10 @@ public function create_package(Request $request){
 public function get_package(Request $request,$id){
     $user=User::findOrFail(Auth::guard('api')->id());
     if($user->user_type=="vendor"||$user->user_type=="customer"){
-        return packages::findOrFail($id)->join('package_services','packages.p_id','=','package_services.package_id')->get();
+        return packages::findOrFail($id)->where('p_id',$id)->get();
     }
 }
-
+//->join('package_services','packages.p_id','=','package_services.package_id')
 public function get_ven_package(){
     $user=User::findOrFail(Auth::guard('api')->id());
     if($user->user_type=="vendor"){

@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import { Card, Row, Col, message } from "antd";
 import { Link } from "react-router-dom";
-import { getApprovedOrders, getPendingOrders } from "./customerFunction";
+import {
+    getApprovedOrders,
+    getPendingOrders,
+    getPackage,
+    getService
+} from "./customerFunction";
 class EventOrders extends Component {
     constructor(props) {
         super(props);
@@ -11,6 +16,10 @@ class EventOrders extends Component {
                 { id: 11, name: "Junoon Band" }
             ],
             id: "",
+            pS: [],
+            pP: [],
+            aS: [],
+            aP: [],
             p_services: [],
             p_packages: [],
             a_services: [],
@@ -27,7 +36,21 @@ class EventOrders extends Component {
                 this.setState({
                     a_services: response.data.data
                 });
+                var res = response.data.data;
+                for (var i = 0; i < res.length; i++) {
+                    var id = res[i];
+                    console.log("service id: " + id.service_id);
+                    getService(id.service_id).then(res => {
+                        //console.log(id);
+                        if (res) {
+                            var val = res[0];
+                            this.state.aS.push(val);
+                            //console.log(res);
+                        }
+                    });
+                }
             }
+            console.log(this.state.aS);
             //console.log(response);
         });
     }
@@ -37,7 +60,22 @@ class EventOrders extends Component {
                 this.setState({
                     a_packages: response.data.data
                 });
+                //console.log(response.data.data);
+                var res = response.data.data;
+                for (var i = 0; i < res.length; i++) {
+                    var id = res[i];
+                    console.log("package id: " + id.package_id);
+                    getPackage(id.package_id).then(res => {
+                        //console.log(id);
+                        if (res) {
+                            var val = res[0];
+                            this.state.aP.push(val);
+                            //console.log(res);
+                        }
+                    });
+                }
             }
+            console.log(this.state.aP);
             //console.log(response);
         });
     }
@@ -47,7 +85,21 @@ class EventOrders extends Component {
                 this.setState({
                     p_services: response.data.data
                 });
-                //console.log(response.data.data);
+                var res = response.data.data;
+                for (var i = 0; i < res.length; i++) {
+                    var id = res[i];
+                    console.log("pService: " + id.service_id);
+                    getService(id.service_id).then(res => {
+                        //console.log(id);
+                        if (res) {
+                            var val = res[0];
+                            this.state.pS.push(val);
+                            //console.log(val.service_name);
+                        }
+                        //console.log(res);
+                    });
+                }
+                console.log(this.state.pS);
             }
         });
     }
@@ -57,11 +109,25 @@ class EventOrders extends Component {
                 this.setState({
                     p_packages: response.data.data
                 });
+                var res = response.data.data;
+                for (var i = 0; i < res.length; i++) {
+                    var id = res[i];
+                    console.log("pPackage: " + id.package_id);
+                    getPackage(id.package_id).then(res => {
+                        //console.log(id);
+                        if (res) {
+                            var val = res[0];
+                            this.state.pP.push(val);
+                            //console.log(res);
+                        }
+                    });
+                }
             }
-
+            console.log(this.state.pP);
             //console.log(response);
         });
     }
+
     componentDidMount() {
         this.setState({
             id: this.props.event_id
@@ -79,17 +145,16 @@ class EventOrders extends Component {
                 <Row>
                     <Col span={10} offset={1}>
                         <h5>Approved Orders</h5>
-                        {this.state.a_services.map((serve, i) => (
+                        {this.state.aS.map((approve, i) => (
                             <div key={i}>
                                 <Link
                                     to={{
                                         pathname: "/services",
-                                        search: "?id=" + serve.service_id,
-                                        state: { service: serve }
+                                        state: { service: approve }
                                     }}
                                 >
                                     <Card hoverable bordered={true}>
-                                        <p>{serve.description}</p>
+                                        <p>{approve.service_name}</p>
                                     </Card>
                                 </Link>
                                 <br />
@@ -98,17 +163,16 @@ class EventOrders extends Component {
                     </Col>
                     <Col span={10} offset={1}>
                         <h5>Pending Orders</h5>
-                        {this.state.p_services.map((serve, i) => (
-                            <div key={i}>
+                        {this.state.pS.map((pend, j) => (
+                            <div key={j}>
                                 <Link
                                     to={{
                                         pathname: "/services",
-                                        search: "?id=" + serve.service_id,
-                                        state: { service: serve }
+                                        state: { service: pend }
                                     }}
                                 >
                                     <Card hoverable bordered={true}>
-                                        <p>{serve.description}</p>
+                                        <p>{pend.service_name}</p>
                                     </Card>
                                 </Link>
                                 <br />
@@ -121,17 +185,16 @@ class EventOrders extends Component {
                 <Row>
                     <Col span={10} offset={1}>
                         <h5>Approved Orders</h5>
-                        {this.state.a_packages.map((serve, i) => (
-                            <div key={i}>
+                        {this.state.aP.map((serve, k) => (
+                            <div key={k}>
                                 <Link
                                     to={{
                                         pathname: "/services",
-                                        search: "?id=" + serve.package_id,
                                         state: { service: serve }
                                     }}
                                 >
                                     <Card hoverable bordered={true}>
-                                        <p>{serve.description}</p>
+                                        <p>{serve.name}</p>
                                     </Card>
                                 </Link>
                                 <br />
@@ -140,17 +203,16 @@ class EventOrders extends Component {
                     </Col>
                     <Col span={10} offset={1}>
                         <h5>Pending Orders</h5>
-                        {this.state.p_packages.map((serve, i) => (
-                            <div key={i}>
+                        {this.state.pP.map((serve, l) => (
+                            <div key={l}>
                                 <Link
                                     to={{
                                         pathname: "/services",
-                                        search: "?id=" + serve.service_id,
                                         state: { service: serve }
                                     }}
                                 >
                                     <Card hoverable bordered={true}>
-                                        <p>{serve.description}</p>
+                                        <p>{serve.name}</p>
                                     </Card>
                                 </Link>
                                 <br />

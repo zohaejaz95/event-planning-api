@@ -99,7 +99,7 @@ export const updateEventStatus = (id, status) => {
 export const getEvents = stat => {
     const token = JSON.parse(localStorage.getItem("usertoken"));
     //newUser["api_token"] = token.api_token;
-    console.log(token.api_token);
+    //console.log(token.api_token);
 
     return axios
         .get("/api/customer/events/" + stat, {
@@ -110,7 +110,51 @@ export const getEvents = stat => {
             }
         })
         .then(response => {
-            console.log(response.data);
+            //console.log(response.data);
+            return response.data;
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+
+export const getService = id => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //newUser["api_token"] = token.api_token;
+    //console.log(token.api_token);
+
+    return axios
+        .get("/api/vendor/get/service/" + id, {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token
+            }
+        })
+        .then(response => {
+            //console.log(response.data);
+            return response.data;
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+
+export const getPackage = id => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //newUser["api_token"] = token.api_token;
+    //console.log(token.api_token);
+
+    return axios
+        .get("/api/vendor/get/package/" + id, {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token
+            }
+        })
+        .then(response => {
+            //console.log(response.data);
             return response.data;
         })
         .catch(err => {
@@ -181,7 +225,7 @@ export const getPendingOrders = (id, type) => {
             }
         )
         .then(response => {
-            console.log(response);
+            //console.log(response);
             return response;
         })
         .catch(err => {
@@ -216,7 +260,7 @@ export const getApprovedOrders = (id, order_type) => {
             }
         )
         .then(response => {
-            console.log(response);
+            //console.log(response);
             return response;
         })
         .catch(err => {

@@ -5,14 +5,11 @@ import {
     Avatar,
     Button,
     Icon,
-    Card,
     Checkbox,
     Progress,
     Tooltip,
     Switch,
     Modal,
-    Row,
-    Col,
     message
 } from "antd";
 import avatar from "../../images/avatar.jpg";
