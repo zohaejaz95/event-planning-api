@@ -49,7 +49,7 @@ class GuestList extends Component {
         this.getG(value);
     }
     events() {
-        getEvents().then(res => {
+        getEvents("active").then(res => {
             if (res) {
                 console.log(res.data);
                 const lists = JSON.stringify(res.data);
