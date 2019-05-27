@@ -23,6 +23,7 @@ class Login extends Component {
             succ: false,
             token: ""
         };
+
         this.showModal = this.showModal.bind(this);
         this.handleOk = this.handleOk.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
@@ -66,10 +67,10 @@ class Login extends Component {
                         this.setState({
                             token: user.user_type
                         });
-
+                        const { history } = this.props;
                         //var path = "/" + res.data.user_type;
                         //this.handleOk();
-                        this.props.history.push("/" + user.user_type);
+                        history.push("/" + user.user_type);
                         //this.changeUrl();
 
                         //console.log(this.state.url);

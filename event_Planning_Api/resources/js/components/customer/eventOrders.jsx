@@ -1,20 +1,23 @@
 import React, { Component } from "react";
-import { Card, Row, Col, message } from "antd";
-import { Link } from "react-router-dom";
+import { Card, Row, Col, message, Select } from "antd";
+import DisplayServices from "./displayServices";
+import DisplayPackages from "./displayPackages";
+//import { Link } from "react-router-dom";
 import {
     getApprovedOrders,
     getPendingOrders,
     getPackage,
     getService
 } from "./customerFunction";
+const { Option, OptGroup } = Select;
 class EventOrders extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            services: [
-                { id: 56, name: "Johar Shaadi Hall" },
-                { id: 11, name: "Junoon Band" }
-            ],
+            uServices: false,
+            uPackages: false,
+            pServices: false,
+            pPackages: false,
             id: "",
             pS: [],
             pP: [],
@@ -29,6 +32,46 @@ class EventOrders extends Component {
         this.approvedPackages = this.approvedPackages.bind(this);
         this.pendingPackages = this.pendingPackages.bind(this);
         this.pendingServices = this.pendingServices.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+    }
+    handleChange(value) {
+        if (value == "unpaidServices") {
+            this.setState({
+                uServices: true,
+                uPackages: false,
+                pServices: false,
+                pPackages: false
+            });
+        } else if (value == "unpaidPackages") {
+            this.setState({
+                uPackages: true,
+                uServices: false,
+                pServices: false,
+                pPackages: false
+            });
+        } else if (value == "paidServices") {
+            this.setState({
+                pServices: true,
+                uServices: false,
+                uPackages: false,
+                pPackages: false
+            });
+        } else if (value == "paidPackages") {
+            this.setState({
+                pPackages: true,
+                uServices: false,
+                uPackages: false,
+                pServices: false
+            });
+        } else {
+            this.setState({
+                pPackages: false,
+                uServices: false,
+                uPackages: false,
+                pServices: false
+            });
+        }
+        console.log(`selected ${value}`);
     }
     approvedServices() {
         getApprovedOrders(this.props.event_id, "services").then(response => {
@@ -70,6 +113,7 @@ class EventOrders extends Component {
                         if (res) {
                             var val = res[0];
                             this.state.aP.push(val);
+
                             //console.log(res);
                         }
                     });
@@ -88,17 +132,21 @@ class EventOrders extends Component {
                 var res = response.data.data;
                 for (var i = 0; i < res.length; i++) {
                     var id = res[i];
-                    console.log("pService: " + id.service_id);
+                    console.log("pS: " + id.service_id);
                     getService(id.service_id).then(res => {
                         //console.log(id);
+
                         if (res) {
                             var val = res[0];
+                            //this.state.p_services[i] = val;
                             this.state.pS.push(val);
+                            //this.state.p_services[i].push(val);
                             //console.log(val.service_name);
                         }
                         //console.log(res);
                     });
                 }
+
                 console.log(this.state.pS);
             }
         });
@@ -141,85 +189,35 @@ class EventOrders extends Component {
     render() {
         return (
             <div>
-                <h4>Orders: Services</h4>
-                <Row>
-                    <Col span={10} offset={1}>
-                        <h5>Approved Orders</h5>
-                        {this.state.aS.map((approve, i) => (
-                            <div key={i}>
-                                <Link
-                                    to={{
-                                        pathname: "/services",
-                                        state: { service: approve }
-                                    }}
-                                >
-                                    <Card hoverable bordered={true}>
-                                        <p>{approve.service_name}</p>
-                                    </Card>
-                                </Link>
-                                <br />
-                            </div>
-                        ))}
-                    </Col>
-                    <Col span={10} offset={1}>
-                        <h5>Pending Orders</h5>
-                        {this.state.pS.map((pend, j) => (
-                            <div key={j}>
-                                <Link
-                                    to={{
-                                        pathname: "/services",
-                                        state: { service: pend }
-                                    }}
-                                >
-                                    <Card hoverable bordered={true}>
-                                        <p>{pend.service_name}</p>
-                                    </Card>
-                                </Link>
-                                <br />
-                            </div>
-                        ))}
-                    </Col>
-                </Row>
-                <br />
-                <h4>Orders: Packages</h4>
-                <Row>
-                    <Col span={10} offset={1}>
-                        <h5>Approved Orders</h5>
-                        {this.state.aP.map((serve, k) => (
-                            <div key={k}>
-                                <Link
-                                    to={{
-                                        pathname: "/services",
-                                        state: { service: serve }
-                                    }}
-                                >
-                                    <Card hoverable bordered={true}>
-                                        <p>{serve.name}</p>
-                                    </Card>
-                                </Link>
-                                <br />
-                            </div>
-                        ))}
-                    </Col>
-                    <Col span={10} offset={1}>
-                        <h5>Pending Orders</h5>
-                        {this.state.pP.map((serve, l) => (
-                            <div key={l}>
-                                <Link
-                                    to={{
-                                        pathname: "/services",
-                                        state: { service: serve }
-                                    }}
-                                >
-                                    <Card hoverable bordered={true}>
-                                        <p>{serve.name}</p>
-                                    </Card>
-                                </Link>
-                                <br />
-                            </div>
-                        ))}
-                    </Col>
-                </Row>
+                <Select
+                    placeholder="Select a category"
+                    style={{ width: 200 }}
+                    onChange={this.handleChange}
+                >
+                    <OptGroup label="Paid">
+                        <Option value="paidServices">Paid Services</Option>
+                        <Option value="paidPackages">Paid Packages</Option>
+                    </OptGroup>
+                    <OptGroup label="Unpaid">
+                        <Option value="unpaidServices">Unpaid Services</Option>
+                        <Option value="unpaidPackages">Unpaid Packages</Option>
+                    </OptGroup>
+                </Select>
+                {this.state.uServices ? (
+                    <DisplayServices
+                        pending={this.state.pS}
+                        approved={this.state.aS}
+                        status={true}
+                    />
+                ) : this.state.uPackages ? (
+                    <DisplayPackages
+                        pending={this.state.pP}
+                        approved={this.state.aP}
+                        status={true}
+                    />
+                ) : (
+                    <div />
+                )}
             </div>
         );
     }

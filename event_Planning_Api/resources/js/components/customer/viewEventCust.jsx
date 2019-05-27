@@ -13,7 +13,12 @@ import {
     message
 } from "antd";
 import avatar from "../../images/avatar.jpg";
-import { getEvents, updateEventStatus, deleteEvent } from "./customerFunction";
+import {
+    getEvents,
+    updateEventStatus,
+    deleteEvent,
+    getExpenses
+} from "./customerFunction";
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
 class ViewEventCust extends Component {
@@ -30,7 +35,12 @@ class ViewEventCust extends Component {
                 { id: 56, name: "Johar Shaadi Hall" },
                 { id: 11, name: "Junoon Band" }
             ],
-            filter: true
+            filter: true,
+            expenses: "",
+            used: "",
+            exeed: "",
+            within: "",
+            status: false
         };
         this.toggleDetail = this.toggleDetail.bind(this);
         this.initEvents = this.initEvents.bind(this);
@@ -156,6 +166,30 @@ class ViewEventCust extends Component {
             detail: true,
             sel: item
         });
+        getExpenses(item.event_id).then(res => {
+            if (res) {
+                this.setState({
+                    expenses: res.expenses,
+                    used: Math.ceil((res.expenses / item.budget) * 100),
+                    exeed: Math.ceil(
+                        ((res.expenses - item.budget) / item.budget) * 100
+                    ),
+                    within: Math.ceil(
+                        ((item.budget - res.expenses) / item.budget) * 100
+                    )
+                });
+                if (res.expenses >= item.budget) {
+                    this.setState({
+                        status: false
+                    });
+                } else {
+                    this.setState({
+                        status: true
+                    });
+                }
+                console.log(res);
+            }
+        });
     }
 
     render() {
@@ -238,22 +272,29 @@ class ViewEventCust extends Component {
                 <hr />
                 <h4>Budget Manager</h4>
                 <p>Budget: {this.state.sel.budget}</p>
-                <p>Expenses: NaN</p>
+                <p>Expenses: {this.state.expenses}</p>
                 <p>Budget Status: </p>
-                <p style={{ color: "green" }}>Within Budget</p>
+                {this.state.status ? (
+                    <h6 style={{ color: "green" }}>Within Budget</h6>
+                ) : (
+                    <h6 style={{ color: "red" }}>Out of Budget</h6>
+                )}
                 <br />
                 <div>
                     <Tooltip placement="topLeft" title="Total Budget">
                         <Progress percent={100} />
                     </Tooltip>
                     <Tooltip placement="topLeft" title="Used Budget">
-                        <Progress percent={0} status="active" />
+                        <Progress percent={this.state.used} />
                     </Tooltip>
                     <Tooltip placement="topLeft" title="Exceeding Budget">
-                        <Progress percent={0} status="exception" />
+                        <Progress
+                            percent={this.state.exeed}
+                            status="exception"
+                        />
                     </Tooltip>
                     <Tooltip placement="topLeft" title="Within Budget">
-                        <Progress percent={100} />
+                        <Progress percent={this.state.within} />
                     </Tooltip>
                 </div>
                 <br />
