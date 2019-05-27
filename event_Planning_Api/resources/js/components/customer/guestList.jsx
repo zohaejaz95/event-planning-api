@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Select, Card, Button, Icon, message } from "antd";
+import { Select, Card, Button, Icon, message, List } from "antd";
 import { getEvents, getGuests, deleteGuest } from "./customerFunction";
 class GuestList extends Component {
     constructor() {
@@ -53,11 +53,11 @@ class GuestList extends Component {
             if (res) {
                 console.log(res.data);
                 const lists = JSON.stringify(res.data);
-                const list = JSON.parse(lists);
+                const elist = JSON.parse(lists);
                 this.setState({
-                    events: list
+                    events: elist
                 });
-                console.log(this.state.events.length);
+                console.log(this.state.events);
             }
         });
     }
@@ -92,11 +92,23 @@ class GuestList extends Component {
                             .indexOf(input.toLowerCase()) >= 0
                     }
                 >
-                    {this.state.events.map((serve, i) => (
+                    <List
+                        size="small"
+                        bordered
+                        dataSource={this.state.events}
+                        renderItem={item => (
+                            <List.Item>
+                                <Option value={item.event_id} key={i}>
+                                    {item.event_name}
+                                </Option>
+                            </List.Item>
+                        )}
+                    />
+                    {/* {this.state.events.map((serve, i) => (
                         <Option value={serve.event_id} key={i}>
                             {serve.event_name}
                         </Option>
-                    ))}
+                    ))} */}
                 </Select>
 
                 <br />

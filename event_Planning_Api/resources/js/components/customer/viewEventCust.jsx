@@ -36,10 +36,10 @@ class ViewEventCust extends Component {
                 { id: 11, name: "Junoon Band" }
             ],
             filter: true,
-            expenses: "",
-            used: "",
-            exeed: "",
-            within: "",
+            expenses: 0,
+            used: 0,
+            exeed: 0,
+            within: 0,
             status: false
         };
         this.toggleDetail = this.toggleDetail.bind(this);
