@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import { Select, Card, Button, Icon, message, List } from "antd";
-import { getEvents, getGuests, deleteGuest } from "./customerFunction";
+import { getGuests, deleteGuest, getActiveEvents } from "./customerFunction";
+import { getEvents } from "./customerFunction";
 class GuestList extends Component {
     constructor() {
         super();
         this.state = {
             events: [],
             event_id: "",
-            guests: []
+            guests: [],
+            stat: "active"
         };
         this.events = this.events.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -48,8 +50,22 @@ class GuestList extends Component {
         });
         this.getG(value);
     }
-    events() {
-        getEvents("active").then(res => {
+    events(status) {
+        getActiveEvents().then(res => {
+            if (res) {
+                console.log(res.data);
+                const lists = JSON.stringify(res.data);
+                const elist = JSON.parse(lists);
+                this.setState({
+                    events: elist
+                });
+            }
+        });
+        console.log(this.state.events);
+    }
+    componentDidMount() {
+        //this.events("active");
+        getActiveEvents().then(res => {
             if (res) {
                 console.log(res.data);
                 const lists = JSON.stringify(res.data);
@@ -60,9 +76,7 @@ class GuestList extends Component {
                 console.log(this.state.events);
             }
         });
-    }
-    componentDidMount() {
-        this.events();
+        console.log(this.state.events);
     }
     render() {
         const Option = Select.Option;
@@ -73,6 +87,17 @@ class GuestList extends Component {
 
         function handleFocus() {
             console.log("focus");
+            getEvents("active").then(res => {
+                if (res) {
+                    console.log(res.data);
+                    const lists = JSON.stringify(res.data);
+                    const elist = JSON.parse(lists);
+                    this.setState({
+                        events: elist
+                    });
+                }
+                console.log(res);
+            });
         }
         return (
             <div>
