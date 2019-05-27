@@ -13,7 +13,7 @@ export const customerProfile = () => {
             }
         })
         .then(response => {
-            //console.log(response.data.data);
+            console.log(response);
             return response.data;
         })
         .catch(err => {
@@ -62,12 +62,12 @@ export const createContact = contact => {
             console.log(err);
         });
 };
-export const getEvents = () => {
+
+export const getExpenses = event_id => {
     const token = JSON.parse(localStorage.getItem("usertoken"));
-    //newUser["api_token"] = token.api_token;
-    console.log(token.api_token);
+
     return axios
-        .get("/api/customer/events", {
+        .get("/api/customer/events/expenses/" + event_id, {
             headers: {
                 "Content-Type": "application/json",
                 Access: "application/json",
@@ -75,7 +75,106 @@ export const getEvents = () => {
             }
         })
         .then(response => {
-            console.log(response.data);
+            console.log(response);
+            return response.data;
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+
+export const updateEventStatus = (id, status) => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //newUser["api_token"] = token.api_token;
+    console.log(token.api_token);
+    var input = {
+        id: id,
+        status: status
+    };
+    return axios
+        .post(
+            "/api/customer/events/update/status",
+            { id: id, status: status },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Access: "application/json",
+                    Authorization: "Bearer " + token.api_token
+                }
+            }
+        )
+        .then(response => {
+            console.log(response);
+            return true;
+        })
+        .catch(err => {
+            console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
+        });
+};
+
+export const getEvents = stat => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //newUser["api_token"] = token.api_token;
+    //console.log(token.api_token);
+
+    return axios
+        .get("/api/customer/events/" + stat, {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token
+            }
+        })
+        .then(response => {
+            //console.log(response.data);
+            return response.data;
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+
+export const getService = id => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //newUser["api_token"] = token.api_token;
+    //console.log(token.api_token);
+
+    return axios
+        .get("/api/vendor/get/service/" + id, {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token
+            }
+        })
+        .then(response => {
+            //console.log(response.data);
+            return response.data;
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+
+export const getPackage = id => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //newUser["api_token"] = token.api_token;
+    //console.log(token.api_token);
+
+    return axios
+        .get("/api/vendor/get/package/" + id, {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token
+            }
+        })
+        .then(response => {
+            //console.log(response.data);
             return response.data;
         })
         .catch(err => {
@@ -121,6 +220,75 @@ export const getGuests = id => {
         })
         .catch(err => {
             console.log(err);
+        });
+};
+
+export const getPendingOrders = (id, type) => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    console.log(id, type);
+    var event = { id: id };
+    return axios
+        .get(
+            "/api/customer/orders/pending/" +
+                type +
+                "/" +
+                id +
+                "?api_token=" +
+                token.api_token,
+            event,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Access: "application/json",
+                    Authorization: "Bearer " + token.api_token
+                }
+            }
+        )
+        .then(response => {
+            //console.log(response);
+            return response;
+        })
+        .catch(err => {
+            console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
+        });
+};
+
+export const getApprovedOrders = (id, order_type) => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    var event = {
+        id: id
+    };
+    return axios
+        .get(
+            "/api/customer/orders/approved/" +
+                order_type +
+                "/" +
+                id +
+                "?api_token=" +
+                token.api_token,
+            event,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Access: "application/json",
+                    Authorization: "Bearer " + token.api_token
+                }
+            }
+        )
+        .then(response => {
+            //console.log(response);
+            return response;
+        })
+        .catch(err => {
+            console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
         });
 };
 
@@ -188,6 +356,33 @@ export const deleteGuest = guest => {
         })
         .catch(err => {
             console.log(err);
+        });
+};
+
+export const deleteEvent = id => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //newUser["api_token"] = token.api_token;
+    console.log(token.api_token);
+    //console.log(guest);
+
+    return axios
+        .delete("api/customer/events/delete/" + id, {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token
+            }
+        })
+        .then(response => {
+            console.log(response.data);
+            return true;
+        })
+        .catch(err => {
+            console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
         });
 };
 

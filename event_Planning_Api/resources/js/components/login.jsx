@@ -14,14 +14,16 @@ import {
 import loginImage from "../images/Pakistani-Wedding.png";
 import { userLogin } from "./userFunction";
 class Login extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             visible: false,
             url: "/",
             msg: false,
-            succ: false
+            succ: false,
+            token: ""
         };
+
         this.showModal = this.showModal.bind(this);
         this.handleOk = this.handleOk.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
@@ -37,7 +39,7 @@ class Login extends Component {
     }
 
     handleOk() {
-        this.props.history.push("/admin");
+        this.props.history.push("/" + this.state.token);
     }
 
     handleCancel(e) {
@@ -55,18 +57,24 @@ class Login extends Component {
                 userLogin(values).then(res => {
                     if (res) {
                         console.log(res.data.user_type);
-
-                        //var path = "/" + res.data.user_type;
-                        //this.handleOk();
-                        //this.props.history.push("/admin");
-                        //this.changeUrl();
                         this.setState({
                             succ: true,
                             msg: false
                         });
+                        var user = JSON.parse(
+                            localStorage.getItem("usertoken")
+                        );
+                        this.setState({
+                            token: user.user_type
+                        });
+                        const { history } = this.props;
+                        //var path = "/" + res.data.user_type;
+                        //this.handleOk();
+                        history.push("/" + user.user_type);
+                        //this.changeUrl();
 
                         //console.log(this.state.url);
-                        //router.push("/$res.data.user_type");
+                        //browserHistory.push("/" + user.user_type);
                         //this.context.router.push("/");
                         //this.props.history.push("/admin");
                         //this.context.router.history.push('/');
@@ -202,7 +210,7 @@ class Login extends Component {
                                                 Forgot password
                                             </a>
                                             <br />
-                                            <a href="">
+                                            <a href={"/" + this.state.token}>
                                                 <Button
                                                     type="primary"
                                                     htmlType="submit"

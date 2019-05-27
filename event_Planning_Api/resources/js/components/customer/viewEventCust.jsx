@@ -1,27 +1,26 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { List, Avatar, Button, Icon, Card, Progress, Tooltip } from "antd";
+import EventOrders from "./eventOrders";
+import {
+    List,
+    Avatar,
+    Button,
+    Icon,
+    Checkbox,
+    Progress,
+    Tooltip,
+    Switch,
+    Modal,
+    message
+} from "antd";
 import avatar from "../../images/avatar.jpg";
-import { getEvents } from "./customerFunction";
+import {
+    getEvents,
+    updateEventStatus,
+    deleteEvent,
+    getExpenses
+} from "./customerFunction";
 const ButtonGroup = Button.Group;
-const data = [
-    {
-        title: "Customer Event 1"
-    },
-    {
-        title: "Customer Event 2"
-    },
-    {
-        title: "Customer Event 3"
-    },
-    {
-        title: "Customer Event 4"
-    },
-    {
-        title: "Customer Event 5"
-    }
-];
-
+const confirm = Modal.confirm;
 class ViewEventCust extends Component {
     constructor() {
         super();
@@ -29,12 +28,118 @@ class ViewEventCust extends Component {
             list: true,
             detail: false,
             events: [],
-            sel: []
+            sel: [],
+            type: "",
+            e_id: [],
+            services: [
+                { id: 56, name: "Johar Shaadi Hall" },
+                { id: 11, name: "Junoon Band" }
+            ],
+            filter: true,
+            expenses: "",
+            used: "",
+            exeed: "",
+            within: "",
+            status: false
         };
         this.toggleDetail = this.toggleDetail.bind(this);
+        this.initEvents = this.initEvents.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.onCheck = this.onCheck.bind(this);
+        this.showConfirm = this.showConfirm.bind(this);
+        this.updateStatus = this.updateStatus.bind(this);
+        this.changeStatus = this.changeStatus.bind(this);
+        this.deleteEvents = this.deleteEvents.bind(this);
     }
-    componentDidMount() {
-        getEvents().then(res => {
+    showConfirm() {
+        var stat = "";
+        if (this.state.sel.status == "active") {
+            stat = "inactive";
+        } else {
+            stat = "active";
+        }
+        this.updateStatus(stat);
+    }
+
+    onCheck(value) {
+        console.log(`checked = ${value}`);
+        this.setState({
+            e_id: value
+        });
+    }
+
+    deleteEvents() {
+        var value = this.state.e_id;
+        var val = [];
+        for (var i = 0; i < value.length; i++) {
+            val = value[i];
+            console.log(val);
+            deleteEvent(val.event_id).then(res => {
+                if (res) {
+                    console.log(res.data);
+                    message.success("Event deleted!");
+                    this.initEvents(val.status);
+                } else {
+                    message.error("Unable to delete event");
+                }
+            });
+        }
+    }
+    changeStatus() {
+        var value = this.state.e_id;
+        var stat = "",
+            val = [];
+        for (var i = 0; i < value.length; i++) {
+            val = value[i];
+            if (val.status == "active") {
+                stat = "inactive";
+            } else {
+                stat = "active";
+            }
+            updateEventStatus(val.event_id, stat).then(res => {
+                if (res) {
+                    console.log(res.data);
+                    message.success("Event status changed!");
+                    this.initEvents(stat);
+                } else {
+                    message.error("Unable to change status");
+                }
+            });
+        }
+    }
+    updateStatus(stat) {
+        console.log(this.state.sel.event_id);
+        updateEventStatus(this.state.sel.event_id, stat).then(res => {
+            if (res) {
+                console.log(res.data);
+                message.success("Event status changed!");
+            } else {
+                message.error("Unable to change status");
+            }
+        });
+    }
+    onChange(checked) {
+        console.log(`switch to ${checked}`);
+        this.setState({
+            filter: !this.state.filter,
+            events: []
+        });
+        var stat = "";
+        if (!this.state.filter) {
+            this.setState({
+                type: "active"
+            });
+            stat = "active";
+        } else {
+            this.setState({
+                type: "inactive"
+            });
+            stat = "inactive";
+        }
+        this.initEvents(stat);
+    }
+    initEvents(status) {
+        getEvents(status).then(res => {
             if (res) {
                 console.log(res.data);
                 const lists = JSON.stringify(res.data);
@@ -43,11 +148,11 @@ class ViewEventCust extends Component {
                     events: elist
                 });
                 console.log(this.state.events);
-                console.log(this.state.events.length);
-                console.log(this.state.events[0]);
-                console.log(this.state.events[0].event_id);
             }
         });
+    }
+    componentDidMount() {
+        this.initEvents("active");
     }
     toggleList() {
         this.setState({
@@ -61,34 +166,74 @@ class ViewEventCust extends Component {
             detail: true,
             sel: item
         });
+        getExpenses(item.event_id).then(res => {
+            if (res) {
+                this.setState({
+                    expenses: res.expenses,
+                    used: Math.ceil((res.expenses / item.budget) * 100),
+                    exeed: Math.ceil(
+                        ((res.expenses - item.budget) / item.budget) * 100
+                    ),
+                    within: Math.ceil(
+                        ((item.budget - res.expenses) / item.budget) * 100
+                    )
+                });
+                if (res.expenses >= item.budget) {
+                    this.setState({
+                        status: false
+                    });
+                } else {
+                    this.setState({
+                        status: true
+                    });
+                }
+                console.log(res);
+            }
+        });
     }
 
     render() {
         const custEventList = (
             <div>
+                {"Inactive "}
+                <Switch defaultChecked onChange={this.onChange} />
+                {" Active"}
                 <h4>Events</h4>
+                <Button type="primary" onClick={this.changeStatus}>
+                    Change Status
+                </Button>{" "}
+                <Button type="danger" onClick={this.deleteEvents}>
+                    Delete
+                </Button>
                 <hr />
-                <List
-                    itemLayout="horizontal"
-                    dataSource={this.state.events}
-                    renderItem={item => (
-                        <div>
-                            <List.Item>
-                                <List.Item.Meta
-                                    avatar={<Avatar src={avatar} />}
-                                    title={<p>{item.event_name}</p>}
-                                    description={item.category}
-                                />
-                                <Button
-                                    type="primary"
-                                    onClick={() => this.toggleDetail(item)}
-                                >
-                                    View Details
-                                </Button>
-                            </List.Item>
-                        </div>
-                    )}
-                />
+                <Checkbox.Group
+                    style={{ width: "100%" }}
+                    onChange={this.onCheck}
+                >
+                    <List
+                        itemLayout="horizontal"
+                        dataSource={this.state.events}
+                        renderItem={item => (
+                            <div>
+                                <List.Item>
+                                    <Checkbox value={item} />
+                                    <List.Item.Meta
+                                        avatar={<Avatar src={avatar} />}
+                                        title={<p>{item.event_name}</p>}
+                                        description={item.category}
+                                    />
+
+                                    <Button
+                                        type="primary"
+                                        onClick={() => this.toggleDetail(item)}
+                                    >
+                                        View Details
+                                    </Button>
+                                </List.Item>
+                            </div>
+                        )}
+                    />
+                </Checkbox.Group>
                 <br />
                 <ButtonGroup>
                     <Button type="primary">
@@ -107,10 +252,9 @@ class ViewEventCust extends Component {
                 <Button type="primary" onClick={this.toggleList.bind(this)}>
                     Back
                     <Icon type="left-circle" />
-                </Button>
-                <Button type="primary">
-                    Guest List
-                    <Icon type="user" />
+                </Button>{" "}
+                <Button type="primary" onClick={this.showConfirm}>
+                    Change Status
                 </Button>
                 <br />
                 <br />
@@ -119,7 +263,6 @@ class ViewEventCust extends Component {
                     <h4>{this.state.sel.event_name}</h4>
                     <h5>{this.state.sel.category}</h5>
                 </span>
-
                 <br />
                 <p>Subject: </p>
                 <p>{this.state.sel.description}</p>
@@ -129,48 +272,35 @@ class ViewEventCust extends Component {
                 <hr />
                 <h4>Budget Manager</h4>
                 <p>Budget: {this.state.sel.budget}</p>
-                <p>Expenses:</p>
-                <p>Budget Status:</p>
+                <p>Expenses: {this.state.expenses}</p>
+                <p>Budget Status: </p>
+                {this.state.status ? (
+                    <h6 style={{ color: "green" }}>Within Budget</h6>
+                ) : (
+                    <h6 style={{ color: "red" }}>Out of Budget</h6>
+                )}
                 <br />
-                <Tooltip placement="topLeft" title="Total Budget">
-                    <Progress percent={30} />
-                </Tooltip>
-                <Tooltip placement="topLeft" title="Used Budget">
-                    <Progress percent={50} status="active" />
-                </Tooltip>
-                <Tooltip placement="topLeft" title="Exceeding Budget">
-                    <Progress percent={70} status="exception" />
-                </Tooltip>
-                <Tooltip placement="topLeft" title="Within Budget">
-                    <Progress percent={100} />
-                </Tooltip>
-                <Tooltip placement="topLeft" title="Status">
-                    <Progress percent={50} />
-                </Tooltip>
+                <div>
+                    <Tooltip placement="topLeft" title="Total Budget">
+                        <Progress percent={100} />
+                    </Tooltip>
+                    <Tooltip placement="topLeft" title="Used Budget">
+                        <Progress percent={this.state.used} />
+                    </Tooltip>
+                    <Tooltip placement="topLeft" title="Exceeding Budget">
+                        <Progress
+                            percent={this.state.exeed}
+                            status="exception"
+                        />
+                    </Tooltip>
+                    <Tooltip placement="topLeft" title="Within Budget">
+                        <Progress percent={this.state.within} />
+                    </Tooltip>
+                </div>
                 <br />
                 <br />
                 <hr />
-                <h4>Services</h4>
-                <h5>Category 1</h5>
-
-                <Link to="/">
-                    <Card hoverable bordered={false}>
-                        <h6>Service Name</h6>
-                    </Card>
-                </Link>
-                <br />
-                <Link to="/">
-                    <Card hoverable bordered={false}>
-                        <h6>Service Name</h6>
-                    </Card>
-                </Link>
-                <br />
-                <h5>Category 2</h5>
-                <Link to="/">
-                    <Card hoverable bordered={false}>
-                        <h6>Service Name</h6>
-                    </Card>
-                </Link>
+                <EventOrders event_id={this.state.sel.event_id} />
                 <br />
             </div>
         );

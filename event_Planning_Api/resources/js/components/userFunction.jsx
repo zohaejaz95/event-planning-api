@@ -18,37 +18,32 @@ export const userLogin = user => {
         })
         .catch(err => {
             console.log(err);
-        });
-};
-
-export const register = newUser => {
-    return axios
-        .post("/api/register", newUser)
-        .then(response => {
-            //console.log("Registered as User: " + response.data);
-            if (newUser.user_type == "customer") {
-                localStorage.setItem(
-                    "custtoken",
-                    JSON.stringify(response.data.data)
-                );
-                console.log(JSON.parse(localStorage.getItem("custtoken")));
-            } else {
-                localStorage.setItem(
-                    "usertoken",
-                    JSON.stringify(response.data.data)
-                );
-                console.log(JSON.parse(localStorage.getItem("usertoken")));
-            }
-
-            return response.data;
-        })
-        .catch(err => {
-            console.log(err);
             console.log(typeof err);
             if (err.response) {
                 console.log(err.response);
             }
         });
+};
+
+export const register = newUser => {
+    return axios.post("/api/register", newUser).then(response => {
+        //console.log("Registered as User: " + response.data);
+        if (newUser.user_type == "customer") {
+            localStorage.setItem(
+                "custtoken",
+                JSON.stringify(response.data.data)
+            );
+            console.log(JSON.parse(localStorage.getItem("custtoken")));
+        } else {
+            localStorage.setItem(
+                "usertoken",
+                JSON.stringify(response.data.data)
+            );
+            console.log(JSON.parse(localStorage.getItem("usertoken")));
+        }
+
+        return response.data;
+    });
 };
 export const customerRegister = newUser => {
     const token = JSON.parse(localStorage.getItem("custtoken"));

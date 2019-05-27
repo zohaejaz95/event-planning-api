@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { createBrowserHistory } from "history";
 import "./App.css";
 import "./css/index.css";
 import "antd/dist/antd.css";
@@ -27,15 +28,21 @@ import NGOSidebar from "./components/ngoSidebar";
 
 export default class App extends Component {
     render() {
+        const { browserHistory } = createBrowserHistory();
         return (
-            <Router>
+            <Router history={browserHistory}>
                 <div className="App">
                     <Header />
                     <Route exact path="/" component={Home} />
                     <Switch>
                         <Route exact path="/ngos" component={NGO} />
                         <Route exact path="/contact-us" component={Contact} />
-                        <Route exact path="/admin" component={Admin} />
+                        <Route
+                            history={browserHistory}
+                            exact
+                            path="/admin"
+                            component={Admin}
+                        />
                         <Route exact path="/services" component={Category} />
                         <Route
                             exact
@@ -48,17 +55,27 @@ export default class App extends Component {
                             path="/vendor-register"
                             component={VendorSignup}
                         />
-                        <Route exact path="/vendor" component={Vendor} />
-
                         <Route
+                            history={browserHistory}
                             exact
-                            path="/ngos/register"
-                            component={NGORegister}
+                            path="/vendor"
+                            component={Vendor}
                         />
+
                         <Route exact path="/ngo" component={NGOSidebar} />
 
-                        <Route exact path="/customer" component={Customer} />
+                        <Route
+                            history={browserHistory}
+                            exact
+                            path="/customer"
+                            component={Customer}
+                        />
                     </Switch>
+                    <Route
+                        exact
+                        path="/ngos/register"
+                        component={NGORegister}
+                    />
                     <Footer />
                 </div>
             </Router>
