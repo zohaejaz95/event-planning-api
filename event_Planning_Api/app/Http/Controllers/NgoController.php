@@ -224,7 +224,8 @@ public function create_sponsorship(Request $request){
             'status' =>'pending',
             'vendor_id' => $vendor->vendor_id,
             'ngo_id' => $request->input('ngo_id'),
-            'service_id' => $request->input('service_id')
+            'service_id' => $request->input('service_id'),
+            'nevent_id' => $request->input('nevent_id')
         ]);
     }
 }
@@ -240,8 +241,21 @@ public function accept_sponsorship($id){
     }
     
 }
-
-
+public function get_sponsorships_events($id,$status){
+    $user=User::findOrFail(Auth::guard('api')->id());
+    if($user->user_type=="ngo"){
+        
+        $spon= sponsorships::where('nevent_id',$id)->where('status',$status)->paginate(15);
+        return $spon;
+    }
+}
+public function get_funding_status($id){
+    $user=User::findOrFail(Auth::guard('api')->id());
+    if($user->user_type=="ngo"){
+    $spon=sponsorships::where('type','cash')->where('nevent_id',$id)->where('status','accepted')->sum('donation');
+    return $spon;
+    }
+}
 
 
 }
