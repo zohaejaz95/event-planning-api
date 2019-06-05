@@ -200,7 +200,7 @@ class ViewEventCust extends Component {
                 {" Active"}
                 <h4>Events</h4>
                 <Button type="primary" onClick={this.changeStatus}>
-                    Change Status
+                    Mark as Complete
                 </Button>{" "}
                 <Button type="danger" onClick={this.deleteEvents}>
                     Delete

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Select, Card, Button, Icon, message, List } from "antd";
-import { getGuests, deleteGuest, getActiveEvents } from "./customerFunction";
+import { getGuests, deleteGuest } from "./customerFunction";
 import { getEvents } from "./customerFunction";
 class GuestList extends Component {
     constructor() {
@@ -51,7 +51,7 @@ class GuestList extends Component {
         this.getG(value);
     }
     events(status) {
-        getActiveEvents().then(res => {
+        getEvents(status).then(res => {
             if (res) {
                 console.log(res.data);
                 const lists = JSON.stringify(res.data);
@@ -64,19 +64,7 @@ class GuestList extends Component {
         console.log(this.state.events);
     }
     componentDidMount() {
-        //this.events("active");
-        getActiveEvents().then(res => {
-            if (res) {
-                console.log(res.data);
-                const lists = JSON.stringify(res.data);
-                const elist = JSON.parse(lists);
-                this.setState({
-                    events: elist
-                });
-                console.log(this.state.events);
-            }
-        });
-        console.log(this.state.events);
+        this.events("active");
     }
     render() {
         const Option = Select.Option;
@@ -117,7 +105,7 @@ class GuestList extends Component {
                             .indexOf(input.toLowerCase()) >= 0
                     }
                 >
-                    <List
+                    {/* <List
                         size="small"
                         bordered
                         dataSource={this.state.events}
@@ -128,26 +116,36 @@ class GuestList extends Component {
                                 </Option>
                             </List.Item>
                         )}
-                    />
-                    {/* {this.state.events.map((serve, i) => (
+                    /> */}
+                    {this.state.events.map((serve, i) => (
                         <Option value={serve.event_id} key={i}>
                             {serve.event_name}
                         </Option>
-                    ))} */}
+                    ))}
                 </Select>
 
                 <br />
                 {this.state.guests.map((guest, i) => (
                     <div key={i}>
                         <Card hoverable bordered={false}>
-                            <h5>{guest.guest_id}</h5>
-                            <p>Details</p>
+                            <h5>{guest.first_name + " " + guest.last_name}</h5>
+                            <h6>Details</h6>
+                            <p>{"Email: " + guest.email}</p>
+                            <p>{"Contact: " + guest.contact}</p>
+                            <p>
+                                {"Address: " +
+                                    guest.address +
+                                    ", " +
+                                    guest.city +
+                                    ", " +
+                                    guest.province}
+                            </p>
                             <Button
                                 type="danger"
                                 onClick={() => this.deleteG(guest.guest_id)}
                             >
                                 <Icon type="minus" />
-                                Uninvite
+                                Cancel Invitation
                             </Button>
                         </Card>
                         <br />

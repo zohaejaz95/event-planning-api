@@ -420,3 +420,32 @@ export const newOrder = items => {
             console.log(err);
         });
 };
+//customers/orders/update/payment/
+export const updatePaymentStatus = (id, status) => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //newUser["api_token"] = token.api_token;
+    console.log(token.api_token);
+    return axios
+        .post(
+            "/api/customers/orders/update/payment/" + id,
+            { status: status },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Access: "application/json",
+                    Authorization: "Bearer " + token.api_token
+                }
+            }
+        )
+        .then(response => {
+            console.log(response);
+            return true;
+        })
+        .catch(err => {
+            console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
+        });
+};

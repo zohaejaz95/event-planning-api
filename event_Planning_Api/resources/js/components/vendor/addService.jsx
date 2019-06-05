@@ -329,9 +329,9 @@ class AddService extends Component {
                             onSubmit={this.handleSubmit}
                             className="login-form "
                         >
-                            <Form.Item>
+                            {/* <Form.Item>
                                 <GetImage />
-                            </Form.Item>
+                            </Form.Item> */}
                             <Form.Item>
                                 {getFieldDecorator("service_name", {
                                     rules: [
