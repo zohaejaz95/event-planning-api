@@ -5,6 +5,7 @@ import NGOEventForm from "./ngo/ngoEventForm";
 import Sponsors from "./ngo/sponsors";
 import ViewEventNGO from "./ngo/viewEventNgo";
 import Messages from "./messages";
+import { ngoProfile } from "./ngo/ngoFunctions";
 
 class NGOSidebar extends Component {
     constructor() {
@@ -15,11 +16,21 @@ class NGOSidebar extends Component {
             viewEvent: false,
             messages: false,
             sponsor: false,
-            profile: true
+            profile: true,
+            ngo: []
         };
         this.toggle = this.toggle.bind(this);
     }
-
+    componentWillMount() {
+        ngoProfile().then(res => {
+            if (res) {
+                this.setState({
+                    ngo: res.data[0]
+                });
+                //console.log(res.data);
+            }
+        });
+    }
     toggle() {
         this.setState({
             collapsed: !this.state.collapsed

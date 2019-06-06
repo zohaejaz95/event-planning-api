@@ -1,4 +1,5 @@
 import axios from "axios";
+import { message, notification } from "antd";
 
 export const customerProfile = () => {
     const token = JSON.parse(localStorage.getItem("usertoken"));
@@ -14,6 +15,27 @@ export const customerProfile = () => {
         })
         .then(response => {
             console.log(response);
+            return response.data;
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+
+export const getCustomer = id => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //newUser["api_token"] = token.api_token;
+    console.log(token.api_token);
+    return axios
+        .get("/api/customers/" + id, {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token
+            }
+        })
+        .then(response => {
+            //console.log(response);
             return response.data;
         })
         .catch(err => {
@@ -418,6 +440,61 @@ export const newOrder = items => {
         })
         .catch(err => {
             console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
+        });
+};
+export const getFeedback = path => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //console.log(token.api_token);
+    return axios
+        .get(path, {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token
+            }
+        })
+        .then(response => {
+            //console.log(response);
+            return response;
+        })
+        .catch(err => {
+            console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
+        });
+};
+export const feedback = item => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //console.log(token.api_token);
+    return axios
+        .post("api/customer/feedback/new", item, {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token
+            }
+        })
+        .then(response => {
+            console.log(response);
+            return true;
+        })
+        .catch(err => {
+            console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
+            notification["error"]({
+                message: "Feedback Nt Submitted!",
+                description:
+                    "You must be registered or logged in as a customer to give feedback!"
+            });
         });
 };
 //customers/orders/update/payment/

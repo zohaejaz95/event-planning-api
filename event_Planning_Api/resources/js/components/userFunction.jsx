@@ -1,4 +1,5 @@
 import axios from "axios";
+import { message } from "antd";
 
 export const userLogin = user => {
     return axios
@@ -149,21 +150,23 @@ export const vendorRegister = newUser => {
 };
 
 export const ngoRegister = newUser => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
     return axios
-        .post("/api/ngo/create", {
-            ngo_name: newUser.name,
-            purpose: newUser.purpose,
-            contact: newUser.contact,
-            email: newUser.email,
-            website: newUser.website,
-            username: newUser.username,
-            status: newUser.status
+        .post("/api/ngo/create", newUser, {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token
+            }
         })
         .then(response => {
             console.log("Registered");
+            return true;
+            //message.success("Registration Successfull!");
         })
         .catch(err => {
             console.log(err);
+            //message.success("!");
         });
 };
 

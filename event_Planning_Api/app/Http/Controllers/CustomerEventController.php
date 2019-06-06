@@ -27,11 +27,7 @@ class CustomerEventController extends Controller
         $user=User::findOrFail(Auth::guard('api')->id());
         if($user->user_type=="customer"){
         $customer=DB::select("select customer_id from customers where username = '$user->name'");
-        if($status=="")
-        $cevents=customer_event::where('customer_id',$customer[0]->customer_id)->where('status','active')->paginate(15);
-        else 
         $cevents=customer_event::where('customer_id',$customer[0]->customer_id)->where('status',$status)->paginate(15);
-        
         return cevent::collection($cevents);
         }
     }

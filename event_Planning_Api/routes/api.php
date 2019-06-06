@@ -39,6 +39,8 @@ Route::get('vendor/token','VendorController@show_token');
 
 Route::get('NGOs','NgoController@index');
 Route::get('NGOs/{id}','NgoController@show');
+Route::get('ngo/token','NgoController@show_token');
+
 Route::post('NGOs/create/event','NgoController@create_event');
 Route::put('NGOs/update/event/{id}','NgoController@update_event');
 Route::delete('NGOs/delete/event/{id}','NgoController@delete_event');

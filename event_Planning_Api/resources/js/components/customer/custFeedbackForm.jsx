@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { Rate, Input, Form, Button, Row, Col } from "antd";
+import { Rate, Input, Form, Button, Row, Col, message } from "antd";
 //import loginImage from "../../images/Pakistani-Wedding.png";
-
+import { feedback } from "./customerFunction";
 class CustFeedbackForm extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleSubmit(e) {
@@ -12,12 +12,31 @@ class CustFeedbackForm extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log("Received values of form: ", values);
+
+                if (this.props.type == "service") {
+                    values["service_id"] = this.props.details.id;
+                } else {
+                    values["package_id"] = this.props.details.p_id;
+                }
+                console.log("Received values of form: ", values);
+                feedback(values).then(res => {
+                    if (res) {
+                        message.success("Feedback submitted successfully!");
+                        // notification["success"]({
+                        //     message: "Your order has been placed!",
+                        //     description:
+                        //         "Your order request has been sent to the hired vendor. See your dashboard for more details."
+                        // });
+                    } else {
+                        message.error("Your feedback could not be submitted!");
+                    }
+                });
             }
         });
     }
     render() {
         const { TextArea } = Input;
-
+        const { getFieldDecorator } = this.props.form;
         return (
             <div className="contents">
                 <Row>
@@ -29,15 +48,31 @@ class CustFeedbackForm extends Component {
                             className="login-form "
                         >
                             <Form.Item className="text-to-left">
-                                <Rate />
+                                {getFieldDecorator("rating", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: "Please provide rating!"
+                                        }
+                                    ]
+                                })(<Rate />)}
                             </Form.Item>
                             <Form.Item>
                                 <label>Comment Box: </label>
-                                <TextArea
-                                    rows={4}
-                                    style={{ width: "100%" }}
-                                    placeholder="Enter Details"
-                                />
+                                {getFieldDecorator("comments", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: "Please enter comments!"
+                                        }
+                                    ]
+                                })(
+                                    <TextArea
+                                        rows={4}
+                                        style={{ width: "100%" }}
+                                        placeholder="Enter Comments"
+                                    />
+                                )}
                             </Form.Item>
 
                             <Button
@@ -56,4 +91,8 @@ class CustFeedbackForm extends Component {
     }
 }
 
-export default CustFeedbackForm;
+//export default CustFeedbackForm;
+const WrappedCustFeedbackForm = Form.create({ name: "normal_login" })(
+    CustFeedbackForm
+);
+export default WrappedCustFeedbackForm;

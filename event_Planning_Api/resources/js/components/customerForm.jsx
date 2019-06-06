@@ -40,6 +40,7 @@ class CustomerForm extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log("Received values of form: ", values);
+                values["contact"] = "92" + values["contact"];
                 customerRegister(values).then(res => {
                     //console.log(res);
                     if (res) {
@@ -62,6 +63,13 @@ class CustomerForm extends Component {
 
     render() {
         const { getFieldDecorator } = this.props.form;
+        const prefixSelector = getFieldDecorator("prefix", {
+            initialValue: "92"
+        })(
+            <Select>
+                <Option value="92">+92</Option>
+            </Select>
+        );
         return (
             <div className="contents">
                 <Modal
@@ -149,13 +157,19 @@ class CustomerForm extends Component {
                                                     "Please input your Contact No.!"
                                             },
                                             {
-                                                pattern: "[9][2][0-9]{10}",
+                                                pattern: "[0-9]{10}",
                                                 message:
                                                     "Invalid Contact Number!"
+                                            },
+                                            {
+                                                max: 10,
+                                                message:
+                                                    "Contact no out of range!"
                                             }
                                         ]
                                     })(
                                         <Input
+                                            addonBefore={prefixSelector}
                                             prefix={
                                                 <Icon
                                                     type="phone"

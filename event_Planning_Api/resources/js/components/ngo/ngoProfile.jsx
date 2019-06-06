@@ -1,9 +1,25 @@
 import React, { Component } from "react";
 import { Statistic, Card, Row, Col, Icon } from "antd";
-
+import { ngoProfile } from "./ngoFunctions";
 import Avatar from "../../images/avatar.jpg";
 
 class NGOProfile extends Component {
+    constructor() {
+        super();
+        this.state = {
+            ngo: []
+        };
+    }
+    componentWillMount() {
+        ngoProfile().then(res => {
+            if (res) {
+                this.setState({
+                    ngo: res.data[0]
+                });
+                console.log(res.data[0]);
+            }
+        });
+    }
     render() {
         return (
             <div className="contents ">
@@ -16,10 +32,10 @@ class NGOProfile extends Component {
                         offset={1}
                         style={{ background: "#ECECEC", padding: "30px" }}
                     >
-                        <h4>NGO name</h4>
-                        <p>Email: </p>
-                        <p>Contact:</p>
-                        <p>Address: </p>
+                        <h4>{this.state.ngo.ngo_name}</h4>
+                        <p>Email: {this.state.ngo.email}</p>
+                        <p>Contact: {"+" + this.state.ngo.contact}</p>
+                        <p>Purpose: {this.state.ngo.purpose}</p>
                     </Col>
                 </Row>
                 <br />

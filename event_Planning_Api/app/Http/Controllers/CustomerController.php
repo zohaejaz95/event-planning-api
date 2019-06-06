@@ -74,7 +74,7 @@ class CustomerController extends Controller
     public function show($id)
     {
         $user=User::findOrFail(Auth::guard('api')->id());
-        if($user->user_type=="customer"){
+        if($user->user_type=="customer"||$user->user_type=="vendor"){
             return customer::findOrFail($id);
         }
     }

@@ -8,6 +8,7 @@ use App\ngo;
 use App\ngo_events;
 use App\sponsorships;
 use App\Http\Requests;
+use Illuminate\Support\Facades\DB;
 use App\Http\Resources\NGO as ngoResource;
 class NgoController extends Controller
 {
@@ -106,6 +107,16 @@ class NgoController extends Controller
         return ngo::findOrFail($id);
         }
 
+    }
+    public function show_token()
+    {
+        $user=User::findOrFail(Auth::guard('api')->id());
+        if($user->user_type=="ngo"){
+            
+            $ngo=DB::select("select * from ngos where username = '$user->name'");
+            return new ngoResource($ngo);
+            //return $customer;
+        }
     }
 
     /**

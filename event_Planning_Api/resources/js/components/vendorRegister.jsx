@@ -45,7 +45,7 @@ class VendorRegister extends Component {
                 };
                 var ven = {
                     vendor_name: values["vendor_name"],
-                    contact: values["contact"],
+                    contact: "92" + values["contact"],
                     website: values["website"],
                     description: values["description"],
                     locations: {},
@@ -149,6 +149,7 @@ class VendorRegister extends Component {
         };
         this.state.address.push(add);
     }
+
     render() {
         const { getFieldDecorator } = this.props.form;
         const { TextArea } = Input;
@@ -159,6 +160,13 @@ class VendorRegister extends Component {
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat"
         };
+        const prefixSelector = getFieldDecorator("prefix", {
+            initialValue: "92"
+        })(
+            <Select>
+                <Option value="92">+92</Option>
+            </Select>
+        );
         return (
             <div className="contents" styles={bgForm}>
                 <br />
@@ -256,6 +264,11 @@ class VendorRegister extends Component {
                                             required: true,
                                             message:
                                                 "Please input your Password!"
+                                        },
+                                        {
+                                            min: 6,
+                                            message:
+                                                "Password must be atleast 6 characters!"
                                         }
                                     ]
                                 })(
@@ -283,12 +296,18 @@ class VendorRegister extends Component {
                                                 "Please input your Contact No.!"
                                         },
                                         {
-                                            pattern: "[9][2][0-9]{10}",
+                                            pattern: "[0-9]{10}",
                                             message: "Invalid Contact Number!"
+                                        },
+                                        ,
+                                        {
+                                            max: 10,
+                                            message: "Contact no out of range!"
                                         }
                                     ]
                                 })(
                                     <Input
+                                        addonBefore={prefixSelector}
                                         prefix={
                                             <Icon
                                                 type="phone"

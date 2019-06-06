@@ -42,7 +42,10 @@ class Order extends Component {
                 <br />
                 <Row>
                     <Col span={14} offset={2}>
-                        <Feedbacks />
+                        <Feedbacks
+                            type={this.props.type}
+                            details={this.props.details}
+                        />
                     </Col>
                 </Row>
                 <br />

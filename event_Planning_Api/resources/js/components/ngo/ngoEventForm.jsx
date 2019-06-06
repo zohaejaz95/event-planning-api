@@ -7,15 +7,30 @@ import {
     Input,
     Button,
     Row,
-    Col
+    Col,
+    message
 } from "antd";
+import { createEvent } from "./ngoFunctions";
 import moment from "moment";
-
+var edate = "";
+var estime = "";
+var eetime = "";
 //import loginImage from "../../images/Pakistani-Wedding.png";
-function onChange(date, dateString, checkedValues, time, timeString) {
+function onChangeDate(date, dateString) {
+    console.log(dateString);
     console.log(date, dateString);
-    console.log("checked = ", checkedValues);
+    edate = dateString;
+    console.log(edate);
+}
+function onChangeStartTime(time, timeString) {
+    estime = timeString;
     console.log(time, timeString);
+    console.log(estime);
+}
+function onChangeEndTime(time, timeString) {
+    eetime = timeString;
+    console.log(time, timeString);
+    console.log(eetime);
 }
 class NGOEventForm extends Component {
     constructor() {
@@ -26,12 +41,24 @@ class NGOEventForm extends Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
+                values["start_time"] = estime;
+                values["end_time"] = eetime;
+                values["date"] = edate;
+                values["status"] = "active";
                 console.log("Received values of form: ", values);
+                createEvent(values).then(res => {
+                    if (res) {
+                        message.success("Event Created Successfully!");
+                    } else {
+                        message.error("Unable to Create Event!");
+                    }
+                });
             }
         });
     }
     render() {
         const { TextArea } = Input;
+        const { getFieldDecorator } = this.props.form;
         return (
             <div className="contents">
                 <Row>
@@ -43,32 +70,95 @@ class NGOEventForm extends Component {
                             className="login-form "
                         >
                             <Form.Item>
-                                <TextArea rows={4} placeholder="Subject" />
+                                {getFieldDecorator("start_time", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: "Please Select Start Time!"
+                                        }
+                                    ]
+                                })(
+                                    <TimePicker
+                                        placeholder="Select Start Time"
+                                        style={{ width: "100%" }}
+                                        onChange={onChangeStartTime}
+                                        defaultOpenValue={moment(
+                                            "00:00:00",
+                                            "HH:mm:ss"
+                                        )}
+                                    />
+                                )}
+                            </Form.Item>
+
+                            <Form.Item>
+                                {getFieldDecorator("end_time", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: "Please Select End Time!"
+                                        }
+                                    ]
+                                })(
+                                    <TimePicker
+                                        placeholder="Select End Time"
+                                        style={{ width: "100%" }}
+                                        onChange={onChangeEndTime}
+                                        defaultOpenValue={moment(
+                                            "00:00:00",
+                                            "HH:mm:ss"
+                                        )}
+                                    />
+                                )}
+                            </Form.Item>
+
+                            <Form.Item>
+                                {getFieldDecorator("date", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: "Please Select Date!"
+                                        }
+                                    ]
+                                })(
+                                    <DatePicker
+                                        placeholder="Select Date"
+                                        style={{ width: "100%" }}
+                                        onChange={onChangeDate}
+                                    />
+                                )}
                             </Form.Item>
                             <Form.Item>
-                                <TimePicker
-                                    style={{ width: 300 }}
-                                    onChange={onChange}
-                                    defaultOpenValue={moment(
-                                        "00:00:00",
-                                        "HH:mm:ss"
-                                    )}
-                                />
+                                {getFieldDecorator("fund", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message:
+                                                "Please Enter Required Fund!"
+                                        }
+                                    ]
+                                })(
+                                    <InputNumber
+                                        style={{ width: "100%" }}
+                                        min={1}
+                                        max={1000000}
+                                        placeholder="Enter Required Fund"
+                                    />
+                                )}
                             </Form.Item>
                             <Form.Item>
-                                <DatePicker
-                                    style={{ width: 300 }}
-                                    onChange={onChange}
-                                />
-                            </Form.Item>
-                            <Form.Item>
-                                <InputNumber
-                                    style={{ width: 300 }}
-                                    min={1}
-                                    max={1000000}
-                                    onChange={onChange}
-                                    placeholder="Fund"
-                                />
+                                {getFieldDecorator("subject", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: "Please Enter Subject!"
+                                        }
+                                    ]
+                                })(
+                                    <TextArea
+                                        rows={4}
+                                        placeholder="Enter Subject"
+                                    />
+                                )}
                             </Form.Item>
                             <Button
                                 type="primary"

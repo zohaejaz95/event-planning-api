@@ -344,7 +344,11 @@ class Category extends Component {
                         <ServiceDetails service={this.state.show} />
                     </Col>
                 </Row>
-                <Order order={this.state.order} />
+                <Order
+                    order={this.state.order}
+                    type="service"
+                    details={this.state.show}
+                />
             </div>
         );
         const packageDetail = (
@@ -366,7 +370,11 @@ class Category extends Component {
                         <PackageDetails package={this.state.show} />
                     </Col>
                 </Row>
-                <Order order={this.state.order} />
+                <Order
+                    order={this.state.order}
+                    type="package"
+                    details={this.state.show}
+                />
             </div>
         );
         return (

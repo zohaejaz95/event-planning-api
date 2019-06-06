@@ -1,11 +1,21 @@
 import React, { Component } from "react";
-import { Form, Icon, Input, Button, Checkbox, Row, Col, Select } from "antd";
-
+import {
+    Form,
+    Icon,
+    Input,
+    Button,
+    Checkbox,
+    Row,
+    Col,
+    Select,
+    message
+} from "antd";
+import { register, ngoRegister } from "./userFunction";
 import loginImage from "../images/Pakistani-Wedding.png";
 
 const { TextArea } = Input;
 const Option = Select.Option;
-class ngoRegister extends Component {
+class NGORegister extends Component {
     constructor() {
         super();
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -15,6 +25,42 @@ class ngoRegister extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log("Received values of form: ", values);
+                var reg = {
+                    name: values["userName"],
+                    email: values["email"],
+                    password: values["password"],
+                    user_type: "ngo"
+                };
+                var ngo = {
+                    ngo_name: values["ngo_name"],
+                    purpose: values["purpose"],
+                    contact: "92" + values["contact"],
+                    website: values["website"]
+                };
+                register(reg)
+                    .then(res => {
+                        if (res) {
+                            ngoRegister(ngo).then(res => {
+                                if (res) {
+                                    message.success(
+                                        "Account created Successfully!"
+                                    );
+                                } else {
+                                    message.error("Unable to create Account!");
+                                }
+                            });
+                        } else {
+                            message.error("Unable to create Account!");
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        console.log(typeof err);
+                        if (err.response) {
+                            console.log(err.response);
+                            console.log(err.response.data.errors);
+                        }
+                    });
             }
         });
     }
@@ -26,6 +72,13 @@ class ngoRegister extends Component {
                 <Option value=".net">.net</Option>
                 <Option value=".pk">.pk</Option>
                 <Option value=".org">.org</Option>
+            </Select>
+        );
+        const prefixSelector = getFieldDecorator("prefix", {
+            initialValue: "92"
+        })(
+            <Select>
+                <Option value="92">+92</Option>
             </Select>
         );
 
@@ -49,12 +102,12 @@ class ngoRegister extends Component {
                             className="login-form "
                         >
                             <Form.Item>
-                                {getFieldDecorator("firstName", {
+                                {getFieldDecorator("ngo_name", {
                                     rules: [
                                         {
                                             required: true,
                                             message:
-                                                "Please input your First Name!"
+                                                "Please input your Organization Name!"
                                         }
                                     ]
                                 })(
@@ -70,71 +123,6 @@ class ngoRegister extends Component {
                                         placeholder="Organization Name"
                                     />
                                 )}
-                            </Form.Item>
-
-                            <Form.Item>
-                                {getFieldDecorator("contact", {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message:
-                                                "Please input your Contact No.!"
-                                        }
-                                    ]
-                                })(
-                                    <Input
-                                        prefix={
-                                            <Icon
-                                                type="phone"
-                                                style={{
-                                                    color: "rgba(0,0,0,.25)"
-                                                }}
-                                            />
-                                        }
-                                        placeholder="Contact No."
-                                    />
-                                )}
-                            </Form.Item>
-
-                            <Form.Item>
-                                <Input
-                                    addonAfter={selectAfterW}
-                                    placeholder="Please input your website"
-                                />
-                            </Form.Item>
-
-                            <Form.Item>
-                                {getFieldDecorator("email", {
-                                    rules: [
-                                        {
-                                            type: "email",
-                                            message:
-                                                "The input is not valid E-mail!"
-                                        },
-                                        {
-                                            required: true,
-                                            message: "Please input your E-mail!"
-                                        }
-                                    ]
-                                })(
-                                    <Input
-                                        prefix={
-                                            <Icon
-                                                type="mail"
-                                                style={{
-                                                    color: "rgba(0,0,0,.25)"
-                                                }}
-                                            />
-                                        }
-                                        placeholder="Email"
-                                    />
-                                )}
-                            </Form.Item>
-                            <Form.Item>
-                                <TextArea
-                                    rows={4}
-                                    placeholder="Enter Description"
-                                />
                             </Form.Item>
                             <Form.Item>
                                 {getFieldDecorator("userName", {
@@ -166,6 +154,11 @@ class ngoRegister extends Component {
                                             required: true,
                                             message:
                                                 "Please input your Password!"
+                                        },
+                                        {
+                                            min: 6,
+                                            message:
+                                                "Password must be atleast 6 characters!"
                                         }
                                     ]
                                 })(
@@ -180,6 +173,92 @@ class ngoRegister extends Component {
                                         }
                                         type="password"
                                         placeholder="Password"
+                                    />
+                                )}
+                            </Form.Item>
+                            <Form.Item>
+                                {getFieldDecorator("contact", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message:
+                                                "Please input your Contact No.!"
+                                        },
+                                        {
+                                            pattern: "[0-9]{10}",
+                                            message: "Invalid Contact Number!"
+                                        },
+                                        {
+                                            max: 10,
+                                            message: "Contact no out of range!"
+                                        }
+                                    ]
+                                })(
+                                    <Input
+                                        addonBefore={prefixSelector}
+                                        prefix={
+                                            <Icon
+                                                type="phone"
+                                                style={{
+                                                    color: "rgba(0,0,0,.25)"
+                                                }}
+                                            />
+                                        }
+                                        placeholder="Contact No."
+                                    />
+                                )}
+                            </Form.Item>
+
+                            <Form.Item>
+                                {getFieldDecorator("website", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message:
+                                                "Please input your Contact No.!"
+                                        }
+                                    ]
+                                })(
+                                    <Input
+                                        addonAfter={selectAfterW}
+                                        placeholder="Please input your website"
+                                    />
+                                )}
+                            </Form.Item>
+
+                            <Form.Item>
+                                {getFieldDecorator("email", {
+                                    rules: [
+                                        {
+                                            type: "email",
+                                            message:
+                                                "The input is not valid E-mail!"
+                                        },
+                                        {
+                                            required: true,
+                                            message: "Please input your E-mail!"
+                                        }
+                                    ]
+                                })(
+                                    <Input
+                                        prefix={
+                                            <Icon
+                                                type="mail"
+                                                style={{
+                                                    color: "rgba(0,0,0,.25)"
+                                                }}
+                                            />
+                                        }
+                                        placeholder="Email"
+                                    />
+                                )}
+                            </Form.Item>
+
+                            <Form.Item>
+                                {getFieldDecorator("purpose")(
+                                    <TextArea
+                                        rows={4}
+                                        placeholder="Enter Description"
                                     />
                                 )}
                             </Form.Item>
@@ -211,6 +290,6 @@ class ngoRegister extends Component {
     }
 }
 
-const WrappedNGORegister = Form.create({ name: "normal_login" })(ngoRegister);
+const WrappedNGORegister = Form.create({ name: "normal_login" })(NGORegister);
 export default WrappedNGORegister;
 //export default ngoRegister;

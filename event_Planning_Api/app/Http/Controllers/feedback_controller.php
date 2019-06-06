@@ -57,7 +57,7 @@ class feedback_controller extends Controller
     public function show_package($id)
     {
         $user=User::findOrFail(Auth::guard('api')->id());
-        if($user->user_type=="customer"){
+        if($user->user_type=="customer"||$user->user_type=="vendor"){
         $feed=feedbacks::where('package_id',$id)->paginate(15);
         return $feed;
         }
@@ -65,7 +65,7 @@ class feedback_controller extends Controller
     public function show_service($id)
     {
         $user=User::findOrFail(Auth::guard('api')->id());
-        if($user->user_type=="customer"){
+        if($user->user_type=="customer"||$user->user_type=="vendor"){
         $feed=feedbacks::where('service_id',$id)->paginate(15);
         return $feed;
         }
