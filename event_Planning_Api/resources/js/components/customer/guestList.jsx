@@ -1,13 +1,15 @@
 import React, { Component } from "react";
-import { Select, Card, Button, Icon, message } from "antd";
-import { getEvents, getGuests, deleteGuest } from "./customerFunction";
+import { Select, Card, Button, Icon, message, List } from "antd";
+import { getGuests, deleteGuest } from "./customerFunction";
+import { getEvents } from "./customerFunction";
 class GuestList extends Component {
     constructor() {
         super();
         this.state = {
             events: [],
             event_id: "",
-            guests: []
+            guests: [],
+            stat: "active"
         };
         this.events = this.events.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -48,21 +50,21 @@ class GuestList extends Component {
         });
         this.getG(value);
     }
-    events() {
-        getEvents().then(res => {
+    events(status) {
+        getEvents(status).then(res => {
             if (res) {
                 console.log(res.data);
                 const lists = JSON.stringify(res.data);
-                const list = JSON.parse(lists);
+                const elist = JSON.parse(lists);
                 this.setState({
-                    events: list
+                    events: elist
                 });
-                console.log(this.state.events.length);
             }
         });
+        console.log(this.state.events);
     }
     componentDidMount() {
-        this.events();
+        this.events("active");
     }
     render() {
         const Option = Select.Option;
@@ -73,6 +75,17 @@ class GuestList extends Component {
 
         function handleFocus() {
             console.log("focus");
+            getEvents("active").then(res => {
+                if (res) {
+                    console.log(res.data);
+                    const lists = JSON.stringify(res.data);
+                    const elist = JSON.parse(lists);
+                    this.setState({
+                        events: elist
+                    });
+                }
+                console.log(res);
+            });
         }
         return (
             <div>
@@ -92,6 +105,18 @@ class GuestList extends Component {
                             .indexOf(input.toLowerCase()) >= 0
                     }
                 >
+                    {/* <List
+                        size="small"
+                        bordered
+                        dataSource={this.state.events}
+                        renderItem={item => (
+                            <List.Item>
+                                <Option value={item.event_id} key={i}>
+                                    {item.event_name}
+                                </Option>
+                            </List.Item>
+                        )}
+                    /> */}
                     {this.state.events.map((serve, i) => (
                         <Option value={serve.event_id} key={i}>
                             {serve.event_name}
@@ -103,14 +128,24 @@ class GuestList extends Component {
                 {this.state.guests.map((guest, i) => (
                     <div key={i}>
                         <Card hoverable bordered={false}>
-                            <h5>{guest.guest_id}</h5>
-                            <p>Details</p>
+                            <h5>{guest.first_name + " " + guest.last_name}</h5>
+                            <h6>Details</h6>
+                            <p>{"Email: " + guest.email}</p>
+                            <p>{"Contact: " + guest.contact}</p>
+                            <p>
+                                {"Address: " +
+                                    guest.address +
+                                    ", " +
+                                    guest.city +
+                                    ", " +
+                                    guest.province}
+                            </p>
                             <Button
                                 type="danger"
                                 onClick={() => this.deleteG(guest.guest_id)}
                             >
                                 <Icon type="minus" />
-                                Uninvite
+                                Cancel Invitation
                             </Button>
                         </Card>
                         <br />

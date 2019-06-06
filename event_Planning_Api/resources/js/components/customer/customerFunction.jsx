@@ -87,10 +87,6 @@ export const updateEventStatus = (id, status) => {
     const token = JSON.parse(localStorage.getItem("usertoken"));
     //newUser["api_token"] = token.api_token;
     console.log(token.api_token);
-    var input = {
-        id: id,
-        status: status
-    };
     return axios
         .post(
             "/api/customer/events/update/status",
@@ -120,9 +116,8 @@ export const getEvents = stat => {
     const token = JSON.parse(localStorage.getItem("usertoken"));
     //newUser["api_token"] = token.api_token;
     //console.log(token.api_token);
-
     return axios
-        .get("/api/customer/events/" + stat, {
+        .get("/api/customer/events/list/" + stat, {
             headers: {
                 "Content-Type": "application/json",
                 Access: "application/json",
@@ -130,7 +125,27 @@ export const getEvents = stat => {
             }
         })
         .then(response => {
-            //console.log(response.data);
+            console.log(response.data);
+            return response.data;
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+export const getActiveEvents = () => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //newUser["api_token"] = token.api_token;
+    //console.log(token.api_token);
+    return axios
+        .get("/api/customer/events/active/", {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token
+            }
+        })
+        .then(response => {
+            console.log(response.data);
             return response.data;
         })
         .catch(err => {
@@ -403,5 +418,34 @@ export const newOrder = items => {
         })
         .catch(err => {
             console.log(err);
+        });
+};
+//customers/orders/update/payment/
+export const updatePaymentStatus = (id, status) => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //newUser["api_token"] = token.api_token;
+    console.log(token.api_token);
+    return axios
+        .post(
+            "/api/customers/orders/update/payment/" + id,
+            { status: status },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Access: "application/json",
+                    Authorization: "Bearer " + token.api_token
+                }
+            }
+        )
+        .then(response => {
+            console.log(response);
+            return true;
+        })
+        .catch(err => {
+            console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
         });
 };

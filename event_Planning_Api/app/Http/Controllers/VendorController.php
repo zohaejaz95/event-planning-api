@@ -303,7 +303,7 @@ public function get_service(Request $request,$id){
 public function get_service_cat($cat){
     $user=User::findOrFail(Auth::guard('api')->id());
     if(($user->user_type=="vendor")||($user->user_type=="customer")){
-        return services::where('category',$cat)->paginate(15);
+        //return services::where('category',$cat)->paginate(15);
     if($cat=='venues'){
         return services::where('category',$cat)->join('venues','services.id','=','venues.service_id')->paginate(15);
     }
@@ -322,6 +322,9 @@ public function get_service_cat($cat){
     }
     else if($cat=='catering'){
         return services::where('category',$cat)->join('caterings','services.id','=','caterings.service_id')->join('food_services','caterings.id','=','food_services.cater_id')->paginate(15);
+    }
+    else{
+        return services::where('category',$cat)->paginate(15);
     }
     }
 }

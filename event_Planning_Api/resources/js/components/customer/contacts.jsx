@@ -51,7 +51,7 @@ class Contacts extends Component {
         });
     }
     events() {
-        getEvents().then(res => {
+        getEvents("active").then(res => {
             if (res) {
                 console.log(res.data);
                 const lists = JSON.stringify(res.data);

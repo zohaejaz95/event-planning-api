@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 //import { Server } from "http";
+import { updatePaymentStatus } from "./customerFunction";
+
 import { List, Button } from "antd";
 class DisplayPackages extends Component {
     constructor(props) {
@@ -9,6 +11,7 @@ class DisplayPackages extends Component {
             pend: [],
             status: ""
         };
+        this.onPayment = this.onPayment.bind(this);
     }
     componentDidMount() {
         var data = this.props;
@@ -17,6 +20,24 @@ class DisplayPackages extends Component {
             approve: data.approved,
             pend: data.pending,
             status: data.status
+        });
+    }
+    onPayment(val) {
+        updatePaymentStatus(val, "complete").then(res => {
+            if (res) {
+                console.log(res);
+                message.success("Marked as paid!!");
+                notification["info"]({
+                    message: "Vendor Side Confirmation",
+                    description:
+                        "This will only be viewed as paid when approved by the vendors.",
+                    onClick: () => {
+                        console.log("Notification Clicked!");
+                    }
+                });
+            } else {
+                message.error("Unable to mark as paid!");
+            }
         });
     }
     render() {
@@ -30,11 +51,20 @@ class DisplayPackages extends Component {
                     renderItem={item => (
                         <List.Item>
                             <List.Item.Meta
-                                title={<a href="/">{item.name}</a>}
+                                title={
+                                    <a href="/services" service={item}>
+                                        {item.name}
+                                    </a>
+                                }
                                 description={item.description}
                             />
                             {this.state.status ? (
-                                <Button type="primary">Paid</Button>
+                                <Button
+                                    type="primary"
+                                    onClick={() => this.onPayment(item.p_id)}
+                                >
+                                    Paid
+                                </Button>
                             ) : (
                                 <div />
                             )}
