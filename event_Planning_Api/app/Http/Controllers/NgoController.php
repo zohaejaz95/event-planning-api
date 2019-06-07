@@ -156,15 +156,15 @@ class NgoController extends Controller
 public function create_event(Request $request){
     $user=User::findOrFail(Auth::guard('api')->id());
     if($user->user_type=="ngo"){
-        $ngo= ngo::where('username',$user->name)->get();
-    $ngoe= ngo_events::create([
+        $ngos= ngo::where('username',$user->name)->get();
+    $ngo= ngo_events::create([
         'subject' => $request->input('subject'),
         'start_time' => $request->input('start_time'),
         'end_time' => $request->input('end_time'),
         'date' => $request->input('date'),
         'fund' => $request->input('fund'),
         'status' => $request->input('status'),
-        'ngo_id' =>$ngo->ngo_id
+        'ngo_id' =>$ngos[0]->ngo_id
     ]);
     }
     
@@ -173,7 +173,7 @@ public function create_event(Request $request){
 public function update_event(Request $request,$id){
     $user=User::findOrFail(Auth::guard('api')->id());
     if($user->user_type=="ngo"){
-        $ngo= ngo::where('username',$user->name)->get();
+        $ngo= ngos::where('username',$user->name)->get();
         $ngoe= ngo_events::where('ngo_id',$ngo->ngo_id)->where('event_id',$id)->get();
     $ngoe->update([
         'subject' => $request->input('subject'),
