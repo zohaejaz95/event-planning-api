@@ -8,12 +8,29 @@ import {
     Row,
     Col,
     Select,
-    message
+    message,
+    Upload
 } from "antd";
 import { register, vendorRegister } from "./userFunction";
 import loginImage from "../images/form-img.jpg";
 //import { element } from "prop-types";
-
+const props = {
+    name: "file",
+    action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+    headers: {
+        authorization: "authorization-text"
+    },
+    onChange(info) {
+        if (info.file.status !== "uploading") {
+            console.log(info.file, info.fileList);
+        }
+        if (info.file.status === "done") {
+            message.success(`${info.file.name} file uploaded successfully`);
+        } else if (info.file.status === "error") {
+            message.error(`${info.file.name} file upload failed.`);
+        }
+    }
+};
 class VendorRegister extends Component {
     constructor() {
         super();
@@ -31,6 +48,7 @@ class VendorRegister extends Component {
         this.selectCat = this.selectCat.bind(this);
         this.setAddress = this.setAddress.bind(this);
     }
+
     handleSubmit(e) {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
@@ -43,11 +61,13 @@ class VendorRegister extends Component {
                     password: values["password"],
                     user_type: "vendor"
                 };
+                var image = values["logo"];
                 var ven = {
                     vendor_name: values["vendor_name"],
                     contact: "92" + values["contact"],
                     website: values["website"],
                     description: values["description"],
+                    logo: image.file.name,
                     locations: {},
                     payment_methods: {},
                     categories: {}
@@ -167,6 +187,7 @@ class VendorRegister extends Component {
                 <Option value="92">+92</Option>
             </Select>
         );
+
         return (
             <div className="contents" styles={bgForm}>
                 <br />
@@ -183,6 +204,24 @@ class VendorRegister extends Component {
                             onSubmit={this.handleSubmit}
                             className="login-form "
                         >
+                            <Form.Item>
+                                {getFieldDecorator("logo", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message:
+                                                "Please input your Company Name!"
+                                        }
+                                    ]
+                                })(
+                                    <Upload {...props}>
+                                        <Button>
+                                            <Icon type="upload" /> Click to
+                                            Upload
+                                        </Button>
+                                    </Upload>
+                                )}
+                            </Form.Item>
                             <Form.Item>
                                 {getFieldDecorator("vendor_name", {
                                     rules: [
