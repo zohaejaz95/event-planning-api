@@ -99,6 +99,7 @@ class VendorController extends Controller
             $filenameToStore = $filename.'_'.time().'.'.$exntesion;
             $path= $request->file('logo')->storeAs('public/vendor/logos',$filenameToStore);
             $path = Storage::disk('public/vendor/logos')->path($filenameWithExt);
+            
             print_r($path);
             $vendor[0]->update([
                 'logo' => $path
@@ -141,7 +142,7 @@ class VendorController extends Controller
                 'category'=>$category['category']
             ]);
         }
-
+        return $path;
     }
 public function create_service(Request $request){
     $user=User::findOrFail(Auth::guard('api')->id());
