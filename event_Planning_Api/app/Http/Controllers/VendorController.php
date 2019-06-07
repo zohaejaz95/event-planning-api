@@ -90,7 +90,7 @@ class VendorController extends Controller
             'account_status'=>'pending'
 
         ]);
-        if($request->has('logo.originFileObj')){
+        if($request->has('logo')){
             $vendor1=DB::select("select vendor_id from vendors where username = '$user->name'");
        
             $vendor=vendor::findOrFail($vendor1[0]->vendor_id);
@@ -108,8 +108,8 @@ class VendorController extends Controller
             if (preg_match('/^data:image\/(\w+);base64,/', $image)) {
                 $data = substr($image, strpos($image, ',') + 1);
                 $imageName= time().'_'.$request->input('img_name');
-            \File::put(storage_path(). 'public/vendor/logos/' . $imageName, base64_decode($image));
-            $path = Storage::disk('public/vendor/logos')->path($imageName);
+            File::put(storage_path(). '\public\vendor\logos\' . $imageName, base64_decode($image));
+            $path = Storage::disk('/vendor/logos')->path($imageName);
         }
             
             
