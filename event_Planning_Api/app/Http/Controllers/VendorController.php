@@ -110,7 +110,7 @@ class VendorController extends Controller
             if (preg_match('/^data:image\/(\w+);base64,/', $image)) {
                 $data = substr($image, strpos($image, ',') + 1);
                 $imageName= time().'_'.$request->input('img_name');
-                Storage::disk('local')->put('\public\vendor\logos\\' . $imageName, base64_decode($image));
+                Storage::disk('local')->put('\public\vendor\logos\\' . $imageName, base64_decode($data));
                 //File::put(storage_path(). '\public\vendor\logos\\' . $imageName, base64_decode($image));
             $path = Storage::disk('local')->path('public\vendor\logos\\'.$imageName);
         }
