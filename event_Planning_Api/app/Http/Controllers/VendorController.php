@@ -103,13 +103,25 @@ class VendorController extends Controller
             $path= $request->file('logo')->storeAs('public/vendor/logos',$filenameToStore);
             $path = Storage::disk('public/vendor/logos')->path($filenameWithExt);
             */
+            //base_64 encoding
+            $image = $request->logo;  // your base64 encoded
+            if (preg_match('/^data:image\/(\w+);base64,/', $image)) {
+                $data = substr($image, strpos($image, ',') + 1);
+                $imageName= time().'_'.$request->input('img_name');
+            \File::put(storage_path(). 'public/vendor/logos/' . $imageName, base64_decode($image));
+            $path = Storage::disk('public/vendor/logos')->path($imageName);
+        }
+            
+            
+            
+            /*
             $file = $request->file('logo.originFileObj');
             $path = $request->file('logo.originFileObj')->path();
             $extension = $request->file('logo.originFileObj')->extension();
             $filenameToStore = $path.'_'.time().$extension;
             $path= $request->file('logo.originFileObj')->storeAs('public/vendor/logos',$filenameToStore);
             $path = Storage::disk('public/vendor/logos')->path($filenameToStore);
-            
+            */
             print_r($path);
             $vendor->update([
                 'logo' => $path
