@@ -96,6 +96,7 @@ class VendorController extends Controller
             $filenameToStore = $filename.'_'.time().'.'.$exntesion;
             $path= $request->file('logo')->storeAs('public/vendor/logos',$filenameToStore);
             $path = Storage::disk('public/vendor/logos')->path($filenameWithExt);
+            print_r($path);
             $vendor->update([
                 'logo' => $path
             ]);
