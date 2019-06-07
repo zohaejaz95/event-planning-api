@@ -91,6 +91,7 @@ class VendorController extends Controller
 
         ]);
         if($request->has('logo')){
+            $vendor=vendor::where('username',$user->name)->get();
             $vendor->update(['logo'=>'inside if']);    
             $filenameWithExt = $request->file('logo')->getOriginalClientFile();
             $filename = pathinfo($filenameWithExt,PATHINFO_FILENAME);
@@ -141,7 +142,7 @@ class VendorController extends Controller
                 'category'=>$category['category']
             ]);
         }
-        return $path;
+        
     }
 public function create_service(Request $request){
     $user=User::findOrFail(Auth::guard('api')->id());
