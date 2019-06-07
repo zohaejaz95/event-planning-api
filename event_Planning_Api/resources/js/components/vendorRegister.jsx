@@ -16,6 +16,7 @@ import loginImage from "../images/form-img.jpg";
 //import { element } from "prop-types";
 const props = {
     name: "file",
+
     action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     headers: {
         authorization: "authorization-text"
@@ -67,7 +68,7 @@ class VendorRegister extends Component {
                     contact: "92" + values["contact"],
                     website: values["website"],
                     description: values["description"],
-                    logo: image.file.name,
+                    logo: image.file,
                     locations: {},
                     payment_methods: {},
                     categories: {}
