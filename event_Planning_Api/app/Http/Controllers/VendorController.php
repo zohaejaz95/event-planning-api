@@ -90,7 +90,7 @@ class VendorController extends Controller
             'account_status'=>'pending'
 
         ]);
-        if($request->has('logo')){
+        if($request->has('logo.originFileObj')){
             $vendor1=DB::select("select vendor_id from vendors where username = '$user->name'");
        
             $vendor=vendor::findOrFail($vendor1[0]->vendor_id);
