@@ -13,6 +13,7 @@ import {
 } from "antd";
 import { register, vendorRegister } from "./userFunction";
 import loginImage from "../images/form-img.jpg";
+import ImageUploader from "react-images-upload";
 //import { element } from "prop-types";
 const props = {
     name: "file",
@@ -32,9 +33,10 @@ const props = {
         }
     }
 };
+var pictures;
 class VendorRegister extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             location: [],
             cities: [],
@@ -43,6 +45,8 @@ class VendorRegister extends Component {
             cat: []
         };
 
+        this.onDrop = this.onDrop.bind(this);
+
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
         this.selectKeys = this.selectKeys.bind(this);
@@ -50,6 +54,31 @@ class VendorRegister extends Component {
         this.setAddress = this.setAddress.bind(this);
     }
 
+    // onDrop(picture) {
+    //     this.setState({
+    //         pictures: this.state.pictures.concat(picture)
+    //     });
+    //     console.log(picture);
+    // }
+    onDrop(event) {
+        // const data = new FormData();
+        // data.append(`file`, event.target.files[0]);
+        // data.append("name", "some value user types");
+        // data.append("description", "some value user types");
+
+        // pictures = data;
+        // console.log(event.target.files[0]);
+        // console.log(data);
+        var reader = new FileReader();
+        reader.readAsDataURL(event.target.files[0]);
+        //var me = this;
+        reader.onload = function() {
+            var fileContent = reader.result;
+            console.log(fileContent);
+            pictures = fileContent;
+            console.log(pictures);
+        };
+    }
     handleSubmit(e) {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
@@ -63,12 +92,13 @@ class VendorRegister extends Component {
                     user_type: "vendor"
                 };
                 var image = values["logo"];
+                //var con=values["contact"];
                 var ven = {
                     vendor_name: values["vendor_name"],
                     contact: "92" + values["contact"],
                     website: values["website"],
                     description: values["description"],
-                    logo: image.file,
+                    logo: pictures,
                     locations: {},
                     payment_methods: {},
                     categories: {}
@@ -205,6 +235,14 @@ class VendorRegister extends Component {
                             onSubmit={this.handleSubmit}
                             className="login-form "
                         >
+                            <input type="file" onChange={this.onDrop} />
+                            {/* <ImageUploader
+                                withIcon={true}
+                                buttonText="Choose images"
+                                onChange={this.onDrop}
+                                imgExtension={[".jpg", ".gif", ".png", ".gif"]}
+                                maxFileSize={5242880}
+                            /> */}
                             <Form.Item>
                                 {getFieldDecorator("logo", {
                                     rules: [
