@@ -95,12 +95,20 @@ class VendorController extends Controller
        
             $vendor=vendor::findOrFail($vendor1[0]->vendor_id);
             $vendor->update(['logo'=>'inside if']);    
+            /*
             $filenameWithExt = $request->file('logo')->getOriginalClientFile();
             $filename = pathinfo($filenameWithExt,PATHINFO_FILENAME);
             $exntesion = $request->file('logo')->getOriginalClientExtension();
             $filenameToStore = $filename.'_'.time().'.'.$exntesion;
             $path= $request->file('logo')->storeAs('public/vendor/logos',$filenameToStore);
             $path = Storage::disk('public/vendor/logos')->path($filenameWithExt);
+            */
+            $file = $request->file('logo.originFileObj');
+            $path = $request->file('logo.originFileObj')->path();
+            $extension = $request->file('logo.originFileObj')->extension();
+            $filenameToStore = $path.'_'.time().$extension;
+            $path= $request->file('logo.originFileObj')->storeAs('public/vendor/logos',$filenameToStore);
+            $path = Storage::disk('public/vendor/logos')->path($filenameToStore);
             
             print_r($path);
             $vendor->update([
