@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use File;
 use Auth;
+use Storage;
 use App\vendor;
 use App\location;
 use App\category_event;
