@@ -88,8 +88,11 @@ class VendorController extends Controller
             'username'=>$user->name,
             'description'=>$request->input('description'),
             'account_status'=>'pending'
+
         ]);
         if($request->hasFile('logo')){
+            $vendor=DB::select("select vendor_id from vendors where username = '$user->name'");
+            $vendor[0]->update(['logo'=>'inside if']);    
             $filenameWithExt = $request->file('logo')->getOriginalClientFile();
             $filename = pathinfo($filenameWithExt,PATHINFO_FILENAME);
             $exntesion = $request->file('logo')->getOriginalClientExtension();
@@ -97,7 +100,7 @@ class VendorController extends Controller
             $path= $request->file('logo')->storeAs('public/vendor/logos',$filenameToStore);
             $path = Storage::disk('public/vendor/logos')->path($filenameWithExt);
             print_r($path);
-            $vendor->update([
+            $vendor[0]->update([
                 'logo' => $path
             ]);
         }
