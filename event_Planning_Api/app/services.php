@@ -55,4 +55,7 @@ class services extends Model
     public function feedbacks(){
         return $this->hasMany('App\feedbacks');
     }
+    public function service_images(){
+        return $this->hasMany('service_images');
+    }
 }
