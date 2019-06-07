@@ -91,8 +91,7 @@ class VendorController extends Controller
 
         ]);
         if($request->hasFile('logo')){
-            $vendor=DB::select("select vendor_id from vendors where username = '$user->name'");
-            $vendor[0]->update(['logo'=>'inside if']);    
+            $vendor->update(['logo'=>'inside if']);    
             $filenameWithExt = $request->file('logo')->getOriginalClientFile();
             $filename = pathinfo($filenameWithExt,PATHINFO_FILENAME);
             $exntesion = $request->file('logo')->getOriginalClientExtension();
@@ -101,7 +100,7 @@ class VendorController extends Controller
             $path = Storage::disk('public/vendor/logos')->path($filenameWithExt);
             
             print_r($path);
-            $vendor[0]->update([
+            $vendor->update([
                 'logo' => $path
             ]);
         }
