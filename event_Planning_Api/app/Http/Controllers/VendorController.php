@@ -91,7 +91,9 @@ class VendorController extends Controller
 
         ]);
         if($request->has('logo')){
-            $vendor=vendor::where('username',$user->name)->get();
+            $vendor1=DB::select("select vendor_id from vendors where username = '$user->name'");
+       
+            $vendor=vendor::findOrFail($vendor1[0]->vendor_id);
             $vendor->update(['logo'=>'inside if']);    
             $filenameWithExt = $request->file('logo')->getOriginalClientFile();
             $filename = pathinfo($filenameWithExt,PATHINFO_FILENAME);
