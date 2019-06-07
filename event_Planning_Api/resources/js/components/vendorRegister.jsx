@@ -99,6 +99,7 @@ class VendorRegister extends Component {
                     website: values["website"],
                     description: values["description"],
                     logo: pictures,
+                    img_name: image.file.name,
                     locations: {},
                     payment_methods: {},
                     categories: {}
