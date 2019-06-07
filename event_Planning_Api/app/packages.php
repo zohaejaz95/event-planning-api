@@ -28,5 +28,8 @@ class packages extends Model
     public function feedbacks(){
         return $this->hasMany('App\feedbacks');
     }
+    public function package_images(){
+        return $this->hasMany('package_images');
+    }
 }
 

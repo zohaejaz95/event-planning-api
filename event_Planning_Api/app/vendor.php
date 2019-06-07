@@ -18,6 +18,7 @@ class vendor extends Model
         'website',
         'username',
         'account_status',
+        'logo'
     ]; 
 public function payment_method()
     {

@@ -89,6 +89,18 @@ class VendorController extends Controller
             'description'=>$request->input('description'),
             'account_status'=>'pending'
         ]);
+        if($request->hasFile('logo')){
+            $filenameWithExt = $request->file('logo')->getOriginalClientFile();
+            $filename = pathinfo($filenameWithExt,PATHINFO_FILENAME);
+            $exntesion = $request->file('logo')->getOriginalClientExtension();
+            $filenameToStore = $filename.'_'.time().'.'.$exntesion;
+            $path= $request->file('logo')->storeAs('public/vendor/logos',$filenameToStore);
+            $path = Storage::disk('public/vendor/logos')->path($filenameWithExt);
+            print_r($path);
+            $vendor->update([
+                'logo' => $path
+            ]);
+        }
         $vendor=DB::select("select vendor_id from vendors where username = '$user->name'");
        
         $locations=$request->input('locations.*');

@@ -117,6 +117,23 @@ Route::delete('customer/delete/{id}','feedback_controller@destroy');
 Route::post('customer/feedback/new','feedback_controller@store');
 Route::put('customer/feedback/update/{id}','feedback_controller@update');
 
+//chats ngo
+Route::get('chat/ngo/conversations','ngo_conversations@get_conver_ngo');
+Route::get('chat/ngo/conversations/vendor','ngo_conversations@get_conver_vendor');
+Route::get('chat/ngo/chat/{convo_id}','ngo_conversations@get_chat');
+Route::post('chat/ngo/new/conversation/{ngo_id}/{vend_id}','ngo_conversations@create_conversation');
+Route::post('chat/ngo/new/message','ngo_conversations@send_message');
+Route::get('chat/ngo/unread/{conv_id}','ngo_conversations@get_unread');
+Route::get('chat/ngo/update_status/{msg_id}','ngo_conversations@update_status');
+//chats customer
+
+Route::get('chat/customer/conversations','customer_conversations@get_conver_cust');
+Route::get('chat/customer/conversations/vendor','customer_conversations@get_conver_vendor');
+Route::get('chat/customer/chat/{convo_id}','customer_conversations@get_chat');
+Route::post('chat/customer/new/conversation/{cust_id}/{vend_id}','customer_conversations@create_conversation');
+Route::post('chat/customer/new/message','customer_conversations@send_message');
+Route::get('chat/customer/unread/{conv_id}','customer_conversations@get_unread');
+Route::get('chat/customer/update_status/{msg_id}','customer_conversations@update_status');
 
 });
 
