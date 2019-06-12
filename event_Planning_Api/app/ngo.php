@@ -18,5 +18,6 @@ class ngo extends Model
         'website',
         'username',
         'status',
+        'profile_pic'
     ];    
 }

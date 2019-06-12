@@ -15,7 +15,8 @@ class customer extends Model
         'contact',
         'address',
         'email',
-        'username'
+        'username',
+        'profile_pic'
     ];
     public function contact_lists()
     {
