@@ -7,6 +7,8 @@ use Auth;
 use App\User;
 use App\customer;
 use App\Http\Requests;
+use File;
+use Storage;
 use App\Http\Resources\Customer as customerResource;
 use Illuminate\Support\Facades\DB;
 

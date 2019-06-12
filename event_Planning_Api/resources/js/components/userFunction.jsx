@@ -69,6 +69,10 @@ export const customerRegister = newUser => {
         })
         .catch(err => {
             console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
         });
 };
 export const getPendingVendors = () => {
@@ -167,6 +171,10 @@ export const ngoRegister = newUser => {
         .catch(err => {
             console.log(err);
             //message.success("!");
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
         });
 };
 

@@ -12,13 +12,32 @@ import {
 } from "antd";
 import { register, ngoRegister } from "./userFunction";
 import loginImage from "../images/Pakistani-Wedding.png";
-
+var pictures;
 const { TextArea } = Input;
 const Option = Select.Option;
 class NGORegister extends Component {
     constructor() {
         super();
+        this.state = {
+            name: ""
+        };
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.onDrop = this.onDrop.bind(this);
+    }
+    onDrop(event) {
+        var reader = new FileReader();
+        reader.readAsDataURL(event.target.files[0]);
+        var pic_name = event.target.files[0];
+        this.setState({
+            name: pic_name.name
+        });
+        console.log(event.target.files[0]);
+        reader.onload = function() {
+            var fileContent = reader.result;
+            console.log(fileContent);
+            pictures = fileContent;
+            console.log(pictures);
+        };
     }
     handleSubmit(e) {
         e.preventDefault();
@@ -35,7 +54,9 @@ class NGORegister extends Component {
                     ngo_name: values["ngo_name"],
                     purpose: values["purpose"],
                     contact: "92" + values["contact"],
-                    website: values["website"]
+                    website: values["website"],
+                    profile_pic: pictures,
+                    img_name: this.state.name
                 };
                 register(reg)
                     .then(res => {
@@ -101,6 +122,7 @@ class NGORegister extends Component {
                             onSubmit={this.handleSubmit}
                             className="login-form "
                         >
+                            <input type="file" onChange={this.onDrop} />
                             <Form.Item>
                                 {getFieldDecorator("ngo_name", {
                                     rules: [

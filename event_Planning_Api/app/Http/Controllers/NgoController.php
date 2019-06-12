@@ -9,6 +9,8 @@ use App\ngo_events;
 use App\sponsorships;
 use App\vendor;
 use App\Http\Requests;
+use File;
+use Storage;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\NGO as ngoResource;
 class NgoController extends Controller

@@ -1,7 +1,19 @@
 import React, { Component } from "react";
-import { Form, Icon, Input, Button, Modal, Row, Col, Alert } from "antd";
+import {
+    Form,
+    Icon,
+    Input,
+    Button,
+    Modal,
+    Row,
+    Col,
+    Select,
+    Alert
+} from "antd";
 import { customerRegister } from "./userFunction";
 import loginImage from "../images/form-img.jpg";
+var pictures;
+const Option = Select.Option;
 
 class CustomerForm extends Component {
     constructor() {
@@ -9,12 +21,15 @@ class CustomerForm extends Component {
         this.state = {
             visible: true,
             succ: false,
-            msg: false
+            msg: false,
+            name: ""
         };
         this.showModal = this.showModal.bind(this);
         this.handleOk = this.handleOk.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+
+        this.onDrop = this.onDrop.bind(this);
     }
     showModal() {
         this.setState({
@@ -29,6 +44,22 @@ class CustomerForm extends Component {
         });
     }
 
+    onDrop(event) {
+        var reader = new FileReader();
+        reader.readAsDataURL(event.target.files[0]);
+        var pic_name = event.target.files[0];
+        this.setState({
+            name: pic_name.name
+        });
+        console.log(event.target.files[0]);
+        reader.onload = function() {
+            var fileContent = reader.result;
+            console.log(fileContent);
+            pictures = fileContent;
+            console.log(pictures);
+        };
+    }
+
     handleCancel(e) {
         console.log(e);
         this.setState({
@@ -41,6 +72,8 @@ class CustomerForm extends Component {
             if (!err) {
                 console.log("Received values of form: ", values);
                 values["contact"] = "92" + values["contact"];
+                values["profile_pic"] = pictures;
+                values["img_name"] = this.state.name;
                 customerRegister(values).then(res => {
                     //console.log(res);
                     if (res) {
@@ -100,6 +133,7 @@ class CustomerForm extends Component {
                                 onSubmit={this.handleSubmit}
                                 className="login-form "
                             >
+                                <input type="file" onChange={this.onDrop} />
                                 <Form.Item>
                                     {getFieldDecorator("first_name", {
                                         rules: [
