@@ -27,6 +27,7 @@
     },
     "dependencies": {
         "antd": "^3.15.2",
+        "react-color": "^2.17.3",
         "react-confetti": "^2.8.0",
         "react-images-upload": "^1.2.6",
         "react-player": "^1.10.0",

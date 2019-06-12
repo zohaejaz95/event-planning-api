@@ -10,6 +10,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::view('/{path?}', 'app');
+Route::view('/cardCustomization','welcome');
+//Route::view('/{path?}', 'app');
 Route::view('/{path1?}/{path2?}', 'app');

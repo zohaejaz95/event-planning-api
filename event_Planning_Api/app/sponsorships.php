@@ -16,6 +16,7 @@ class sponsorships extends Model
         'status',
         'vendor_id',
         'ngo_id',
-        'service_id'
+        'service_id',
+        'nevent_id'
     ];
 }

@@ -30,10 +30,10 @@ class Orders extends Component {
                             >
                                 <Tabs defaultActiveKey="3" onChange={callback}>
                                     <TabPane tab="Services" key="3">
-                                        <OrderRequests order_type="service" />
+                                        <OrderRequests order_type="services" />
                                     </TabPane>
                                     <TabPane tab="Packages" key="4">
-                                        <OrderRequests order_type="package" />
+                                        <OrderRequests order_type="packages" />
                                     </TabPane>
                                 </Tabs>
                             </div>
@@ -47,10 +47,10 @@ class Orders extends Component {
                             >
                                 <Tabs defaultActiveKey="5" onChange={callback}>
                                     <TabPane tab="Services" key="5">
-                                        <OrdersPending order_type="service" />
+                                        <OrdersPending order_type="services" />
                                     </TabPane>
                                     <TabPane tab="Packages" key="6">
-                                        <OrdersPending order_type="package" />
+                                        <OrdersPending order_type="packages" />
                                     </TabPane>
                                 </Tabs>
                             </div>

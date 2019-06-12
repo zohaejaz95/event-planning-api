@@ -49,7 +49,7 @@ Route::get('NGOs/get/events','NgoController@get_events');
 Route::get('NGOs/get/event/{id}','NgoController@get_event');
 Route::post('NGOs/create/sponsorship','NgoController@create_sponsorship');
 Route::put('NGOs/sponsorships/accept/{id}','NgoController@accept_sponsorship');
-Route::get('NGOs/sponsorships/get/{id}/{status}','NgoController@get_sponsorships_events');
+Route::get('NGOs/sponsorships/get/{id}/{status}/{type}','NgoController@get_sponsorships_events');
 Route::get('NGOs/sponsorships/funding/{id}','NgoController@get_funding_status');
 
 Route::put('admin/vendor/update/{id}','VendorController@updateStatus');
@@ -90,6 +90,8 @@ Route::delete('customer/guest_list/remove/{id}','ContactListController@remove_gu
 Route::post('vendor/create/service','VendorController@create_service');
 Route::get('vendor/get/service/{id}','VendorController@get_service');
 Route::get('vendor/get/service/category/{cat}','VendorController@get_service_cat');
+Route::get('vendor/get/service/all/token','VendorController@get_vendor_services');
+
 
 Route::put('vendor/update/serivce/{id}','VendorController@update_service');
 Route::delete('vendor/delete/serivce/{id}','VendorController@delete_service');
@@ -99,7 +101,7 @@ Route::get('vendor/get/packages/token','VendorController@get_ven_package');
 Route::get('vendor/get/packages/all','VendorController@get_all_package');
 Route::get('vendor/get/orders/approved/{type}','VendorController@get_order_approved');
 Route::get('vendor/get/orders/pending/{type}','VendorController@get_order_pending');
-Route::put('vendor/update/orders/{id}/{status}','VendorController@update_order_status');
+Route::get('vendor/update/orders/{id}/{status}','VendorController@update_order_status');
 
 Route::put('vendor/update/package/{id}','VendorController@update_package');
 Route::delete('vendor/delete/package/{id}','VendorController@delete_package');

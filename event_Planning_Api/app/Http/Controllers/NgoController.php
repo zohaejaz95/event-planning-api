@@ -7,6 +7,7 @@ use App\User;
 use App\ngo;
 use App\ngo_events;
 use App\sponsorships;
+use App\vendor;
 use App\Http\Requests;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\NGO as ngoResource;
@@ -103,7 +104,7 @@ class NgoController extends Controller
     {
         //
         $user=User::findOrFail(Auth::guard('api')->id());
-        if($user->user_type=="admin"){
+        if($user->user_type=="admin"||$user->user_type=="vendor"){
         return ngo::findOrFail($id);
         }
 
@@ -182,7 +183,7 @@ public function update_event(Request $request,$id){
         'date' => $request->input('date'),
         'fund' => $request->input('fund'),
         'status' => $request->input('status'),
-        'ngo_id' =>$ngo->ngo_id
+        'ngo_id' =>$ngo[0]->ngo_id
     ]);
     }
     
@@ -191,7 +192,7 @@ public function delete_event(Request $request,$id){
     $user=User::findOrFail(Auth::guard('api')->id());
     if($user->user_type=="ngo"){
         $ngo= ngo::where('username',$user->name)->get();
-        $ngoe= ngo_events::where('ngo_id',$ngo->ngo_id)->where('event_id',$id)->get();
+        $ngoe= ngo_events::where('ngo_id',$ngo[0]->ngo_id)->where('event_id',$id)->get();
     $ngoe->delete();
     }
     
@@ -201,7 +202,7 @@ public function get_events_token(){
     $user=User::findOrFail(Auth::guard('api')->id());
     if($user->user_type=="ngo"){
         $ngo= ngo::where('username',$user->name)->get();
-        $events=ngo_events::where('ngo_id',$ngo->ngo_id)->paginate(15);
+        $events=ngo_events::where('ngo_id',$ngo[0]->ngo_id)->paginate(15);
         return $events;
     }
 }
@@ -233,7 +234,7 @@ public function create_sponsorship(Request $request){
             'type'=> $request->input('type'),
             'donation'=> $request->input('donation'),
             'status' =>'pending',
-            'vendor_id' => $vendor->vendor_id,
+            'vendor_id' => $vendor[0]->vendor_id,
             'ngo_id' => $request->input('ngo_id'),
             'service_id' => $request->input('service_id'),
             'nevent_id' => $request->input('nevent_id')
@@ -252,11 +253,11 @@ public function accept_sponsorship($id){
     }
     
 }
-public function get_sponsorships_events($id,$status){
+public function get_sponsorships_events($id,$status,$type){
     $user=User::findOrFail(Auth::guard('api')->id());
     if($user->user_type=="ngo"){
         
-        $spon= sponsorships::where('nevent_id',$id)->where('status',$status)->paginate(15);
+        $spon= sponsorships::where('nevent_id',$id)->where('status',$status)->where('type',$type)->paginate(15);
         return $spon;
     }
 }

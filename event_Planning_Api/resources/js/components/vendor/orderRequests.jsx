@@ -1,31 +1,10 @@
 import React, { Component } from "react";
-import { List, Avatar, Button, Icon, Collapse } from "antd";
+import { List, Avatar, Button, Icon, Collapse, Modal, message } from "antd";
 import avatar from "../../images/avatar.jpg";
-
+import { getOrderPending, updateOrderStatus } from "./vendorFunctions";
 const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group;
-const data = [
-    {
-        num: 1,
-        title: "Order 1"
-    },
-    {
-        num: 2,
-        title: "Order 2"
-    },
-    {
-        num: 3,
-        title: "Order 3"
-    },
-    {
-        num: 4,
-        title: "Order 4"
-    },
-    {
-        num: 5,
-        title: "Order 5"
-    }
-];
+const confirm = Modal.confirm;
 const customPanelStyle = {
     background: "#f7f7f7",
     borderRadius: 4,
@@ -35,20 +14,114 @@ const customPanelStyle = {
 };
 
 class OrderRequests extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            orders: [],
+            details: false
+        };
+        this.pendingOrders = this.pendingOrders.bind(this);
+        this.showApproveConfirm = this.showApproveConfirm.bind(this);
+        this.showRejectConfirm = this.showRejectConfirm.bind(this);
+    }
+
+    pendingOrders() {
+        getOrderPending(this.props.order_type).then(response => {
+            if (response) {
+                this.setState({
+                    orders: response.data
+                });
+                console.log(response.data);
+            }
+        });
+    }
+    showApproveConfirm(item) {
+        confirm({
+            title: "Are you sure you want to accept this order?",
+            content: "Order ID: " + item.o_id,
+            okText: "Yes",
+            okType: "danger",
+            cancelText: "No",
+            onOk() {
+                console.log("OK");
+                updateOrderStatus(item.o_id, "approved").then(res => {
+                    if (res) {
+                        message.success("Marked as approved");
+                    } else {
+                        message.error("Something went wrong!");
+                    }
+                });
+            },
+            onCancel() {
+                console.log("Cancel");
+                message.error("Still Pending");
+            }
+        });
+    }
+    showRejectConfirm(item) {
+        confirm({
+            title: "Are you sure you want to reject this order?",
+            content: "Order ID: " + item.o_id,
+            okText: "Yes",
+            okType: "danger",
+            cancelText: "No",
+            onOk() {
+                console.log("OK");
+                updateOrderStatus(item.o_id, "rejected").then(res => {
+                    if (res) {
+                        message.info("Order Request Rejected!");
+                        this.setState({
+                            orders: []
+                        });
+                        this.pendingOrders();
+                    } else {
+                        message.error("Something went wrong!");
+                    }
+                });
+            },
+            onCancel() {
+                console.log("Cancel");
+                message.error("Still Pending");
+            }
+        });
+    }
+    componentWillMount() {
+        this.pendingOrders();
+        if (this.props.order_type == "services") {
+            this.setState({
+                details: true
+            });
+        }
+    }
+    // componentWillUpdate() {
+    //     this.setState({
+    //         orders: []
+    //     });
+    //     this.pendingOrders();
+    //     if (this.props.order_type == "services") {
+    //         this.setState({
+    //             details: true
+    //         });
+    //     }
+    // }
     render() {
         return (
             <div>
                 <div>
                     <List
                         itemLayout="horizontal"
-                        dataSource={data}
+                        dataSource={this.state.orders}
                         renderItem={item => (
                             <div>
                                 <List.Item>
                                     <List.Item.Meta
                                         avatar={<Avatar src={avatar} />}
-                                        title={<p>{item.title}</p>}
-                                        description="Customer Name"
+                                        title={
+                                            <p>{"Order ID: " + item.o_id}</p>
+                                        }
+                                        description={
+                                            "Customer Name: " + item.customer_id
+                                        }
                                     />
                                 </List.Item>
                                 <Collapse
@@ -57,23 +130,42 @@ class OrderRequests extends Component {
                                 >
                                     <Panel
                                         header="Details"
-                                        key={item.num}
+                                        key={item}
                                         style={customPanelStyle}
                                     >
-                                        <p>Service/Package Name:</p>
-                                        <p>Payment Method:</p>
-                                        <p>Description:</p>
+                                        {this.state.details ? (
+                                            <p>
+                                                {"Service Name: " +
+                                                    item.service_id}
+                                            </p>
+                                        ) : (
+                                            <p>
+                                                {"Package Name: " +
+                                                    item.package_id}
+                                            </p>
+                                        )}
                                         <p>
-                                            Lorem, ipsum dolor sit amet
-                                            consectetur adipisicing elit.
-                                            Deserunt neque iste architecto
-                                            beatae labore provident, consectetur
-                                            qui ducimus numquam vero et sint
-                                            voluptatibus doloribus fugiat eum
-                                            ratione quibusdam dicta eius.
+                                            Payment Method:{" "}
+                                            {item.payment_method}
                                         </p>
-                                        <Button type="primary">Accept</Button>
-                                        <Button type="danger">Reject</Button>
+                                        <p>Description:</p>
+                                        <p>{item.description}</p>
+                                        <Button
+                                            type="primary"
+                                            onClick={() =>
+                                                this.showApproveConfirm(item)
+                                            }
+                                        >
+                                            Accept
+                                        </Button>
+                                        <Button
+                                            type="danger"
+                                            onClick={() =>
+                                                this.showRejectConfirm(item)
+                                            }
+                                        >
+                                            Reject
+                                        </Button>
                                     </Panel>
                                 </Collapse>
                             </div>

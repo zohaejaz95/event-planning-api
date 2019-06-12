@@ -1,40 +1,98 @@
 import React, { Component } from "react";
 import {
     Form,
-    Input,
     InputNumber,
     Select,
     Button,
-    Checkbox,
+    Radio,
     Row,
-    Col
+    Col,
+    message
 } from "antd";
-
+import { getAllServices, createSponsorship } from "./vendorFunctions";
 //import loginImage from "../../images/Pakistani-Wedding.png";
 function onChange(value) {
     console.log("changed", value);
 }
+function onChangeServ(value) {
+    console.log(`selected ${value}`);
+}
+
+function onBlur() {
+    console.log("blur");
+}
+
+function onFocus() {
+    console.log("focus");
+}
+
+function onSearch(val) {
+    console.log("search:", val);
+}
 class SponsorshipForm extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+        this.state = {
+            value: "",
+            services: [],
+            cash: "",
+            serv: ""
+        };
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+    componentWillMount() {
+        getAllServices().then(res => {
+            if (res) {
+                this.setState({
+                    services: res
+                });
+                console.log(res);
+            }
+        });
     }
     handleSubmit(e) {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
+                values["type"] = this.state.value;
+                var list = this.props.ngo_data;
+                values["ngo_id"] = list.ngo_id;
+                values["nevent_id"] = list.event_id;
                 console.log("Received values of form: ", values);
+                createSponsorship(values).then(res => {
+                    if (res) {
+                        message.success("Request Submission Successful");
+                    } else {
+                        message.error("Unable to complete request!");
+                    }
+                });
             }
         });
     }
+    onChange1(e) {
+        console.log("radio checked", e.target.value);
+        this.setState({
+            value: e.target.value
+        });
+        if (e.target.value == "cash") {
+            this.setState({
+                cash: "",
+                serv: "disabled"
+            });
+        } else {
+            this.setState({
+                serv: "",
+                cash: "disabled"
+            });
+        }
+    }
     render() {
-        const Option = Select.Option;
-        const selectAfter = (
-            <Select defaultValue="service1" style={{ width: 100 }}>
-                <Option value="service1">service1</Option>
-                <Option value="service2">service2</Option>
-            </Select>
-        );
+        const { getFieldDecorator } = this.props.form;
+        const { Option } = Select;
+        const options = [
+            { label: "Financial", value: "cash" },
+            { label: "Service", value: "service" }
+        ];
         return (
             <div className="contents">
                 <Row>
@@ -51,38 +109,50 @@ class SponsorshipForm extends Component {
                                     <br />{" "}
                                 </div>
 
-                                <Checkbox.Group
-                                    style={{ width: "100%" }}
-                                    onChange={onChange}
-                                >
-                                    <Row>
-                                        <Col span={8}>
-                                            <Checkbox value="Financial">
-                                                Financial
-                                            </Checkbox>
-                                        </Col>
-                                        <Col span={8}>
-                                            <Checkbox value="Services">
-                                                Services
-                                            </Checkbox>
-                                        </Col>
-                                    </Row>
-                                </Checkbox.Group>
-                            </Form.Item>
-                            <Form.Item>
-                                <InputNumber
-                                    style={{ width: 300 }}
-                                    min={1}
-                                    max={1000000}
-                                    onChange={onChange}
-                                    placeholder="Amount"
+                                <Radio.Group
+                                    options={options}
+                                    onChange={e => this.onChange1(e)}
+                                    value={this.state.value}
                                 />
                             </Form.Item>
                             <Form.Item>
-                                <Input
-                                    addonAfter={selectAfter}
-                                    placeholder="Services"
-                                />
+                                {getFieldDecorator("donation")(
+                                    <InputNumber
+                                        {...this.state.cash}
+                                        style={{ width: "100%" }}
+                                        min={0}
+                                        max={1000000}
+                                        onChange={onChange}
+                                        placeholder="Amount"
+                                    />
+                                )}
+                            </Form.Item>
+                            <Form.Item>
+                                {getFieldDecorator("service_id")(
+                                    <Select
+                                        {...this.state.serv}
+                                        showSearch
+                                        style={{ width: "100%" }}
+                                        placeholder="Select a service"
+                                        optionFilterProp="children"
+                                        onChange={onChangeServ}
+                                        onFocus={onFocus}
+                                        onBlur={onBlur}
+                                        onSearch={onSearch}
+                                        filterOption={(input, option) =>
+                                            option.props.children
+                                                .toLowerCase()
+                                                .indexOf(input.toLowerCase()) >=
+                                            0
+                                        }
+                                    >
+                                        {this.state.services.map((item, i) => (
+                                            <Option value={item.id} key={i}>
+                                                {item.service_name}
+                                            </Option>
+                                        ))}
+                                    </Select>
+                                )}
                             </Form.Item>
 
                             <Button

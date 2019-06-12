@@ -435,6 +435,15 @@ public function get_ven_package(){
     }
 }
 
+// public function get_ven_serv(){
+//     $user=User::findOrFail(Auth::guard('api')->id());
+//     if($user->user_type=="vendor"){
+//         $venid=DB::select("select vendor_id from vendors where username = '$user->name'");
+//         $pack=packages::where('vendor_id',$venid[0]->vendor_id)->join('package_services','packages.p_id','=','package_services.package_id')->paginate(15);
+//         return $pack;
+//     }
+// }
+
 public function get_all_package(){
     $pack=packages::join('package_services','packages.p_id','=','package_services.package_id')->paginate(15);
     return $pack;
@@ -504,7 +513,7 @@ public function get_payment_methods($id){
 }
 
 
-public function get_vendor_services(){
+public function get_vendor_services(Request $request){
     $user=User::findOrFail(Auth::guard('api')->id());
     
     if($user->user_type=="vendor"){
@@ -541,19 +550,17 @@ public function get_order_approved(Request $request,$type){
     if($user->user_type=="vendor"){
         $venid=DB::select("select vendor_id from vendors where username = '$user->name'");
     
-        if($type=="services"){
-        $services=orders::select('o_id','order_status','payment_method','payment_status','description','order_type',
-        'service_id','customer_id','event_id')->where('order_status','pending')->where('order_type','service')
-        ->where('vendor_id',$venid[0]->vendor_id)->paginate(15);
+    if($type=="services"){
+        $services=orders::select('o_id','order_status','payment_method','payment_status','description','order_type','service_id','customer_id','event_id')->where('order_status','approved')->where('order_type','service')->where('vendor_id',$venid[0]->vendor_id)->paginate(15);
         return $services;
     }
     else if($type=="packages"){
         $services=orders::select('o_id','order_status','payment_method','payment_status','description','order_type',
-        'package_id','customer_id','event_id')->where('order_status','pending')->where('order_type','package')
+        'package_id','customer_id','event_id')->where('order_status','approved')->where('order_type','package')
         ->where('vendor_id',$venid[0]->vendor_id)->paginate(15);
         return $services;
     }
-}   
+}  
 }
 public function update_order_status($id,$status){
     $user=User::findOrFail(Auth::guard('api')->id());

@@ -197,7 +197,7 @@ public function get_order ($id){
 
 public function get_order_pending(Request $request,$type,$id){
     $user=User::findOrFail(Auth::guard('api')->id());
-    if($user->user_type=="customer"){
+    if($user->user_type=="customer"||$user->user_type=="vendor"){
         $customer=DB::select("select customer_id from customers where username = '$user->name'");
        
     if($type=="services"){
@@ -216,7 +216,7 @@ public function get_order_pending(Request $request,$type,$id){
 public function get_order_approved(Request $request,$type,$id){
     $user=User::findOrFail(Auth::guard('api')->id());
     
-    if($user->user_type=="customer"){
+    if($user->user_type=="customer"||$user->user_type=="vendor"){
         $customer=DB::select("select customer_id from customers where username = '$user->name'");
     
         if($type=="services"){

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { List, Avatar, Button, Icon } from "antd";
 import SponsorshipForm from "./sponsorshipForm";
 import avatar from "../../images/avatar.jpg";
-
+import { getNGOEvents, getNGOData } from "./vendorFunctions";
 const ButtonGroup = Button.Group;
 const data = [
     {
@@ -28,9 +28,13 @@ class NGOEvents extends Component {
         this.state = {
             list: true,
             detail: false,
-            sponsor: false
+            sponsor: false,
+            events: [],
+            sel: [],
+            ngo_det: []
         };
         this.toggleDetail = this.toggleDetail.bind(this);
+        this.getNGOEvent = this.getNGOEvent.bind(this);
     }
     toggleList() {
         this.setState({
@@ -39,11 +43,19 @@ class NGOEvents extends Component {
             sponsor: false
         });
     }
-    toggleDetail() {
+    toggleDetail(item) {
         this.setState({
             list: false,
             detail: true,
-            sponsor: false
+            sponsor: false,
+            sel: item
+        });
+        getNGOData(item.ngo_id).then(res => {
+            if (res) {
+                this.setState({
+                    ngo_det: res
+                });
+            }
         });
     }
     toggleSponsor() {
@@ -53,6 +65,19 @@ class NGOEvents extends Component {
             sponsor: true
         });
     }
+    componentDidMount() {
+        this.getNGOEvent();
+    }
+    getNGOEvent() {
+        getNGOEvents().then(res => {
+            if (res) {
+                this.setState({
+                    events: res.data
+                });
+                console.log(res.data);
+            }
+        });
+    }
     render() {
         const ngoEventList = (
             <div>
@@ -60,18 +85,18 @@ class NGOEvents extends Component {
                 <hr />
                 <List
                     itemLayout="horizontal"
-                    dataSource={data}
+                    dataSource={this.state.events}
                     renderItem={item => (
                         <div>
                             <List.Item>
                                 <List.Item.Meta
                                     avatar={<Avatar src={avatar} />}
-                                    title={<p>{item.title}</p>}
-                                    description="NGO Name"
+                                    title={<p>{item.subject}</p>}
+                                    description={"Fund Required: " + item.fund}
                                 />
                                 <Button
                                     type="primary"
-                                    onClick={this.toggleDetail.bind(this)}
+                                    onClick={() => this.toggleDetail(item)}
                                 >
                                     View Details
                                 </Button>
@@ -101,22 +126,57 @@ class NGOEvents extends Component {
                 <br />
                 <br />
                 <Avatar size={64} icon="user" />
-                <span>
-                    <h4>NGO Event Name</h4>
-                    <h5>NGO Name</h5>
-                </span>
+
+                <h4>{this.state.ngo_det.ngo_name}</h4>
                 <br />
-                <p>Subject: </p>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Deleniti accusantium consequatur numquam, nulla at omnis
-                    iusto molestias facilis inventore nostrum tenetur beatae
-                    dolorum ad eligendi, maxime exercitationem sequi repudiandae
-                    obcaecati!
-                </p>
-                <p>Time: </p>
-                <p>Date:</p>
-                <p>Required Fund: </p>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>Purpose</th>
+                            <td>{this.state.ngo_det.purpose}</td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td>{this.state.ngo_det.email}</td>
+                        </tr>
+                        <tr>
+                            <th>Website</th>
+                            <td>{this.state.ngo_det.website}</td>
+                        </tr>
+                        <tr>
+                            <th>Contact</th>
+                            <td>{this.state.ngo_det.contact}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br />
+                <h4>Event Details</h4>
+
+                <br />
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>Subject</th>
+                            <td>{this.state.sel.subject}</td>
+                        </tr>
+                        <tr>
+                            <th>Funds Required</th>
+                            <td>{this.state.sel.fund}</td>
+                        </tr>
+                        <tr>
+                            <th>Start Time</th>
+                            <td>{this.state.sel.start_time}</td>
+                        </tr>
+                        <tr>
+                            <th>End Time</th>
+                            <td>{this.state.sel.end_time}</td>
+                        </tr>
+                        <tr>
+                            <th>Date</th>
+                            <td>{this.state.sel.date}</td>
+                        </tr>
+                    </tbody>
+                </table>
                 <br />
                 <Button type="primary" onClick={this.toggleSponsor.bind(this)}>
                     Accept
@@ -129,17 +189,16 @@ class NGOEvents extends Component {
         const sponsorhipForm = (
             <div>
                 <br />
-                <Avatar size={64} icon="user" />
-                <span>
-                    <h4>NGO Event Name</h4>
-                    <h5>NGO Name</h5>
-                </span>
-                <br />
-
-                <SponsorshipForm />
                 <Button type="danger" onClick={this.toggleDetail.bind(this)}>
                     Cancel
                 </Button>
+                <Avatar size={64} icon="user" />
+                <span>
+                    <h4>{this.state.ngo_det.ngo_name}</h4>
+                    <h5>{this.state.sel.subject}</h5>
+                </span>
+                <br />
+                <SponsorshipForm ngo_data={this.state.sel} />
             </div>
         );
         return (

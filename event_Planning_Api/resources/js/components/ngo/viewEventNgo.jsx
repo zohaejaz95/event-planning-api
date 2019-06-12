@@ -1,66 +1,99 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { List, Avatar, Button, Icon, Card, Progress, Tooltip } from "antd";
+//import { Link } from "react-router-dom";
+import {
+    List,
+    Avatar,
+    Button,
+    Icon,
+    Progress,
+    Tooltip,
+    message,
+    Select
+} from "antd";
 import avatar from "../../images/avatar.jpg";
+import { getEvents, getEventStatus, getSponsorships } from "./ngoFunctions";
 const ButtonGroup = Button.Group;
-const data = [
-    {
-        title: "Customer Event 1"
-    },
-    {
-        title: "Customer Event 2"
-    },
-    {
-        title: "Customer Event 3"
-    },
-    {
-        title: "Customer Event 4"
-    },
-    {
-        title: "Customer Event 5"
-    }
-];
 
 class ViewEventNGO extends Component {
     constructor() {
         super();
         this.state = {
             list: true,
-            detail: false
+            detail: false,
+            events: [],
+            sel: [],
+            num: 0,
+            spon: []
         };
         this.toggleDetail = this.toggleDetail.bind(this);
+        this.getNGOEvent = this.getNGOEvent.bind(this);
+        //this.handleChange = this.handleChange.bind(this);
     }
+
     toggleList() {
         this.setState({
             list: true,
-            detail: false
+            detail: false,
+            events: []
         });
+        this.getNGOEvent();
     }
-    toggleDetail() {
+    toggleDetail(item) {
         this.setState({
             list: false,
-            detail: true
+            detail: true,
+            sel: item
+        });
+        getEventStatus(item.id).then(res => {
+            if (res) {
+                this.setState({
+                    num: res
+                });
+            }
+            console.log(res);
+        });
+        getSponsorships(item.id, "accepted", "service").then(res => {
+            if (res) {
+                this.setState({
+                    spon: res
+                });
+                console.log(res);
+            }
+        });
+    }
+    componentDidMount() {
+        this.getNGOEvent();
+    }
+    getNGOEvent() {
+        getEvents().then(res => {
+            if (res) {
+                this.setState({
+                    events: res.data
+                });
+                //console.log(res.data);
+            }
         });
     }
     render() {
+        //const { Option, OptGroup } = Select;
         const custEventList = (
             <div>
                 <h4>Events</h4>
                 <hr />
                 <List
                     itemLayout="horizontal"
-                    dataSource={data}
+                    dataSource={this.state.events}
                     renderItem={item => (
                         <div>
                             <List.Item>
                                 <List.Item.Meta
                                     avatar={<Avatar src={avatar} />}
-                                    title={<p>{item.title}</p>}
-                                    description="Event Type: Wedding"
+                                    title={<p>{item.subject}</p>}
+                                    description={"Fund Required: " + item.fund}
                                 />
                                 <Button
                                     type="primary"
-                                    onClick={this.toggleDetail.bind(this)}
+                                    onClick={() => this.toggleDetail(item)}
                                 >
                                     View Details
                                 </Button>
@@ -92,65 +125,81 @@ class ViewEventNGO extends Component {
                 <br />
                 <Avatar size={64} icon="user" />
                 <span>
-                    <h4>Customer Event Name</h4>
-                    <h5>Wedding Event</h5>
+                    <h4>Event Details</h4>
+                    <h5>{"Fund Required: " + this.state.sel.fund}</h5>
                 </span>
 
                 <br />
                 <p>Subject: </p>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Deleniti accusantium consequatur numquam, nulla at omnis
-                    iusto molestias facilis inventore nostrum tenetur beatae
-                    dolorum ad eligendi, maxime exercitationem sequi repudiandae
-                    obcaecati!
-                </p>
-                <p>Time: </p>
-                <p>Date:</p>
-                <p>Required Fund: </p>
+                <p>{this.state.sel.subject}</p>
+                <p>Start Time: {this.state.sel.start_time}</p>
+                <p>End Time: {this.state.sel.end_time}</p>
+                <p>Date: {this.state.sel.date}</p>
                 <br />
                 <hr />
                 <h4>Statistics</h4>
-                <p>Fund:</p>
-                <p>Expenses:</p>
-                <p>Budget Status:</p>
+                <p>Fund: {this.state.sel.fund}</p>
+                <p>Sponsored Fund: {this.state.num}</p>
                 <br />
-                <Tooltip placement="topLeft" title="Total Required Fund">
-                    <Progress percent={30} />
+                <Tooltip placement="topLeft" title="Required Fund">
+                    <Progress
+                        percent={Math.ceil(
+                            ((this.state.sel.fund - this.state.num) /
+                                this.state.sel.fund) *
+                                100
+                        )}
+                        status="exception"
+                    />
                 </Tooltip>
                 <Tooltip placement="topLeft" title="Fund Received">
-                    <Progress percent={50} status="active" />
-                </Tooltip>
-                <Tooltip placement="topLeft" title="Limited Fund">
-                    <Progress percent={70} status="exception" />
-                </Tooltip>
-                <Tooltip placement="topLeft" title="Status">
-                    <Progress percent={100} />
+                    <Progress
+                        percent={Math.ceil(
+                            (this.state.num / this.state.sel.fund) * 100
+                        )}
+                        status="active"
+                    />
                 </Tooltip>
                 <br />
                 <br />
-                <hr />
-                <h4>Services</h4>
-                <h5>Category 1</h5>
 
-                <Link to="/">
-                    <Card hoverable bordered={false}>
-                        <h6>Service Name</h6>
-                    </Card>
-                </Link>
-                <br />
-                <Link to="/">
-                    <Card hoverable bordered={false}>
-                        <h6>Service Name</h6>
-                    </Card>
-                </Link>
-                <br />
-                <h5>Category 2</h5>
-                <Link to="/">
-                    <Card hoverable bordered={false}>
-                        <h6>Service Name</h6>
-                    </Card>
-                </Link>
+                {/* <hr />
+                <h4>Services</h4>
+                <List
+                    itemLayout="horizontal"
+                    dataSource={this.state.spon}
+                    renderItem={item => (
+                        <div>
+                            <List.Item>
+                                <List.Item.Meta
+                                    avatar={<Avatar src={avatar} />}
+                                    title={<p>{item.title}</p>}
+                                    description="Vendor Name"
+                                />
+                            </List.Item>
+                            <Collapse bordered={false} defaultActiveKey={["1"]}>
+                                <Panel
+                                    header="Details"
+                                    key={item.num}
+                                    style={customPanelStyle}
+                                >
+                                    <p>Service/Package Name:</p>
+                                    <p>Payment Method:</p>
+                                    <p>Description:</p>
+                                    <p>
+                                        Lorem, ipsum dolor sit amet consectetur
+                                        adipisicing elit. Deserunt neque iste
+                                        architecto beatae labore provident,
+                                        consectetur qui ducimus numquam vero et
+                                        sint voluptatibus doloribus fugiat eum
+                                        ratione quibusdam dicta eius.
+                                    </p>
+                                    <Button type="primary">Accept</Button>
+                                    <Button type="danger">Reject</Button>
+                                </Panel>
+                            </Collapse>
+                        </div>
+                    )}
+                /> */}
                 <br />
             </div>
         );

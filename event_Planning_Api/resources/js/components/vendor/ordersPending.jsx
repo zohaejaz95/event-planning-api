@@ -10,32 +10,11 @@ import {
     Modal
 } from "antd";
 import avatar from "../../images/avatar.jpg";
-
+import { getOrderApproved, updateOrderStatus } from "./vendorFunctions";
 const confirm = Modal.confirm;
 const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group;
-const data = [
-    {
-        num: 1,
-        title: "Order 1"
-    },
-    {
-        num: 2,
-        title: "Order 2"
-    },
-    {
-        num: 3,
-        title: "Order 3"
-    },
-    {
-        num: 4,
-        title: "Order 4"
-    },
-    {
-        num: 5,
-        title: "Order 5"
-    }
-];
+
 const customPanelStyle = {
     background: "#f7f7f7",
     borderRadius: 4,
@@ -44,39 +23,79 @@ const customPanelStyle = {
     overflow: "hidden"
 };
 
-function showDeleteConfirm() {
-    confirm({
-        title: "Are you sure delete this task?",
-        content: "Some descriptions",
-        okText: "Yes",
-        okType: "danger",
-        cancelText: "No",
-        onOk() {
-            console.log("OK");
-            message.success("marked as complete");
-        },
-        onCancel() {
-            console.log("Cancel");
-            message.error("Still Pending");
-        }
-    });
-}
-
 class OrdersPending extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            details: false,
+            orders: []
+        };
+        this.approvedOrders = this.approvedOrders.bind(this);
+        this.showConfirm = this.showConfirm.bind(this);
+    }
+    approvedOrders() {
+        getOrderApproved(this.props.order_type).then(response => {
+            if (response) {
+                this.setState({
+                    orders: response.data
+                });
+            }
+            console.log(response.data);
+        });
+    }
+    componentWillMount() {
+        this.approvedOrders();
+        if (this.props.order_type == "services") {
+            this.setState({
+                details: true
+            });
+        }
+    }
+    showConfirm(item) {
+        confirm({
+            title: "Are you sure this order is completed?",
+            content: "Order ID: " + item.o_id,
+            okText: "Yes",
+            okType: "danger",
+            cancelText: "No",
+            onOk() {
+                console.log("OK");
+                updateOrderStatus(item.o_id, "completed").then(res => {
+                    if (res) {
+                        this.setState({
+                            orders: []
+                        });
+                        this.approvedOrders();
+                        message.success("Marked as complete");
+                    } else {
+                        message.error("Something went wrong!");
+                    }
+                });
+            },
+            onCancel() {
+                console.log("Cancel");
+                message.error("Still Pending");
+            }
+        });
+    }
     render() {
         return (
             <div>
                 <div>
                     <List
                         itemLayout="horizontal"
-                        dataSource={data}
+                        dataSource={this.state.orders}
                         renderItem={item => (
                             <div>
                                 <List.Item>
                                     <List.Item.Meta
                                         avatar={<Avatar src={avatar} />}
-                                        title={<p>{item.title}</p>}
-                                        description="Customer Name"
+                                        title={
+                                            <p>{"Order ID: " + item.o_id}</p>
+                                        }
+                                        description={
+                                            "Customer Name: " + item.customer_id
+                                        }
                                     />
                                 </List.Item>
                                 <Collapse
@@ -85,22 +104,31 @@ class OrdersPending extends Component {
                                 >
                                     <Panel
                                         header="Details"
-                                        key={item.num}
+                                        key={item}
                                         style={customPanelStyle}
                                     >
-                                        <p>Service/Package Name:</p>
-                                        <p>Payment Method:</p>
-                                        <p>Description:</p>
+                                        {this.state.details ? (
+                                            <p>
+                                                {"Service Name: " +
+                                                    item.service_id}
+                                            </p>
+                                        ) : (
+                                            <p>
+                                                {"Package Name: " +
+                                                    item.package_id}
+                                            </p>
+                                        )}
                                         <p>
-                                            Lorem, ipsum dolor sit amet
-                                            consectetur adipisicing elit.
-                                            Deserunt neque iste architecto
-                                            beatae labore provident, consectetur
-                                            qui ducimus numquam vero et sint
-                                            voluptatibus doloribus fugiat eum
-                                            ratione quibusdam dicta eius.
+                                            Payment Method:{" "}
+                                            {item.payment_method}
                                         </p>
-                                        <Checkbox onClick={showDeleteConfirm}>
+                                        <p>Description:</p>
+                                        <p>{item.description}</p>
+                                        <Checkbox
+                                            onClick={() =>
+                                                this.showConfirm(item)
+                                            }
+                                        >
                                             Mark as Complete
                                         </Checkbox>
                                     </Panel>
