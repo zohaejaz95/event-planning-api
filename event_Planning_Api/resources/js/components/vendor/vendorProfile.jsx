@@ -3,9 +3,9 @@ import { Row, Col } from "antd";
 import { vendorProfile, getCategory, getLocation } from "./vendorFunctions";
 //import Upload from "./upload";
 //import Cate from "../../images/cate.jpg";
+var pict = "";
 import Avatar from "../../images/avatar.jpg";
 //const profileData = JSON.parse(localStorage.getItem("usertoken"));
-
 class VendorProfile extends Component {
     constructor() {
         super();
@@ -13,7 +13,8 @@ class VendorProfile extends Component {
             //email: localStorage.getItem("email"),
             profile: [],
             locations: [],
-            category: []
+            category: [],
+            pic_name: ""
         };
     }
     componentDidMount() {
@@ -24,6 +25,18 @@ class VendorProfile extends Component {
                 this.setState({
                     profile: JSON.parse(localStorage.getItem("profile"))
                 });
+                console.log(res.data[0]);
+                var arr = "";
+                arr = res.data[0];
+                var pic = arr.logo;
+                var fields = pic.split("\\");
+                console.log(fields[10]);
+                console.log(pic);
+                this.setState({
+                    pic_name: fields[10]
+                });
+                pict =
+                    "../../../../storage/app/public/vendor/logos/" + fields[10];
             }
         });
         getCategory().then(resp => {
@@ -44,11 +57,19 @@ class VendorProfile extends Component {
         });
     }
     render() {
+        var Logo = {
+            width: "100%",
+            backgroundImage: `url(${pict})`,
+            backgroundPosition: "center",
+            backgroundRepeat: "no - repeat",
+            backgroundSize: "cover"
+        };
         return (
             <div className="contents ">
                 <Row>
                     <Col span={4}>
-                        <img className="avatar-uploader" src={Avatar} alt="" />
+                        <div style={Logo} />
+                        {/* <img className="avatar-uploader" src={Avatar} alt="" /> */}
                     </Col>
                     <Col
                         span={19}
