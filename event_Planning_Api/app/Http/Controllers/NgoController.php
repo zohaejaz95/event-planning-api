@@ -233,7 +233,7 @@ public function delete_event(Request $request,$id){
     $user=User::findOrFail(Auth::guard('api')->id());
     if($user->user_type=="ngo"){
         $ngo= ngo::where('username',$user->name)->get();
-        $ngoe= ngo_events::where('ngo_id',$ngo[0]->ngo_id)->where('event_id',$id)->get();
+        $ngoe= ngo_events::findOrFail($id);
     $ngoe->delete();
     }
     
@@ -283,17 +283,27 @@ public function create_sponsorship(Request $request){
     }
 }
 
-public function accept_sponsorship($id){
+public function accept_sponsorship(Request $request,$id){
     $user=User::findOrFail(Auth::guard('api')->id());
     if($user->user_type=="ngo"){
         $ngo= ngo::where('username',$user->name)->get();
-        $ngoe= ngo_events::where('event_id',$id)->where('ngo_id',$ngo->ngo_id)->get();
+        $ngoe= sponsorships::findOrFail($id);
         $ngoe->update([
-            'status' => 'accepted'
+            "status" => "accepted"
         ]);
     }
     
 }
+
+public function reject_sponsorship(Request $request,$id){
+    $user=User::findOrFail(Auth::guard('api')->id());
+    if($user->user_type=="ngo"){
+        $ngo= ngo::where('username',$user->name)->get();
+        $ngoe= sponsorships::findOrFail($id);
+        $ngoe->delete();
+    }
+}
+
 public function get_sponsorships_events($id,$status,$type){
     $user=User::findOrFail(Auth::guard('api')->id());
     if($user->user_type=="ngo"){

@@ -48,7 +48,7 @@ Route::get('NGOs/get/events/token','NgoController@get_events_token');
 Route::get('NGOs/get/events','NgoController@get_events');
 Route::get('NGOs/get/event/{id}','NgoController@get_event');
 Route::post('NGOs/create/sponsorship','NgoController@create_sponsorship');
-Route::put('NGOs/sponsorships/accept/{id}','NgoController@accept_sponsorship');
+Route::post('NGOs/sponsorships/accept/{id}','NgoController@accept_sponsorship');
 Route::get('NGOs/sponsorships/get/{id}/{status}/{type}','NgoController@get_sponsorships_events');
 Route::get('NGOs/sponsorships/funding/{id}','NgoController@get_funding_status');
 
@@ -90,8 +90,8 @@ Route::delete('customer/guest_list/remove/{id}','ContactListController@remove_gu
 Route::post('vendor/create/service','VendorController@create_service');
 Route::get('vendor/get/service/{id}','VendorController@get_service');
 Route::get('vendor/get/service/category/{cat}','VendorController@get_service_cat');
+Route::get('vendor/get/service/category/token/{cat}','VendorController@get_service_cat_token');
 Route::get('vendor/get/service/all/token','VendorController@get_vendor_services');
-
 
 Route::put('vendor/update/serivce/{id}','VendorController@update_service');
 Route::delete('vendor/delete/serivce/{id}','VendorController@delete_service');

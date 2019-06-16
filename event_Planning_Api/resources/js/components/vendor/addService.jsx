@@ -14,7 +14,7 @@ import {
 import moment from "moment";
 //import loginImage from "../../images/Pakistani-Wedding.png";
 import { createService } from "./vendorFunctions";
-import GetImage from "../getImage";
+//import GetImage from "../getImage";
 function onChange(checkedValues) {
     console.log("checked = ", checkedValues);
 }
@@ -30,7 +30,7 @@ function onChange(checkedValues) {
 //     console.log(time, timeString);
 //     console.log(etime);
 // }
-
+const Option = Select.Option;
 class AddService extends Component {
     constructor() {
         super();
@@ -183,6 +183,13 @@ class AddService extends Component {
         const { getFieldDecorator } = this.props.form;
         const { TextArea } = Input;
         const Option = Select.Option;
+        const prefixSelector = getFieldDecorator("prefix", {
+            initialValue: "92"
+        })(
+            <Select>
+                <Option value="92">+92</Option>
+            </Select>
+        );
         const venue = (
             <div>
                 <Form.Item>
@@ -219,6 +226,7 @@ class AddService extends Component {
                 </Form.Item>
                 <Form.Item>
                     <Input
+                        addonBefore={prefixSelector}
                         placeholder="Enter Contact No"
                         onChange={this.onChangeContact}
                     />

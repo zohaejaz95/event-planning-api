@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { List, Avatar, Button, Icon, Collapse, Modal, Input } from "antd";
+import { List, Avatar, Button, Icon, Collapse, Modal } from "antd";
 import avatar from "../../images/avatar.jpg";
-
+import { getSponsorships } from "./ngoFunctions";
 const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group;
 const data = [
@@ -35,25 +35,54 @@ const customPanelStyle = {
 };
 
 class Sponsorships extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            cash: [],
+            service: [],
+            event_id: "",
+            details: true
+        };
+    }
+    componentWillMount() {
+        this.setState({
+            event_id: this.props.spon
+        });
+        getSponsorships(this.props.spon, "accepted", "cash").then(res => {
+            if (res) {
+                this.setState({
+                    cash: res.data
+                });
+            }
+        });
+        getSponsorships(this.props.spon, "accepted", "service").then(res => {
+            if (res) {
+                this.setState({
+                    service: res.data
+                });
+            }
+        });
+    }
     render() {
         return (
             <div>
-                <Input
-                    suffix={
-                        <Icon type="search" className="certain-category-icon" />
-                    }
-                />
+                <h5>Financial Aid</h5>
                 <div>
                     <List
                         itemLayout="horizontal"
-                        dataSource={data}
+                        dataSource={this.state.cash}
                         renderItem={item => (
                             <div>
                                 <List.Item>
                                     <List.Item.Meta
                                         avatar={<Avatar src={avatar} />}
-                                        title={<p>{item.title}</p>}
-                                        description="Customer Name"
+                                        title={
+                                            "Sponsorship ID: " +
+                                            item.sponsorship_id
+                                        }
+                                        description={
+                                            "Sponsored By: " + item.vendor_id
+                                        }
                                     />
                                 </List.Item>
                                 <Collapse
@@ -62,21 +91,74 @@ class Sponsorships extends Component {
                                 >
                                     <Panel
                                         header="Details"
-                                        key={item.num}
+                                        key={item.sponsorship_id}
                                         style={customPanelStyle}
                                     >
-                                        <p>Service/Package Name:</p>
-                                        <p>Payment Method:</p>
-                                        <p>Description:</p>
-                                        <p>
-                                            Lorem, ipsum dolor sit amet
-                                            consectetur adipisicing elit.
-                                            Deserunt neque iste architecto
-                                            beatae labore provident, consectetur
-                                            qui ducimus numquam vero et sint
-                                            voluptatibus doloribus fugiat eum
-                                            ratione quibusdam dicta eius.
-                                        </p>
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <th>Service Name</th>
+                                                    <td>{item.service_id}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <br />
+                                    </Panel>
+                                </Collapse>
+                            </div>
+                        )}
+                    />
+                    <br />
+                    <ButtonGroup>
+                        <Button type="primary">
+                            <Icon type="left" />
+                            Previous
+                        </Button>
+                        <Button type="primary">
+                            Next
+                            <Icon type="right" />
+                        </Button>
+                    </ButtonGroup>
+                </div>
+
+                <br />
+                <h5>Services Provided</h5>
+                <div>
+                    <List
+                        itemLayout="horizontal"
+                        dataSource={this.state.service}
+                        renderItem={item => (
+                            <div>
+                                <List.Item>
+                                    <List.Item.Meta
+                                        avatar={<Avatar src={avatar} />}
+                                        title={
+                                            "Sponsorship ID: " +
+                                            item.sponsorship_id
+                                        }
+                                        description={
+                                            "Sponsored By: " + item.vendor_id
+                                        }
+                                    />
+                                </List.Item>
+                                <Collapse
+                                    bordered={false}
+                                    defaultActiveKey={["1"]}
+                                >
+                                    <Panel
+                                        header="Details"
+                                        key={item.sponsorship_id}
+                                        style={customPanelStyle}
+                                    >
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <th>Financial Aid</th>
+                                                    <td>{item.donation}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <br />
                                     </Panel>
                                 </Collapse>
                             </div>

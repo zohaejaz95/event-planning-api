@@ -3,11 +3,7 @@ import { List, Avatar, Button, Icon, Select, message, Row, Col } from "antd";
 //import ReactPlayer from "react-player";
 import ServiceDetails from "./serviceDetails";
 import avatar from "../../images/avatar.jpg";
-import {
-    getVendorServices,
-    deleteServices,
-    getServicesCat
-} from "./vendorFunctions";
+import { getServicesCatToken, deleteServices } from "./vendorFunctions";
 
 const ButtonGroup = Button.Group;
 
@@ -46,9 +42,9 @@ class Services extends Component {
         this.paginateService(value);
     }
     paginateService(value) {
-        getServicesCat(value).then(res => {
+        getServicesCatToken(value).then(res => {
             if (res) {
-                console.log(res.data);
+                //console.log(res.data);
                 const lists = JSON.stringify(res.data);
                 const elist = JSON.parse(lists);
                 this.setState({

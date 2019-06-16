@@ -51,6 +51,89 @@ export const createEvent = event => {
         });
 };
 
+export const updateEvent = (id, event) => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //newUser["api_token"] = token.api_token;
+    //console.log(token.api_token);
+    return axios
+        .post("/api/NGOs/update/event/" + id, event, {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token
+            }
+        })
+        .then(response => {
+            //console.log(response.data.data);
+            return true;
+        })
+        .catch(err => {
+            console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
+        });
+};
+
+export const acceptSponsor = id => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    return axios
+        .post(
+            "/api/NGOs/sponsorships/accept/" +
+                id +
+                "?api_token=" +
+                token.api_token,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Access: "application/json",
+                    Authorization: "Bearer " + token.api_token
+                }
+            }
+        )
+        .then(response => {
+            //console.log(response.data.data);
+            return true;
+        })
+        .catch(err => {
+            console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
+        });
+};
+
+export const rejectSponsor = id => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    return axios
+        .post(
+            "/api/NGOs/sponsorships/accept/" +
+                id +
+                "?api_token=" +
+                token.api_token,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Access: "application/json",
+                    Authorization: "Bearer " + token.api_token
+                }
+            }
+        )
+        .then(response => {
+            //console.log(response.data.data);
+            return true;
+        })
+        .catch(err => {
+            console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
+        });
+};
+
 export const getEvents = () => {
     const token = JSON.parse(localStorage.getItem("usertoken"));
     //newUser["api_token"] = token.api_token;
@@ -66,6 +149,31 @@ export const getEvents = () => {
         .then(response => {
             //console.log(response);
             return response.data;
+        })
+        .catch(err => {
+            console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
+        });
+};
+
+export const deleteEvent = id => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //newUser["api_token"] = token.api_token;
+    //console.log(token.api_token);
+    return axios
+        .delete("/api/NGOs/delete/event/" + id, {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token
+            }
+        })
+        .then(response => {
+            //console.log(response);
+            return true;
         })
         .catch(err => {
             console.log(err);

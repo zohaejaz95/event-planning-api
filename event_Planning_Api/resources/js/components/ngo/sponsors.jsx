@@ -2,12 +2,13 @@ import React, { Component } from "react";
 
 import { Tabs } from "antd";
 import SponsorRequest from "./sponsorRequest";
-import Sponsorships from "./sponsorships";
+//import Sponsorships from "./sponsorships";
 
 const TabPane = Tabs.TabPane;
 function callback(key) {
     console.log(key);
 }
+
 class Sponsors extends Component {
     render() {
         return (
@@ -21,11 +22,11 @@ class Sponsors extends Component {
                     className="text-to-left"
                 >
                     <Tabs defaultActiveKey="1" onChange={callback}>
-                        <TabPane tab="Request" key="1">
-                            <SponsorRequest />
+                        <TabPane tab="Request: Financial" key="1">
+                            <SponsorRequest type="cash" />
                         </TabPane>
-                        <TabPane tab="Pending" key="2">
-                            <Sponsorships />
+                        <TabPane tab="Request: Services" key="2">
+                            <SponsorRequest type="service" />
                         </TabPane>
                     </Tabs>
                 </div>

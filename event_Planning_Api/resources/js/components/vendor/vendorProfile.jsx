@@ -35,8 +35,8 @@ class VendorProfile extends Component {
                 this.setState({
                     pic_name: fields[10]
                 });
-                pict =
-                    "../../../../storage/app/public/vendor/logos/" + fields[10];
+                pict = require(`../../../../storage/app/public/vendor/logos/` +
+                    fields[10]);
             }
         });
         getCategory().then(resp => {
@@ -57,46 +57,60 @@ class VendorProfile extends Component {
         });
     }
     render() {
-        var Logo = {
-            width: "100%",
-            backgroundImage: `url(${pict})`,
-            backgroundPosition: "center",
-            backgroundRepeat: "no - repeat",
-            backgroundSize: "cover"
-        };
+        // var Logo = {
+        //     width: "100%",
+        //     backgroundImage: `url(${pict})`,
+        //     backgroundPosition: "center",
+        //     backgroundRepeat: "no - repeat",
+        //     backgroundSize: "cover"
+        // };
         return (
             <div className="contents ">
                 <Row>
                     <Col span={4}>
-                        <div style={Logo} />
-                        {/* <img className="avatar-uploader" src={Avatar} alt="" /> */}
+                        {/* <div style={Logo} /> */}
+                        <img className="avatar-uploader" src={pict} alt="" />
                     </Col>
-                    <Col
-                        span={19}
-                        offset={1}
-                        style={{ background: "#ECECEC", padding: "30px" }}
-                    >
+                    <Col span={19} offset={1} style={{ padding: "30px" }}>
                         <h4>{this.state.profile.vendor_name}</h4>
-                        <h6>Email:</h6> {this.state.profile.email}
-                        <h6>Website:</h6> {this.state.profile.website}
-                        <h6>Contact:</h6> {this.state.profile.contact}
-                        <h6>Locations:</h6>
-                        {this.state.locations.map((con, i) => (
-                            <div key={i}>
-                                <p>
-                                    {i + 1}. City: {con.city}
-                                </p>
-                                <p>Address: {con.address}</p>
-                            </div>
-                        ))}
-                        <h6>Category:</h6>
-                        {this.state.category.map((con, i) => (
-                            <div key={i}>
-                                <p>{con.category}</p>
-                            </div>
-                        ))}
-                        <h6>Description:</h6>
-                        <p>{this.state.profile.description}</p>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th>Email</th>
+                                    <td>{this.state.profile.email}</td>
+                                </tr>
+                                <tr>
+                                    <th>Website</th>
+                                    <td>{this.state.profile.website}</td>
+                                </tr>
+                                <tr>
+                                    <th>Contact</th>
+                                    <td>{this.state.profile.contact}</td>
+                                </tr>
+                                <tr>
+                                    <th>Locations</th>
+
+                                    {this.state.locations.map((con, i) => (
+                                        <td key={i}>
+                                            {i + 1}. City: {con.city}
+                                            <br />
+                                            Address: {con.address}
+                                        </td>
+                                    ))}
+                                </tr>
+                                <tr>
+                                    <th>Category/ies</th>
+
+                                    {this.state.category.map((con, i) => (
+                                        <td key={i}>{con.category}</td>
+                                    ))}
+                                </tr>
+                                <tr>
+                                    <th>Description</th>
+                                    <td>{this.state.profile.description}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </Col>
                 </Row>
                 <br />

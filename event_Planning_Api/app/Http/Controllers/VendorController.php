@@ -370,6 +370,36 @@ public function get_service_cat($cat){
     }
 }
 
+public function get_service_cat_token($cat){
+    $user=User::findOrFail(Auth::guard('api')->id());
+    if(($user->user_type=="vendor")){
+        $vendor=DB::select("select vendor_id from vendors where username = '$user->name'");
+        //return services::where('category',$cat)->paginate(15);
+    if($cat=='venues'){
+        return services::where('vendor_id',$vendor[0]->vendor_id)->where('category',$cat)->join('venues','services.id','=','venues.service_id')->paginate(15);
+    }
+    else if($cat=='photographs'){
+        //return services::findOrFail($id)->photographs()->get();
+          return services::where('vendor_id',$vendor[0]->vendor_id)->where('category',$cat)->join('photographs','services.id','=','photographs.services_id')->paginate(15);
+    }
+    else if($cat=='makeup artists'){
+        return services::where('vendor_id',$vendor[0]->vendor_id)->where('category',$cat)->join('makeup_artists','services.id','=','makeup_artists.service_id')->paginate(15);
+    }
+    else if($cat=='entertainment'){
+        return services::where('vendor_id',$vendor[0]->vendor_id)->where('category',$cat)->join('entertainments','services.id','=','entertainments.service_id')->paginate(15);
+    }
+    else if($cat=='car rental'){
+        return services::where('vendor_id',$vendor[0]->vendor_id)->where('category',$cat)->join('car_rentals','services.id','=','car_rentals.service_id')->paginate(15);
+    }
+    else if($cat=='catering'){
+        return services::where('vendor_id',$vendor[0]->vendor_id)->where('category',$cat)->join('caterings','services.id','=','caterings.service_id')->join('food_services','caterings.id','=','food_services.cater_id')->paginate(15);
+    }
+    else{
+        return services::where('vendor_id',$vendor[0]->vendor_id)->where('category',$cat)->paginate(15);
+    }
+    }
+}
+
 public function delete_service(Request $request,$id){
     $user=User::findOrFail(Auth::guard('api')->id());
     if($user->user_type=="vendor"){

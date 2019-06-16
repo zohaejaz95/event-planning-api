@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 //import { Link } from "react-router-dom";
+import Sponsorships from "./sponsorships";
 import {
     List,
     Avatar,
@@ -8,12 +9,17 @@ import {
     Progress,
     Tooltip,
     message,
-    Select
+    Modal
 } from "antd";
 import avatar from "../../images/avatar.jpg";
-import { getEvents, getEventStatus, getSponsorships } from "./ngoFunctions";
+import {
+    getEvents,
+    getEventStatus,
+    getSponsorships,
+    deleteEvent
+} from "./ngoFunctions";
 const ButtonGroup = Button.Group;
-
+const confirm = Modal.confirm;
 class ViewEventNGO extends Component {
     constructor() {
         super();
@@ -27,7 +33,7 @@ class ViewEventNGO extends Component {
         };
         this.toggleDetail = this.toggleDetail.bind(this);
         this.getNGOEvent = this.getNGOEvent.bind(this);
-        //this.handleChange = this.handleChange.bind(this);
+        this.confirmDelete = this.confirmDelete.bind(this);
     }
 
     toggleList() {
@@ -71,6 +77,28 @@ class ViewEventNGO extends Component {
                     events: res.data
                 });
                 //console.log(res.data);
+            }
+        });
+    }
+    confirmDelete(data) {
+        confirm({
+            title: "Are you sure you want to delete this event?",
+            content: "Subject: " + data.subject,
+            okText: "Yes",
+            okType: "danger",
+            cancelText: "No",
+            onOk() {
+                console.log("OK");
+                deleteEvent(data.event_id).then(res => {
+                    if (res) {
+                        message.success("Deleted Successfully!");
+                    } else {
+                        message.error("Unable to perform action!");
+                    }
+                });
+            },
+            onCancel() {
+                console.log("Cancel");
             }
         });
     }
@@ -121,6 +149,13 @@ class ViewEventNGO extends Component {
                     <Icon type="left-circle" />
                 </Button>
 
+                <Button
+                    type="danger"
+                    onClick={() => this.confirmDelete(this.state.sel)}
+                >
+                    <Icon type="delete" />
+                </Button>
+
                 <br />
                 <br />
                 <Avatar size={64} icon="user" />
@@ -161,45 +196,8 @@ class ViewEventNGO extends Component {
                 </Tooltip>
                 <br />
                 <br />
-
-                {/* <hr />
-                <h4>Services</h4>
-                <List
-                    itemLayout="horizontal"
-                    dataSource={this.state.spon}
-                    renderItem={item => (
-                        <div>
-                            <List.Item>
-                                <List.Item.Meta
-                                    avatar={<Avatar src={avatar} />}
-                                    title={<p>{item.title}</p>}
-                                    description="Vendor Name"
-                                />
-                            </List.Item>
-                            <Collapse bordered={false} defaultActiveKey={["1"]}>
-                                <Panel
-                                    header="Details"
-                                    key={item.num}
-                                    style={customPanelStyle}
-                                >
-                                    <p>Service/Package Name:</p>
-                                    <p>Payment Method:</p>
-                                    <p>Description:</p>
-                                    <p>
-                                        Lorem, ipsum dolor sit amet consectetur
-                                        adipisicing elit. Deserunt neque iste
-                                        architecto beatae labore provident,
-                                        consectetur qui ducimus numquam vero et
-                                        sint voluptatibus doloribus fugiat eum
-                                        ratione quibusdam dicta eius.
-                                    </p>
-                                    <Button type="primary">Accept</Button>
-                                    <Button type="danger">Reject</Button>
-                                </Panel>
-                            </Collapse>
-                        </div>
-                    )}
-                /> */}
+                <h4>Sponsors</h4>
+                <Sponsorships spon={this.state.sel.event_id} />
                 <br />
             </div>
         );

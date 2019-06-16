@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { Statistic, Card, Row, Col, Icon } from "antd";
 import { ngoProfile } from "./ngoFunctions";
+//import imagesdj from "../../../../storage/app/public/ngo/profile_pics/"
 //import Avatar from "../../images/avatar.jpg";
+var pict;
 class NGOProfile extends Component {
     constructor() {
         super();
@@ -26,6 +28,8 @@ class NGOProfile extends Component {
                 this.setState({
                     pic_name: fields[10]
                 });
+                pict = require(`../../../../storage/app/public/ngo/profile_pics/` +
+                    fields[10]);
             }
         });
     }
@@ -43,12 +47,8 @@ class NGOProfile extends Component {
             <div className="contents ">
                 <Row>
                     <Col span={4}>
-                        <div style={Logo} />
-                        {/* <img
-                            className="avatar-uploader"
-                            src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350"
-                            alt="Not found"
-                        /> */}
+                        {/* <div style={Logo} /> */}
+                        <img className="avatar-uploader" src={pict} alt="" />
                     </Col>
                     <Col
                         span={19}
