@@ -40,7 +40,7 @@ class customer_conversations extends Controller
     public function create_conversation($cust_id,$vend_id){
         $user=User::findOrFail(Auth::guard('api')->id());
         if($user->user_type=="vendor"||$user->user_type=="customer"){
-        $cnt=csc::where('customer_id',$cust_id)->where('vendor_id',$vend_id)->count(id);
+        $cnt=csc::where('customer_id',$cust_id)->where('vendor_id',$vend_id)->count('id');
 
             if($cnt==0){            
             $conv=csc::create([
