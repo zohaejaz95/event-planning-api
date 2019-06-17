@@ -18,7 +18,7 @@ class customer_conversations extends Controller
         if($user->user_type=="customer"){
             
             $cust= DB::select("select customer_id from customers where username = '$user->name'");
-            $conv=csc::where('customer_id',$cust[0]->customer_id)->paginate(15);
+            $conv=csc::where('customer_id',$cust[0]->customer_id)->join('vendors','customer_conversations.vendor_id','=','vendors.vendor_id')->paginate(15);
             return $conv;
         }
     }
@@ -27,7 +27,7 @@ class customer_conversations extends Controller
         $user=User::findOrFail(Auth::guard('api')->id());
         if($user->user_type=="vendor"){
             $venid=DB::select("select vendor_id from vendors where username = '$user->name'");
-        $conv=csc::where('vendor_id',$venid[0]->vendor_id)->paginate(15);
+        $conv=csc::where('vendor_id',$venid[0]->vendor_id)->join('customers','customer_conversations.customer_id','=','customers.customer_id')->paginate(15);
         return $conv;
         }
     }

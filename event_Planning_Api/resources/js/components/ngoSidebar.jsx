@@ -171,7 +171,7 @@ class NGOSidebar extends Component {
                             ) : this.state.profile ? (
                                 <NGOProfile />
                             ) : this.state.messages ? (
-                                <Messages />
+                                <Messages sender="ngo" receiver="vendor" />
                             ) : (
                                 <NGOProfile />
                             )}

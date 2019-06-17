@@ -21,7 +21,10 @@ class Order extends Component {
                     <Col span={14} offset={2}>
                         {this.state.show ? (
                             <div>
-                                <OrderForm order={this.props.order} />
+                                <OrderForm
+                                    order={this.props.order}
+                                    details={this.props.details}
+                                />
                             </div>
                         ) : (
                             <div />

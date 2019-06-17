@@ -1,6 +1,14 @@
 import React, { Component } from "react";
-import { Form, Input, Button, message, Modal, Select } from "antd";
-import { getEvents, newOrder } from "./customer/customerFunction";
+import {
+    Form,
+    Input,
+    Button,
+    message,
+    Modal,
+    Select,
+    notification
+} from "antd";
+import { getEvents, newOrder, createConvo } from "./customer/customerFunction";
 //import loginImage from "../../images/Pakistani-Wedding.png";
 const Option = Select.Option;
 class CustOrderForm extends Component {
@@ -49,6 +57,21 @@ class CustOrderForm extends Component {
                 newOrder(values).then(res => {
                     if (res) {
                         message.success("Order has been placed!");
+                        console.log(this.state.events);
+                        console.log(this.props.details);
+                        var c_id = this.state.events[0];
+                        createConvo(
+                            c_id.customer_id,
+                            this.props.details.vendor_id
+                        ).then(res => {
+                            if (res) {
+                                notification["info"]({
+                                    message: "Chat Now",
+                                    description:
+                                        "Now you can chat with the customer. Open messages now!"
+                                });
+                            }
+                        });
                     } else {
                         message.error("Unable to place order!");
                     }

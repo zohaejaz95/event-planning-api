@@ -14,11 +14,11 @@ class ChatBox extends Component {
                     <Col span={1} offset={1}>
                         <h4>Zoha</h4>
                     </Col>
-                    <Col span={1} offset={18}>
+                    {/* <Col span={1} offset={18}>
                         <Button type="danger">
                             <Icon type="delete" />
                         </Button>
-                    </Col>
+                    </Col> */}
                 </Row>
 
                 <hr />

@@ -13,7 +13,7 @@ import Header from "./components/header";
 import Home from "./components/home";
 import NGO from "./components/ngo";
 import Contact from "./components/contactUs";
-import Services from "./components/services";
+//import Services from "./components/services";
 import Category from "./components/category";
 import Order from "./components/order";
 

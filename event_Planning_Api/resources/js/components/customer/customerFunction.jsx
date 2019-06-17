@@ -576,3 +576,38 @@ export const getEventId = id => {
             }
         });
 };
+
+//create convo
+
+export const createConvo = (cust_id, ven_id) => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //newUser["api_token"] = token.api_token;
+    console.log(token.api_token);
+    return axios
+        .post(
+            "/api/chat/customer/new/conversation/" +
+                cust_id +
+                "/" +
+                ven_id +
+                "?api_token=" +
+                token.api_token,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Access: "application/json",
+                    Authorization: "Bearer " + token.api_token,
+                    token: token.api_token
+                }
+            }
+        )
+        .then(response => {
+            return true;
+        })
+        .catch(err => {
+            console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
+        });
+};

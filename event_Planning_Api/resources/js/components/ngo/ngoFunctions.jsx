@@ -264,15 +264,24 @@ export const getSponsorships = (id, status, type) => {
 export const createConvo = (ngo_id, ven_id) => {
     const token = JSON.parse(localStorage.getItem("usertoken"));
     //newUser["api_token"] = token.api_token;
-    console.log(token.api_token);
+    //console.log(token.api_token);
     return axios
-        .post("/api/chat/ngo/new/conversation/" + ngo_id + "/" + ven_id, {
-            headers: {
-                "Content-Type": "application/json",
-                Access: "application/json",
-                Authorization: "Bearer " + token.api_token
+        .post(
+            "/api/chat/ngo/new/conversation/" +
+                ngo_id +
+                "/" +
+                ven_id +
+                "?api_token=" +
+                token.api_token,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Access: "application/json",
+                    Authorization: "Bearer " + token.api_token,
+                    token: token.api_token
+                }
             }
-        })
+        )
         .then(response => {
             return true;
         })

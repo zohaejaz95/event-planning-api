@@ -300,7 +300,7 @@ class Customer extends Component {
                             ) : this.state.contact ? (
                                 <Contacts />
                             ) : this.state.messages ? (
-                                <Messages />
+                                <Messages sender="customer" receiver="vendor" />
                             ) : (
                                 <Profile />
                             )}

@@ -18,7 +18,7 @@ class ngo_conversations extends Controller
         if($user->user_type=="ngo"){
             
             $ngo= DB::select("select ngo_id from ngos where username = '$user->name'");
-            $conv=ngc::where('ngo_id',$ngo[0]->ngo_id)->paginate(15);
+            $conv=ngc::where('ngo_id',$ngo[0]->ngo_id)->join('vendors','ngo_conversations.vendor_id','=','vendors.vendor_id')->paginate(15);
             return $conv;
         }
     }
@@ -27,7 +27,7 @@ class ngo_conversations extends Controller
         $user=User::findOrFail(Auth::guard('api')->id());
         if($user->user_type=="vendor"){
             $venid=DB::select("select vendor_id from vendors where username = '$user->name'");
-        $conv=ngc::where('vendor_id',$venid[0]->vendor_id)->paginate(15);
+        $conv=ngc::where('vendor_id',$venid[0]->vendor_id)->join('ngos','ngo_conversations.ngo_id','=','ngos.ngo_id')->paginate(15);
         return $conv;
         }
     }
