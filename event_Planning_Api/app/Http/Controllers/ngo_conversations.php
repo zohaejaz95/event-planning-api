@@ -40,7 +40,7 @@ class ngo_conversations extends Controller
     public function create_conversation($ngo_id,$vend_id){
         $user=User::findOrFail(Auth::guard('api')->id());
         if($user->user_type=="vendor"||$user->user_type=="ngo"){
-        $cnt=ngc::where('ngo_id',$ngo_id)->where('vendor_id',$vend_id)->count(id);
+        $cnt=ngc::where('ngo_id',$ngo_id)->where('vendor_id',$vend_id)->count('id');
 
             if($cnt==0){            
             $conv=ngc::create([
