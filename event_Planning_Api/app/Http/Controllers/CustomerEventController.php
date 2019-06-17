@@ -90,9 +90,11 @@ class CustomerEventController extends Controller
         $user=User::findOrFail(Auth::guard('api')->id());
         if($user->user_type=="customer"){
             $customer=DB::select("select customer_id from customers where username = '$user->name'");
-            $event=customer_event::findOrFail($id)->get();
-            if($event->customer_id==$customer[0]->customer_id){
-            return customer_event::findOrFail($id)->get();
+            $event=DB::select("select customer_id from customer_events where event_id = '$id'");
+            //$event=customer_event::findOrFail($id);
+            if($event[0]->customer_id==$customer[0]->customer_id){
+                $eve=customer_event::findOrFail($id);
+            return $eve;
             }
         }
     }
@@ -103,9 +105,26 @@ class CustomerEventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request,$id)
     {
         //
+        $user=User::findOrFail(Auth::guard('api')->id());
+        if($user->user_type=="customer"){
+            $customer=DB::select("select customer_id from customers where username = '$user->name'");
+        
+            $event=customer_event::findOrFail($id);
+            $event->update([
+            'event_name'=>$request->input('event_name'),
+            'category'=>$request->input('category'),
+            'description'=>$request->input('description'),
+            'budget'=>$request->input('budget'),
+            'date'=>$request->input('date'),
+            'time'=>$request->input('time'),
+            'status'=>$request->input('status'),
+            'type'=>$request->input('type'),
+            'customer_id'=>$customer[0]->customer_id 
+            ]);
+        }
     }
 
     /**

@@ -125,7 +125,7 @@ class CustEventForm extends Component {
                                     ]
                                 })(
                                     <TimePicker
-                                        style={{ width: 300 }}
+                                        style={{ width: "100%" }}
                                         onChange={onChangeTime}
                                         defaultOpenValue={moment(
                                             "00:00:00",
@@ -144,7 +144,7 @@ class CustEventForm extends Component {
                                     ]
                                 })(
                                     <DatePicker
-                                        style={{ width: 300 }}
+                                        style={{ width: "100%" }}
                                         onChange={onChangeDate}
                                     />
                                 )}
@@ -159,7 +159,7 @@ class CustEventForm extends Component {
                                     ]
                                 })(
                                     <InputNumber
-                                        style={{ width: 300 }}
+                                        style={{ width: "100%" }}
                                         min={1}
                                         max={1000000}
                                         placeholder="Budget"

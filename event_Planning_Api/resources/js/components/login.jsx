@@ -8,7 +8,8 @@ import {
     Checkbox,
     Row,
     Col,
-    Alert
+    Alert,
+    message
 } from "antd";
 
 import loginImage from "../images/Pakistani-Wedding.png";
@@ -21,7 +22,8 @@ class Login extends Component {
             url: "/",
             msg: false,
             succ: false,
-            token: ""
+            token: "",
+            confirmLoading: false
         };
 
         this.showModal = this.showModal.bind(this);
@@ -67,6 +69,10 @@ class Login extends Component {
                         this.setState({
                             token: user.user_type
                         });
+                        //window.location.reload();
+                        window.location.href =
+                            "http://localhost:8000/" + user.user_type;
+                        message.success("Login Successful!");
                         const { history } = this.props;
                         //var path = "/" + res.data.user_type;
                         //this.handleOk();
@@ -107,6 +113,7 @@ class Login extends Component {
                 <Modal
                     title=""
                     style={{ top: "8%", width: "1em" }}
+                    confirmLoading={this.state.confirmLoading}
                     visible={this.state.visible}
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
@@ -230,13 +237,6 @@ class Login extends Component {
                                     message="Error"
                                     description="Invalid Email or Password"
                                     type="error"
-                                    showIcon
-                                />
-                            ) : this.state.succ ? (
-                                <Alert
-                                    message="Login Successful!"
-                                    description="Click on Dashboard to view your profile."
-                                    type="success"
                                     showIcon
                                 />
                             ) : (

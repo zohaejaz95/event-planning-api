@@ -25,7 +25,8 @@ class Vendor extends Component {
             order: false,
             events: false,
             sponsor: false,
-            messages: false
+            messages: false,
+            msg: false
         };
         this.toggle = this.toggle.bind(this);
     }
@@ -45,7 +46,8 @@ class Vendor extends Component {
             order: false,
             events: false,
             sponsor: false,
-            messages: false
+            messages: false,
+            msg: false
         });
     }
     viewServices() {
@@ -58,7 +60,8 @@ class Vendor extends Component {
             order: false,
             events: false,
             sponsor: false,
-            messages: false
+            messages: false,
+            msg: false
         });
     }
 
@@ -72,7 +75,8 @@ class Vendor extends Component {
             order: false,
             events: false,
             sponsor: false,
-            messages: false
+            messages: false,
+            msg: false
         });
     }
 
@@ -86,7 +90,8 @@ class Vendor extends Component {
             order: false,
             events: false,
             sponsor: false,
-            messages: false
+            messages: false,
+            msg: false
         });
     }
     newPackages() {
@@ -99,7 +104,8 @@ class Vendor extends Component {
             order: false,
             events: false,
             sponsor: false,
-            messages: false
+            messages: false,
+            msg: false
         });
     }
 
@@ -113,7 +119,8 @@ class Vendor extends Component {
             order: true,
             events: false,
             sponsor: false,
-            messages: false
+            messages: false,
+            msg: false
         });
     }
 
@@ -127,7 +134,8 @@ class Vendor extends Component {
             order: false,
             events: true,
             sponsor: false,
-            messages: false
+            messages: false,
+            msg: false
         });
     }
     sponsorships() {
@@ -140,7 +148,8 @@ class Vendor extends Component {
             order: false,
             events: false,
             sponsor: true,
-            messages: false
+            messages: false,
+            msg: false
         });
     }
     message() {
@@ -153,7 +162,22 @@ class Vendor extends Component {
             order: false,
             events: false,
             sponsor: false,
-            messages: true
+            messages: true,
+            msg: false
+        });
+    }
+    messageNGO() {
+        this.setState({
+            services: false,
+            newService: false,
+            profile: false,
+            packages: false,
+            newPackage: false,
+            order: false,
+            events: false,
+            sponsor: false,
+            messages: false,
+            msg: true
         });
     }
 
@@ -242,13 +266,28 @@ class Vendor extends Component {
                                     Sponsorships
                                 </Menu.Item>
                             </SubMenu>
-                            <Menu.Item
-                                key="9"
-                                onClick={this.message.bind(this)}
+                            <SubMenu
+                                key="sub3"
+                                title={
+                                    <span>
+                                        <Icon type="message" />
+                                        <span>Messages</span>
+                                    </span>
+                                }
                             >
-                                <Icon type="message" />
-                                <span> Messages </span>
-                            </Menu.Item>
+                                <Menu.Item
+                                    key="9"
+                                    onClick={this.message.bind(this)}
+                                >
+                                    <span> Customers </span>
+                                </Menu.Item>
+                                <Menu.Item
+                                    key="10"
+                                    onClick={this.messageNGO.bind(this)}
+                                >
+                                    <span> NGOs </span>
+                                </Menu.Item>
+                            </SubMenu>
                         </Menu>
                     </Sider>
                     <Layout>
@@ -288,7 +327,9 @@ class Vendor extends Component {
                             ) : this.state.sponsor ? (
                                 <Sponsorships />
                             ) : this.state.messages ? (
-                                <Messages />
+                                <Messages receiver="customer" sender="vendor" />
+                            ) : this.state.msg ? (
+                                <Messages receiver="ngo" sender="vendor" />
                             ) : (
                                 <VendorProfile />
                             )}

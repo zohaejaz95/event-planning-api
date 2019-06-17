@@ -7,13 +7,15 @@ import {
     Collapse,
     Modal,
     message,
-    Select
+    Select,
+    notification
 } from "antd";
 import {
     getEvents,
     getSponsorships,
     acceptSponsor,
-    rejectSponsor
+    rejectSponsor,
+    createConvo
 } from "./ngoFunctions";
 import avatar from "../../images/avatar.jpg";
 
@@ -109,6 +111,15 @@ class SponsorRequest extends Component {
                 acceptSponsor(item.sponsorship_id).then(res => {
                     if (res) {
                         message.success("Sponsorship Accepted!!");
+                        createConvo(item.ngo_id, item.vendor_id).then(res => {
+                            if (res) {
+                                notification["info"]({
+                                    message: "Chat Now",
+                                    description:
+                                        "Now you can chat with the sponsor. Open messages now!"
+                                });
+                            }
+                        });
                         acc = true;
                     } else {
                         message.error("Action could not be performed!");

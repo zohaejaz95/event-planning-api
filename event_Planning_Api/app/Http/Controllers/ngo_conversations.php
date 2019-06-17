@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\ngo_conversations as ngc;
+use App\User;
+use Auth;
 use App\ngo_chats;
 use App\ngo;
 use App\vendor;

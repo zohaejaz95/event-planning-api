@@ -9,15 +9,19 @@ import {
     Progress,
     Tooltip,
     message,
-    Modal
+    Modal,
+    Row,
+    Col
 } from "antd";
 import avatar from "../../images/avatar.jpg";
 import {
     getEvents,
     getEventStatus,
     getSponsorships,
-    deleteEvent
+    deleteEvent,
+    getEventId
 } from "./ngoFunctions";
+import NGOEditEvent from "./editEvent";
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
 class ViewEventNGO extends Component {
@@ -27,6 +31,7 @@ class ViewEventNGO extends Component {
             list: true,
             detail: false,
             events: [],
+            edit: false,
             sel: [],
             num: 0,
             spon: []
@@ -34,13 +39,17 @@ class ViewEventNGO extends Component {
         this.toggleDetail = this.toggleDetail.bind(this);
         this.getNGOEvent = this.getNGOEvent.bind(this);
         this.confirmDelete = this.confirmDelete.bind(this);
+        this.editEvent = this.editEvent.bind(this);
+        this.getData = this.getData.bind(this);
+        this.getUpdatedEvent = this.getUpdatedEvent.bind(this);
     }
 
     toggleList() {
         this.setState({
             list: true,
             detail: false,
-            events: []
+            events: [],
+            edit: false
         });
         this.getNGOEvent();
     }
@@ -48,8 +57,12 @@ class ViewEventNGO extends Component {
         this.setState({
             list: false,
             detail: true,
-            sel: item
+            sel: item,
+            edit: false
         });
+        this.getData(item);
+    }
+    getData(item) {
         getEventStatus(item.id).then(res => {
             if (res) {
                 this.setState({
@@ -67,6 +80,20 @@ class ViewEventNGO extends Component {
             }
         });
     }
+    getUpdatedEvent(item) {
+        getEventId(item.event_id).then(res => {
+            if (res) {
+                this.setState({
+                    list: false,
+                    detail: true,
+                    sel: res[0],
+                    edit: false
+                });
+                console.log(res[0]);
+                // this.getData(item);
+            }
+        });
+    }
     componentDidMount() {
         this.getNGOEvent();
     }
@@ -76,7 +103,7 @@ class ViewEventNGO extends Component {
                 this.setState({
                     events: res.data
                 });
-                //console.log(res.data);
+                console.log(res.data);
             }
         });
     }
@@ -100,6 +127,14 @@ class ViewEventNGO extends Component {
             onCancel() {
                 console.log("Cancel");
             }
+        });
+    }
+
+    editEvent() {
+        this.setState({
+            list: false,
+            detail: false,
+            edit: true
         });
     }
     render() {
@@ -149,16 +184,24 @@ class ViewEventNGO extends Component {
                     <Icon type="left-circle" />
                 </Button>
 
-                <Button
-                    type="danger"
-                    onClick={() => this.confirmDelete(this.state.sel)}
-                >
-                    <Icon type="delete" />
-                </Button>
-
                 <br />
                 <br />
-                <Avatar size={64} icon="user" />
+                <Row>
+                    <Col span={20}>
+                        <Avatar size={64} icon="user" />
+                    </Col>
+                    <Col span={4}>
+                        <Button
+                            type="danger"
+                            onClick={() => this.confirmDelete(this.state.sel)}
+                        >
+                            <Icon type="delete" />
+                        </Button>
+                        <Button type="primary" onClick={this.editEvent}>
+                            <Icon type="edit" />
+                        </Button>
+                    </Col>
+                </Row>
                 <span>
                     <h4>Event Details</h4>
                     <h5>{"Fund Required: " + this.state.sel.fund}</h5>
@@ -206,11 +249,23 @@ class ViewEventNGO extends Component {
             <div>
                 <br />
 
-                {this.state.list
-                    ? custEventList
-                    : this.state.detail
-                    ? custEventDetail
-                    : custEventList}
+                {this.state.list ? (
+                    custEventList
+                ) : this.state.detail ? (
+                    custEventDetail
+                ) : this.state.edit ? (
+                    <div>
+                        <Button
+                            type="primary"
+                            onClick={() => this.getUpdatedEvent(this.state.sel)}
+                        >
+                            Back
+                        </Button>
+                        <NGOEditEvent event={this.state.sel} />
+                    </div>
+                ) : (
+                    custEventList
+                )}
             </div>
         );
     }

@@ -215,8 +215,8 @@ public function create_event(Request $request){
 public function update_event(Request $request,$id){
     $user=User::findOrFail(Auth::guard('api')->id());
     if($user->user_type=="ngo"){
-        $ngo= ngos::where('username',$user->name)->get();
-        $ngoe= ngo_events::where('ngo_id',$ngo->ngo_id)->where('event_id',$id)->get();
+        $ngo= ngo::where('username',$user->name)->get();
+        $ngoe= ngo_events::findOrFail($id);
     $ngoe->update([
         'subject' => $request->input('subject'),
         'start_time' => $request->input('start_time'),
@@ -256,11 +256,11 @@ public function get_events(){
         return $events;
     }
 }
-public function get_event($id){
+public function get_event_id($id){
     $user=User::findOrFail(Auth::guard('api')->id());
     if($user->user_type=="ngo"){
         $ngo= ngo::where('username',$user->name)->get();
-        $events=ngo_events::where('ngo_id',$ngo->ngo_id)->where('event_id',$id)->get();
+        $events=ngo_events::findOrFail($id)->where('ngo_id',$ngo[0]->ngo_id)->get();
         return $events;
     }
 }

@@ -42,11 +42,11 @@ Route::get('NGOs/{id}','NgoController@show');
 Route::get('ngo/token','NgoController@show_token');
 
 Route::post('NGOs/create/event','NgoController@create_event');
-Route::put('NGOs/update/event/{id}','NgoController@update_event');
+Route::post('NGOs/update/event/{id}','NgoController@update_event');
 Route::delete('NGOs/delete/event/{id}','NgoController@delete_event');
 Route::get('NGOs/get/events/token','NgoController@get_events_token');
 Route::get('NGOs/get/events','NgoController@get_events');
-Route::get('NGOs/get/event/{id}','NgoController@get_event');
+Route::get('NGOs/get/event/{id}','NgoController@get_event_id');
 Route::post('NGOs/create/sponsorship','NgoController@create_sponsorship');
 Route::post('NGOs/sponsorships/accept/{id}','NgoController@accept_sponsorship');
 Route::get('NGOs/sponsorships/get/{id}/{status}/{type}','NgoController@get_sponsorships_events');
@@ -62,6 +62,7 @@ Route::get('admin/vendor/rejected/','VendorController@rejected');
 Route::get('admin/vendor/pending/','VendorController@pending');
 
 Route::post('customer/newevent/','customerEventController@store');
+Route::post('customer/update/event/{id}','customerEventController@edit');
 Route::get('customer/events/list/{status}','customerEventController@index');
 Route::get('customer/events/active','customerEventController@activeEvents');
 

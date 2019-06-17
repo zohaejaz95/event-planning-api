@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use Auth;
 use App\customer_conversations as csc;
 use App\customer_chats;
 use App\customer;

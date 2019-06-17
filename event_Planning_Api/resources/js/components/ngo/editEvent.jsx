@@ -10,11 +10,14 @@ import {
     Col,
     message
 } from "antd";
-import { createEvent } from "./ngoFunctions";
+import { updateEvent } from "./ngoFunctions";
 import moment from "moment";
 var edate = "";
 var estime = "";
 var eetime = "";
+var dat = moment();
+var stime = moment();
+var etime = moment();
 //import loginImage from "../../images/Pakistani-Wedding.png";
 function onChangeDate(date, dateString) {
     console.log(dateString);
@@ -36,13 +39,21 @@ class NGOEditEvent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            stime: this.props.event.start_time,
-            etime: this.props.event.end_time,
-            date: this.props.event.date,
-            fund: this.props.event.fund,
-            subj: this.props.event.subject
+            event: []
         };
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+    componentDidMount() {
+        this.setState({
+            event: this.props.event
+        });
+        // moment("12-25-1995", "MM-DD-YYYY")
+        dat = moment(this.props.event.date, "YYYY-MM-DD");
+        etime = moment(this.props.event.end_time, "HH:mm:ss");
+        stime = moment(this.props.event.start_time, "HH:mm:ss");
+        eetime = this.props.event.end_time;
+        estime = this.props.event.start_time;
+        edate = this.props.event.date;
     }
     handleSubmit(e) {
         e.preventDefault();
@@ -53,11 +64,11 @@ class NGOEditEvent extends Component {
                 values["date"] = edate;
                 values["status"] = "active";
                 console.log("Received values of form: ", values);
-                createEvent(values).then(res => {
+                updateEvent(this.props.event.event_id, values).then(res => {
                     if (res) {
-                        message.success("Event Created Successfully!");
+                        message.success("Event Updated Successfully!");
                     } else {
-                        message.error("Unable to Create Event!");
+                        message.error("Unable to Update Event!");
                     }
                 });
             }
@@ -77,21 +88,11 @@ class NGOEditEvent extends Component {
                             className="login-form "
                         >
                             <Form.Item>
-                                {getFieldDecorator(
-                                    "start_time",
-                                    { initialValue: 3 },
-                                    {
-                                        rules: [
-                                            {
-                                                required: true,
-                                                message:
-                                                    "Please Select Start Time!"
-                                            }
-                                        ]
-                                    }
-                                )(
+                                {getFieldDecorator("start_time", {
+                                    initialValue: stime
+                                })(
                                     <TimePicker
-                                        placeholder="Select Start Time"
+                                        placeholder="Select New Start Time"
                                         style={{ width: "100%" }}
                                         onChange={onChangeStartTime}
                                         defaultOpenValue={moment(
@@ -103,21 +104,11 @@ class NGOEditEvent extends Component {
                             </Form.Item>
 
                             <Form.Item>
-                                {getFieldDecorator(
-                                    "end_time",
-                                    { initialValue: 3 },
-                                    {
-                                        rules: [
-                                            {
-                                                required: true,
-                                                message:
-                                                    "Please Select End Time!"
-                                            }
-                                        ]
-                                    }
-                                )(
+                                {getFieldDecorator("end_time", {
+                                    initialValue: etime
+                                })(
                                     <TimePicker
-                                        placeholder="Select End Time"
+                                        placeholder="Select New End Time"
                                         style={{ width: "100%" }}
                                         onChange={onChangeEndTime}
                                         defaultOpenValue={moment(
@@ -129,39 +120,20 @@ class NGOEditEvent extends Component {
                             </Form.Item>
 
                             <Form.Item>
-                                {getFieldDecorator(
-                                    "date",
-                                    { initialValue: 3 },
-                                    {
-                                        rules: [
-                                            {
-                                                required: true,
-                                                message: "Please Select Date!"
-                                            }
-                                        ]
-                                    }
-                                )(
+                                {getFieldDecorator("date", {
+                                    initialValue: dat
+                                })(
                                     <DatePicker
-                                        placeholder="Select Date"
+                                        placeholder="Select New Date"
                                         style={{ width: "100%" }}
                                         onChange={onChangeDate}
                                     />
                                 )}
                             </Form.Item>
                             <Form.Item>
-                                {getFieldDecorator(
-                                    "fund",
-                                    { initialValue: 3 },
-                                    {
-                                        rules: [
-                                            {
-                                                required: true,
-                                                message:
-                                                    "Please Enter Required Fund!"
-                                            }
-                                        ]
-                                    }
-                                )(
+                                {getFieldDecorator("fund", {
+                                    initialValue: this.state.event.fund
+                                })(
                                     <InputNumber
                                         style={{ width: "100%" }}
                                         min={1}
@@ -173,7 +145,7 @@ class NGOEditEvent extends Component {
                             <Form.Item>
                                 {getFieldDecorator(
                                     "subject",
-                                    { initialValue: "Hello" },
+                                    { initialValue: this.state.event.subject },
                                     {
                                         rules: [
                                             {
@@ -204,6 +176,6 @@ class NGOEditEvent extends Component {
     }
 }
 
-const WrappedNGOEventForm = Form.create({ name: "normal_login" })(NGOEditEvent);
-export default WrappedNGOEventForm;
+const WrappedNGOEventEdit = Form.create({ name: "normal_login" })(NGOEditEvent);
+export default WrappedNGOEventEdit;
 //export default NGOEditEvent;

@@ -4,8 +4,8 @@ import ChatBox from "./chatBox";
 import { Row, Col, Menu, Icon } from "antd";
 
 class Messages extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             data: [
                 {

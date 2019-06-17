@@ -159,6 +159,31 @@ export const getEvents = () => {
         });
 };
 
+export const getEventId = id => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //newUser["api_token"] = token.api_token;
+    //console.log(token.api_token);
+    return axios
+        .get("/api/NGOs/get/event/" + id, {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token
+            }
+        })
+        .then(response => {
+            //console.log(response);
+            return response.data;
+        })
+        .catch(err => {
+            console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
+        });
+};
+
 export const deleteEvent = id => {
     const token = JSON.parse(localStorage.getItem("usertoken"));
     //newUser["api_token"] = token.api_token;
@@ -224,6 +249,32 @@ export const getSponsorships = (id, status, type) => {
         .then(response => {
             //console.log(response);
             return response.data;
+        })
+        .catch(err => {
+            console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
+        });
+};
+
+// create convo
+
+export const createConvo = (ngo_id, ven_id) => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //newUser["api_token"] = token.api_token;
+    console.log(token.api_token);
+    return axios
+        .post("/api/chat/ngo/new/conversation/" + ngo_id + "/" + ven_id, {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token
+            }
+        })
+        .then(response => {
+            return true;
         })
         .catch(err => {
             console.log(err);

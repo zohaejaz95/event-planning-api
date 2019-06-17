@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import EditEvent from "./editEvent";
 import EventOrders from "./eventOrders";
 import {
     List,
@@ -10,14 +11,17 @@ import {
     Tooltip,
     Switch,
     Modal,
-    message
+    message,
+    Row,
+    Col
 } from "antd";
 import avatar from "../../images/avatar.jpg";
 import {
     getEvents,
     updateEventStatus,
     deleteEvent,
-    getExpenses
+    getExpenses,
+    getEventId
 } from "./customerFunction";
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
@@ -26,6 +30,7 @@ class ViewEventCust extends Component {
         super();
         this.state = {
             list: true,
+            edit: false,
             detail: false,
             events: [],
             sel: [],
@@ -50,6 +55,8 @@ class ViewEventCust extends Component {
         this.updateStatus = this.updateStatus.bind(this);
         this.changeStatus = this.changeStatus.bind(this);
         this.deleteEvents = this.deleteEvents.bind(this);
+        this.toggleEdit = this.toggleEdit.bind(this);
+        this.updatedEvent = this.updatedEvent.bind(this);
     }
     showConfirm() {
         var stat = "";
@@ -76,7 +83,7 @@ class ViewEventCust extends Component {
             console.log(val);
             deleteEvent(val.event_id).then(res => {
                 if (res) {
-                    console.log(res.data);
+                    //console.log(res.data);
                     message.success("Event deleted!");
                     this.initEvents(val.status);
                 } else {
@@ -98,7 +105,7 @@ class ViewEventCust extends Component {
             }
             updateEventStatus(val.event_id, stat).then(res => {
                 if (res) {
-                    console.log(res.data);
+                    //console.log(res.data);
                     message.success("Event status changed!");
                     this.initEvents(stat);
                 } else {
@@ -111,7 +118,7 @@ class ViewEventCust extends Component {
         console.log(this.state.sel.event_id);
         updateEventStatus(this.state.sel.event_id, stat).then(res => {
             if (res) {
-                console.log(res.data);
+                //console.log(res.data);
                 message.success("Event status changed!");
             } else {
                 message.error("Unable to change status");
@@ -157,13 +164,15 @@ class ViewEventCust extends Component {
     toggleList() {
         this.setState({
             list: true,
-            detail: false
+            detail: false,
+            edit: false
         });
     }
     toggleDetail(item) {
         this.setState({
             list: false,
             detail: true,
+            edit: false,
             sel: item
         });
         getExpenses(item.event_id).then(res => {
@@ -187,11 +196,29 @@ class ViewEventCust extends Component {
                         status: true
                     });
                 }
-                console.log(res);
+                //console.log(res);
             }
         });
     }
-
+    toggleEdit() {
+        this.setState({
+            list: false,
+            detail: false,
+            edit: true
+        });
+    }
+    updatedEvent() {
+        getEventId(this.state.sel.event_id).then(res => {
+            if (res) {
+                this.setState({
+                    list: false,
+                    detail: true,
+                    edit: false,
+                    sel: res
+                });
+            }
+        });
+    }
     render() {
         const custEventList = (
             <div>
@@ -200,10 +227,10 @@ class ViewEventCust extends Component {
                 {" Active"}
                 <h4>Events</h4>
                 <Button type="primary" onClick={this.changeStatus}>
-                    Mark as Complete
+                    Change Status
                 </Button>{" "}
                 <Button type="danger" onClick={this.deleteEvents}>
-                    Delete
+                    <Icon type="delete" />
                 </Button>
                 <hr />
                 <Checkbox.Group
@@ -250,15 +277,24 @@ class ViewEventCust extends Component {
         const custEventDetail = (
             <div>
                 <Button type="primary" onClick={this.toggleList.bind(this)}>
+                    <Icon type="left" />
                     Back
-                    <Icon type="left-circle" />
-                </Button>{" "}
-                <Button type="primary" onClick={this.showConfirm}>
-                    Change Status
                 </Button>
                 <br />
                 <br />
-                <Avatar size={64} icon="user" />
+                <Row>
+                    <Col span={20}>
+                        <Avatar size={64} icon="user" />
+                    </Col>
+                    <Col span={4}>
+                        <Button type="primary" onClick={this.showConfirm}>
+                            Change Status
+                        </Button>
+                        <Button type="primary" onClick={this.toggleEdit}>
+                            <Icon type="edit" />
+                        </Button>
+                    </Col>
+                </Row>
                 <span>
                     <h4>{this.state.sel.event_name}</h4>
                     <h5>{this.state.sel.category}</h5>
@@ -309,11 +345,21 @@ class ViewEventCust extends Component {
             <div>
                 <br />
 
-                {this.state.list
-                    ? custEventList
-                    : this.state.detail
-                    ? custEventDetail
-                    : custEventList}
+                {this.state.list ? (
+                    custEventList
+                ) : this.state.detail ? (
+                    custEventDetail
+                ) : this.state.edit ? (
+                    <div>
+                        <Button type="primary" onClick={this.updatedEvent}>
+                            <Icon type="left" />
+                            Back
+                        </Button>
+                        <EditEvent event={this.state.sel} />
+                    </div>
+                ) : (
+                    custEventList
+                )}
             </div>
         );
     }
