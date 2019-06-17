@@ -9,6 +9,7 @@ use App\customer_conversations as csc;
 use App\customer_chats;
 use App\customer;
 use App\vendor;
+use Illuminate\Support\Facades\DB;
 class customer_conversations extends Controller
 {
     //

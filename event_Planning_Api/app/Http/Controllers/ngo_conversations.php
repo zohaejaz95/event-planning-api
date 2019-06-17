@@ -9,6 +9,7 @@ use Auth;
 use App\ngo_chats;
 use App\ngo;
 use App\vendor;
+use Illuminate\Support\Facades\DB;
 class ngo_conversations extends Controller
 {
     //
