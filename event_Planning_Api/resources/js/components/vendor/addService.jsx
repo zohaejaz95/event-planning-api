@@ -170,9 +170,20 @@ class AddService extends Component {
                 console.log("Received values of form: ", values);
                 createService(values).then(res => {
                     if (res) {
-                        // addImgServices().then(res=>{
-
-                        // })
+                        var val = {};
+                        for (var i = 0; i < pictures.length; i++) {
+                            val = {
+                                img_name: this.state.name[i],
+                                image: pictures[i]
+                            };
+                            addImgServices(res, val).then(response => {
+                                if (response) {
+                                    console.log("Images added successfully!");
+                                } else {
+                                    console.log("Images couldn't be saved!");
+                                }
+                            });
+                        }
                         message.success("Service created!");
                     } else {
                         message.error("Something went wrong!");

@@ -76,7 +76,7 @@ export const createService = service => {
         })
         .then(response => {
             console.log(response);
-            return true;
+            return response.data;
         })
         .catch(err => {
             console.log(err);
@@ -97,7 +97,7 @@ export const createPackages = service => {
         })
         .then(response => {
             console.log(response);
-            return true;
+            return response.data;
         })
         .catch(err => {
             console.log(err);
