@@ -42,7 +42,8 @@ class VendorRegister extends Component {
             cities: [],
             sel: [],
             address: [],
-            cat: []
+            cat: [],
+            name: ""
         };
 
         this.onDrop = this.onDrop.bind(this);
@@ -61,6 +62,10 @@ class VendorRegister extends Component {
     //     console.log(picture);
     // }
     onDrop(event) {
+        var pic_name = event.target.files[0];
+        this.setState({
+            name: pic_name.name
+        });
         // const data = new FormData();
         // data.append(`file`, event.target.files[0]);
         // data.append("name", "some value user types");
@@ -99,7 +104,7 @@ class VendorRegister extends Component {
                     website: values["website"],
                     description: values["description"],
                     logo: pictures,
-                    img_name: image.file.name,
+                    img_name: this.state.name,
                     locations: {},
                     payment_methods: {},
                     categories: {}
@@ -244,7 +249,7 @@ class VendorRegister extends Component {
                                 imgExtension={[".jpg", ".gif", ".png", ".gif"]}
                                 maxFileSize={5242880}
                             /> */}
-                            <Form.Item>
+                            {/* <Form.Item>
                                 {getFieldDecorator("logo", {
                                     rules: [
                                         {
@@ -261,7 +266,7 @@ class VendorRegister extends Component {
                                         </Button>
                                     </Upload>
                                 )}
-                            </Form.Item>
+                            </Form.Item> */}
                             <Form.Item>
                                 {getFieldDecorator("vendor_name", {
                                     rules: [

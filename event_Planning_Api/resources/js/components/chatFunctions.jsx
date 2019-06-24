@@ -52,38 +52,38 @@ export const getNgoToVendor = () => {
         });
 };
 
-export const getChatNgo = convo_id => {
-    const token = JSON.parse(localStorage.getItem("usertoken"));
-    //newUser["api_token"] = token.api_token;
-    //console.log(token.api_token);
-    return axios
-        .get("/api/chat/ngo/chat/" + convo_id, {
-            headers: {
-                "Content-Type": "application/json",
-                Access: "application/json",
-                Authorization: "Bearer " + token.api_token,
-                token: token.api_token
-            }
-        })
-        .then(response => {
-            //console.log(response.data.data);
-            return response.data;
-        })
-        .catch(err => {
-            console.log(err);
-            console.log(typeof err);
-            if (err.response) {
-                console.log(err.response);
-            }
-        });
-};
+// export const getChatNgo = convo_id => {
+//     const token = JSON.parse(localStorage.getItem("usertoken"));
+//     //newUser["api_token"] = token.api_token;
+//     //console.log(token.api_token);
+//     return axios
+//         .get("/api/chat/ngo/chat/" + convo_id, {
+//             headers: {
+//                 "Content-Type": "application/json",
+//                 Access: "application/json",
+//                 Authorization: "Bearer " + token.api_token,
+//                 token: token.api_token
+//             }
+//         })
+//         .then(response => {
+//             //console.log(response.data.data);
+//             return response.data;
+//         })
+//         .catch(err => {
+//             console.log(err);
+//             console.log(typeof err);
+//             if (err.response) {
+//                 console.log(err.response);
+//             }
+//         });
+// };
 
-export const sendMsgNGO = (ngo_id, ven_id) => {
+export const sendMsgNGO = item => {
     const token = JSON.parse(localStorage.getItem("usertoken"));
     //newUser["api_token"] = token.api_token;
     //console.log(token.api_token);
     return axios
-        .get("/api/chat/ngo/new/conversation/" + ngo_id + "/" + ven_id, {
+        .post("/api/chat/ngo/new/message", item, {
             headers: {
                 "Content-Type": "application/json",
                 Access: "application/json",
@@ -151,5 +151,79 @@ export const getCustToVendor = () => {
             if (err.response) {
                 console.log(err.response);
             }
+        });
+};
+
+export const getNGOChat = id => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //newUser["api_token"] = token.api_token;
+    //console.log(token.api_token);
+    return axios
+        .get("/api/chat/ngo/chat/" + id, {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token,
+                token: token.api_token
+            }
+        })
+        .then(response => {
+            //console.log(response.data.data);
+            return response.data;
+        })
+        .catch(err => {
+            console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
+        });
+};
+
+export const getCustChat = id => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //newUser["api_token"] = token.api_token;
+    //console.log(token.api_token);
+    return axios
+        .get("/api/chat/customer/chat/" + id, {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token,
+                token: token.api_token
+            }
+        })
+        .then(response => {
+            //console.log(response.data.data);
+            return response.data;
+        })
+        .catch(err => {
+            console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
+        });
+};
+
+export const sendMsgCust = item => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //newUser["api_token"] = token.api_token;
+    //console.log(token.api_token);
+    return axios
+        .post("/api/chat/customer/new/message", item, {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token,
+                token: token.api_token
+            }
+        })
+        .then(response => {
+            //console.log(response.data.data);
+            return true;
+        })
+        .catch(err => {
+            console.log(err);
         });
 };

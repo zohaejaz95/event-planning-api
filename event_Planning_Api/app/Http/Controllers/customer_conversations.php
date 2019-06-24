@@ -34,7 +34,7 @@ class customer_conversations extends Controller
     public function get_chat($convo_id){
         $user=User::findOrFail(Auth::guard('api')->id());
         if($user->user_type=="vendor"||$user->user_type=="customer"){
-        $chat=customer_chats::orderBy('msg_no','DESC')->where('convo_id',$convo_id)->paginate(10);
+        $chat=customer_chats::orderBy('msg_no','ASC')->where('convo_id',$convo_id)->paginate(10);
         return $chat;
         }
     }

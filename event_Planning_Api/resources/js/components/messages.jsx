@@ -4,7 +4,9 @@ import {
     getNgoToVendor,
     getVendorToNgo,
     getCustToVendor,
-    getVendorToCust
+    getVendorToCust,
+    getCustChat,
+    getNGOChat
 } from "./chatFunctions";
 import ChatBox from "./chatBox";
 import { Row, Col, Menu, Icon } from "antd";
@@ -15,14 +17,15 @@ class Messages extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            display: false,
             ngo: false,
             venN: false,
             venC: false,
             cust: false,
-            data: []
+            chat: [],
+            data: [],
+            sel: []
         };
-        this.venCustChat = this.venCustChat.bind(this);
-        this.venNgoChat = this.venNgoChat.bind(this);
         this.custChat = this.custChat.bind(this);
         this.ngoChat = this.ngoChat.bind(this);
     }
@@ -87,11 +90,37 @@ class Messages extends Component {
             }
         }
     }
+    ngoChat(item) {
+        this.setState({
+            sel: item,
+            display: false
+        });
+        getNGOChat(item.id).then(res => {
+            if (res) {
+                console.log(res.data);
+                this.setState({
+                    chat: res.data,
+                    display: true
+                });
+            }
+        });
+    }
+    custChat(item) {
+        this.setState({
+            sel: item,
+            display: false
+        });
+        getCustChat(item.id).then(res => {
+            if (res) {
+                console.log(res.data);
+                this.setState({
+                    chat: res.data,
+                    display: true
+                });
+            }
+        });
+    }
 
-    venCustChat() {}
-    venNgoChat() {}
-    ngoChat() {}
-    custChat() {}
     render() {
         const ngoDisplay = (
             <div>
@@ -136,10 +165,7 @@ class Messages extends Component {
                     style={{ height: 440 }}
                 >
                     {this.state.data.map((data, i) => (
-                        <Menu.Item
-                            key={i}
-                            onClick={() => this.venNgoChat(data)}
-                        >
+                        <Menu.Item key={i} onClick={() => this.ngoChat(data)}>
                             <Icon type="user" />
                             {data.ngo_name}
                         </Menu.Item>
@@ -156,10 +182,7 @@ class Messages extends Component {
                     style={{ height: 440 }}
                 >
                     {this.state.data.map((data, i) => (
-                        <Menu.Item
-                            key={i}
-                            onClick={() => this.venCustChat(data)}
-                        >
+                        <Menu.Item key={i} onClick={() => this.custChat(data)}>
                             <Icon type="user" />
                             {data.first_name + " " + data.last_name}
                         </Menu.Item>
@@ -171,7 +194,21 @@ class Messages extends Component {
             <div>
                 <Row>
                     <Col span={17} push={6} offset={1}>
-                        <ChatBox data={this.state.data} />
+                        {this.state.display ? (
+                            <ChatBox
+                                data={this.state.sel}
+                                chat={this.state.chat}
+                                sender={this.props.sender}
+                                receiver={this.props.receiver}
+                            />
+                        ) : (
+                            <div className="text-to-center">
+                                <br />
+                                <br />
+                                <br />
+                                <h6>Select a chat to display.</h6>
+                            </div>
+                        )}
                     </Col>
                     <Col span={6} pull={18}>
                         <div>

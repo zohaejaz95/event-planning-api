@@ -130,6 +130,33 @@ export const updateVendorStatus = (res, id) => {
         });
 };
 
+export const updateNGOStatus = (res, id) => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //console.log(token.api_token);
+
+    console.log(res);
+    console.log(id + res);
+    return axios
+        .put(
+            "/api/admin/NGO/update/" + id,
+            { status: res },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Access: "application/json",
+                    Authorization: "Bearer " + token.api_token
+                }
+            }
+        )
+        .then(response => {
+            console.log(response);
+            return true;
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+
 export const vendorRegister = newUser => {
     const token = JSON.parse(localStorage.getItem("usertoken"));
     return axios

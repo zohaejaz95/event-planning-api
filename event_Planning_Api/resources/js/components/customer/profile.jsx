@@ -4,12 +4,14 @@ import { customerProfile } from "./customerFunction";
 import Avatar from "../../images/avatar.jpg";
 const profileData = JSON.parse(localStorage.getItem("usertoken"));
 //import {customerProfile} from "../userFunction";
+//import imagessf from "../../../../storage/app/public/customer/profile_pics"
 class CustProfile extends Component {
     constructor() {
         super();
         this.state = {
             email: localStorage.getItem("email"),
-            profile: []
+            profile: [],
+            pic_name: ""
         };
     }
     componentDidMount() {
@@ -20,6 +22,17 @@ class CustProfile extends Component {
                 this.setState({
                     profile: JSON.parse(localStorage.getItem("profile"))
                 });
+                var arr = "";
+                arr = res.data[0];
+                var pic = arr.logo;
+                var fields = pic.split("\\");
+                console.log(fields[10]);
+                console.log(pic);
+                this.setState({
+                    pic_name: fields[10]
+                });
+                pict = require(`../../../../storage/app/public/customer/profile_pics` +
+                    fields[10]);
             }
         });
     }

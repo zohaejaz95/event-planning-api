@@ -52,6 +52,8 @@ Route::post('NGOs/sponsorships/accept/{id}','NgoController@accept_sponsorship');
 Route::get('NGOs/sponsorships/get/{id}/{status}/{type}','NgoController@get_sponsorships_events');
 Route::get('NGOs/sponsorships/funding/{id}','NgoController@get_funding_status');
 
+Route::get('vendors/sponsorships/get','NgoController@get_sponsorships_ven');
+
 Route::put('admin/vendor/update/{id}','VendorController@updateStatus');
 Route::put('admin/NGO/update/{id}','NgoController@updateStatus');
 Route::get('admin/NGO/approved/','NgoController@approved');

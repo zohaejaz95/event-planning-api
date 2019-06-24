@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { List, Avatar, Button, Icon, Progress, Tooltip } from "antd";
+import { List, Avatar, Button, Icon, Progress, Tooltip, message } from "antd";
 //import NGODetail from "../admin/ngoDetail";
 import avatar from "../../images/avatar.jpg";
-import { getPendingNGOs } from "../userFunction";
+import { getPendingNGOs, updateNGOStatus } from "../userFunction";
 
 const ButtonGroup = Button.Group;
 
@@ -12,9 +12,11 @@ class NGOInfo extends Component {
         this.state = {
             detail: false,
             ngos: [],
-            arr: {}
+            arr: []
         };
         this.toggleDetail = this.toggleDetail.bind(this);
+        this.toggleDetails = this.toggleDetails.bind(this);
+        this.pending = this.pending.bind(this);
     }
     toggleDetail(item) {
         console.log(item);
@@ -30,7 +32,41 @@ class NGOInfo extends Component {
         });
     }
 
-    componentDidMount() {
+    accepted() {
+        var v_id = this.state.arr.ngo_id;
+        console.log(this.state.arr.ngo_id);
+        updateNGOStatus("approved", v_id).then(res => {
+            if (res) {
+                this.setState({
+                    ngos: []
+                });
+                this.pending();
+                this.toggleDetails();
+                message.success("NGO Account Accepted");
+                //this.props.history.push("/admin");
+            } else {
+                message.error("Something went wrong!!");
+            }
+        });
+    }
+    rejected() {
+        var v_id = this.state.arr.ngo_id;
+        console.log(this.state.arr.ngo_id);
+        updateNGOStatus("rejected", v_id).then(res => {
+            if (res) {
+                this.setState({
+                    ngos: []
+                });
+                this.pending();
+                this.toggleDetails();
+                message.warning("NGO Account Rejected");
+                //this.props.history.push("/admin");
+            } else {
+                message.error("Something went wrong!!");
+            }
+        });
+    }
+    pending() {
         getPendingNGOs().then(res => {
             if (res) {
                 console.log(res.data);
@@ -42,6 +78,9 @@ class NGOInfo extends Component {
                 console.log(this.state.ngos);
             }
         });
+    }
+    componentDidMount() {
+        this.pending();
     }
     render() {
         const ngoList = (
@@ -58,7 +97,7 @@ class NGOInfo extends Component {
                             />
                             <Button
                                 type="primary"
-                                onClick={this.toggleDetail(item)}
+                                onClick={() => this.toggleDetail(item)}
                             >
                                 View Detail
                             </Button>
@@ -67,10 +106,7 @@ class NGOInfo extends Component {
                 />
                 <br />
                 <ButtonGroup>
-                    <Button
-                        type="primary"
-                        onClick={this.toggleDetail.bind(this)}
-                    >
+                    <Button type="primary">
                         <Icon type="left" />
                         Previous
                     </Button>
@@ -103,8 +139,12 @@ class NGOInfo extends Component {
                     <p>Contact: {this.state.arr.contact}</p>
                     <p>Purpose: {this.state.arr.purpose}</p>
                     <br />
-                    <Button type="primary">Accept</Button>
-                    <Button type="danger">Reject</Button>
+                    <Button type="primary" onClick={this.accepted.bind(this)}>
+                        Accept
+                    </Button>
+                    <Button type="danger" onClick={this.rejected.bind(this)}>
+                        Reject
+                    </Button>
                 </div>
             </div>
         );

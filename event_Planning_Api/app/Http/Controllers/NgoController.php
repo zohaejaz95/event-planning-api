@@ -8,6 +8,7 @@ use App\ngo;
 use App\ngo_events;
 use App\sponsorships;
 use App\vendor;
+use App\services;
 use App\Http\Requests;
 use File;
 use Storage;
@@ -317,6 +318,15 @@ public function get_funding_status($id){
     if($user->user_type=="ngo"){
     $spon=sponsorships::where('type','cash')->where('nevent_id',$id)->where('status','accepted')->sum('donation');
     return $spon;
+    }
+}
+
+public function get_sponsorships_ven(){
+    $user=User::findOrFail(Auth::guard('api')->id());
+    if($user->user_type=="vendor"){
+        
+        $spon= sponsorships::join('ngo_events','sponsorships.nevent_id','=','ngo_events.event_id')->join('ngos','sponsorships.ngo_id','=','ngos.ngo_id')->join('services','sponsorships.service_id','=','services.id')->paginate(15);
+        return $spon;
     }
 }
 

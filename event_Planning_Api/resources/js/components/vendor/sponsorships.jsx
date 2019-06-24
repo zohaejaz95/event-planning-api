@@ -10,7 +10,7 @@ import {
     message
 } from "antd";
 import avatar from "../../images/avatar.jpg";
-
+import { getSponsorships } from "./vendorFunctions";
 const confirm = Modal.confirm;
 const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group;
@@ -62,6 +62,22 @@ function showDeleteConfirm() {
 }
 
 class Sponsorships extends Component {
+    constructor() {
+        super();
+        this.state = {
+            spons: []
+        };
+    }
+    componentWillMount() {
+        getSponsorships().then(res => {
+            if (res) {
+                this.setState({
+                    spons: res.data
+                });
+                console.log(res.data);
+            }
+        });
+    }
     render() {
         return (
             <div>
@@ -70,14 +86,14 @@ class Sponsorships extends Component {
                 <div>
                     <List
                         itemLayout="horizontal"
-                        dataSource={data}
+                        dataSource={this.state.spons}
                         renderItem={item => (
                             <div>
                                 <List.Item>
                                     <List.Item.Meta
                                         avatar={<Avatar src={avatar} />}
-                                        title={<p>{item.title}</p>}
-                                        description="NGO Name"
+                                        title={<p>{item.subject}</p>}
+                                        description={item.ngo_name}
                                     />
                                 </List.Item>
                                 <Collapse
@@ -86,21 +102,28 @@ class Sponsorships extends Component {
                                 >
                                     <Panel
                                         header="Details"
-                                        key={item.num}
+                                        key={item.sponsorship_id}
                                         style={customPanelStyle}
                                     >
-                                        <p>
-                                            Lorem, ipsum dolor sit amet
-                                            consectetur adipisicing elit.
-                                            Deserunt neque iste architecto
-                                            beatae labore provident, consectetur
-                                            qui ducimus numquam vero et sint
-                                            voluptatibus doloribus fugiat eum
-                                            ratione quibusdam dicta eius.
-                                        </p>
-                                        <Checkbox onClick={showDeleteConfirm}>
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <th>Donation</th>
+                                                    <td>{item.donation}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Service</th>
+                                                    <td>{item.service_name}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Status</th>
+                                                    <td>{item.status}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        {/* <Checkbox onClick={showDeleteConfirm}>
                                             Mark as Complete
-                                        </Checkbox>
+                                        </Checkbox> */}
                                     </Panel>
                                 </Collapse>
                             </div>
