@@ -93,6 +93,8 @@ Route::get('vendor/get/service/{id}','VendorController@get_service');
 Route::get('vendor/get/service/category/{cat}','VendorController@get_service_cat');
 Route::get('vendor/get/service/category/token/{cat}','VendorController@get_service_cat_token');
 Route::get('vendor/get/service/all/token','VendorController@get_vendor_services');
+Route::post('vendor/service/{id}/add/image','VendorController@add_service_img');
+Route::get('vendor/service/{id}/get/image','VendorController@get_serv_img');
 
 Route::put('vendor/update/serivce/{id}','VendorController@update_service');
 Route::delete('vendor/delete/serivce/{id}','VendorController@delete_service');
@@ -100,6 +102,9 @@ Route::post('vendor/create/package','VendorController@create_package');
 Route::get('vendor/get/package/{id}','VendorController@get_package');
 Route::get('vendor/get/packages/token','VendorController@get_ven_package');
 Route::get('vendor/get/packages/all','VendorController@get_all_package');
+Route::post('vendor/package/{id}/add/image','VendorController@add_package_img');
+Route::get('vendor/package/{id}/get/image','VendorController@get_pkg_img');
+
 Route::get('vendor/get/orders/approved/{type}','VendorController@get_order_approved');
 Route::get('vendor/get/orders/pending/{type}','VendorController@get_order_pending');
 Route::get('vendor/update/orders/{id}/{status}','VendorController@update_order_status');

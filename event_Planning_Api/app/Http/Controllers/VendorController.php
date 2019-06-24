@@ -22,6 +22,8 @@ use App\food_services;
 use App\packages;
 use App\package_services;
 use App\orders;
+use App\service_images;
+use App\package_images;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\Vendor as vendorResource;
 use App\Http\Requests;
@@ -235,7 +237,34 @@ public function create_service(Request $request){
 }
 
 }
+public function add_service_img(Request $request,$id){
+    $user=User::findOrFail(Auth::guard('api')->id());
+    if($user->user_type=="vendor"){
+        $vendor=DB::select("select vendor_id from vendors where username = '$user->name'");
+        $service=services::findOrFail($id);
+        $count=service_images::where('service_id',$id)->count('id');
+        if(($request->has('image'))&&($service->vendor_id==$vendor[0]->id)&&($count<4)){
 
+            $image = $request->image;  // your base64 encoded
+            if (preg_match('/^data:image\/(\w+);base64,/', $image)) {
+                $data = substr($image, strpos($image, ',') + 1);
+                $imageName= time().'_'.$request->input('img_name');
+                Storage::disk('local')->put('\public\services\\' . $imageName, base64_decode($data));
+                //File::put(storage_path(). '\public\vendor\logos\\' . $imageName, base64_decode($image));
+            $path = Storage::disk('local')->path('public\services\\'.$imageName);
+            $simg=service_images::create([
+                'path'=> $path,
+                'service_id'=> $id
+            ]);    
+        
+        }
+        }
+    } 
+}
+public function get_serv_img($id){
+    $simg=service_images::where('service_id',$id)->get();
+    return $simg;
+}
 public function update_service(Request $request,$id){
     $user=User::findOrFail(Auth::guard('api')->id());
     if($user->user_type=="vendor"){
@@ -447,6 +476,35 @@ public function create_package(Request $request){
 
         }
     }    
+}
+
+public function add_package_img(Request $request,$id){
+    $user=User::findOrFail(Auth::guard('api')->id());
+    if($user->user_type=="vendor"){
+        $vendor=DB::select("select vendor_id from vendors where username = '$user->name'");
+        $service=packages::findOrFail($id);
+        $count=package_images::where('service_id',$id)->count('id');
+        if(($request->has('image'))&&($service->vendor_id==$vendor[0]->id)&&($count<4)){
+
+            $image = $request->image;  // your base64 encoded
+            if (preg_match('/^data:image\/(\w+);base64,/', $image)) {
+                $data = substr($image, strpos($image, ',') + 1);
+                $imageName= time().'_'.$request->input('img_name');
+                Storage::disk('local')->put('\public\packages\\' . $imageName, base64_decode($data));
+                //File::put(storage_path(). '\public\vendor\logos\\' . $imageName, base64_decode($image));
+            $path = Storage::disk('local')->path('public\packages\\'.$imageName);
+            $simg=package_images::create([
+                'path'=> $path,
+                'package_id'=> $id
+            ]);    
+        
+        }
+        }
+    } 
+}
+public function get_pkg_img($id){
+    $simg=package_images::where('package_id',$id)->get();
+    return $simg;
 }
 
 public function get_package(Request $request,$id){
