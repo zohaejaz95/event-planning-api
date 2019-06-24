@@ -243,6 +243,7 @@ public function add_service_img(Request $request,$id){
         $vendor=DB::select("select vendor_id from vendors where username = '$user->name'");
         $service=services::findOrFail($id);
         $count=service_images::where('service_id',$id)->count('id');
+        return $count;
         if(($request->has('image'))&&($service->vendor_id==$vendor[0]->vendor_id)&&($count<4)){
 
             $image = $request->image;  // your base64 encoded

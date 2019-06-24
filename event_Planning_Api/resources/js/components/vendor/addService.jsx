@@ -179,6 +179,7 @@ class AddService extends Component {
                             addImgServices(res, val).then(response => {
                                 if (response) {
                                     console.log("Images added successfully!");
+                                    console.log(response);
                                 } else {
                                     console.log("Images couldn't be saved!");
                                 }
