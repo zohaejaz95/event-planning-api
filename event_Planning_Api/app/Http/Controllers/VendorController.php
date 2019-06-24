@@ -233,7 +233,7 @@ public function create_service(Request $request){
             ]);
         }
     }
-    
+    return $service->id;
 }
 
 }
@@ -475,6 +475,7 @@ public function create_package(Request $request){
             ]);
 
         }
+        return $package->p_id;
     }    
 }
 
