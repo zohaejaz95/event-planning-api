@@ -66,6 +66,12 @@ class NGORegister extends Component {
                                     message.success(
                                         "Account created Successfully!"
                                     );
+                                    var user = JSON.parse(
+                                        localStorage.getItem("usertoken")
+                                    );
+                                    window.location.href =
+                                        "http://localhost:8000/" +
+                                        user.user_type;
                                 } else {
                                     message.error("Unable to create Account!");
                                 }

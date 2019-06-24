@@ -82,6 +82,11 @@ class CustomerForm extends Component {
                             succ: true,
                             msg: false
                         });
+                        var user = JSON.parse(
+                            localStorage.getItem("usertoken")
+                        );
+                        window.location.href =
+                            "http://localhost:8000/" + user.user_type;
                     } else {
                         //e.preventDefault();
                         this.setState({
@@ -260,14 +265,14 @@ class CustomerForm extends Component {
                             type="error"
                             showIcon
                         />
-                    ) : this.state.succ ? (
-                        <Alert
-                            message="Congratulations!"
-                            description="Registration Successful! Click on Dashboard to view your profile."
-                            type="success"
-                            showIcon
-                        />
                     ) : (
+                        // ) : this.state.succ ? (
+                        //     <Alert
+                        //         message="Congratulations!"
+                        //         description="Registration Successful! Click on Dashboard to view your profile."
+                        //         type="success"
+                        //         showIcon
+                        //     />
                         <div />
                     )}
                 </Modal>

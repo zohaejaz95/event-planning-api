@@ -1,38 +1,44 @@
 import React, { Component } from "react";
 import { Statistic, Card, Row, Col, Icon } from "antd";
 import { customerProfile } from "./customerFunction";
-import Avatar from "../../images/avatar.jpg";
+//import Avatar from "../../images/avatar.jpg";
 const profileData = JSON.parse(localStorage.getItem("usertoken"));
 //import {customerProfile} from "../userFunction";
-//import imagessf from "../../../../storage/app/public/customer/profile_pics"
+//import imagessf from "../../../../storage/app/public/customer/profile_pics/1561390943_IMG-20161104-WA0015.jpg";
+//var pictur;
 class CustProfile extends Component {
     constructor() {
         super();
         this.state = {
             email: localStorage.getItem("email"),
             profile: [],
-            pic_name: ""
+            pic_name: "",
+            pictur: ""
         };
     }
     componentDidMount() {
         customerProfile().then(res => {
             if (res) {
-                console.log(res.data[0]);
+                //console.log(res.data[0]);
                 localStorage.setItem("profile", JSON.stringify(res.data[0]));
                 this.setState({
                     profile: JSON.parse(localStorage.getItem("profile"))
                 });
-                var arr = "";
+                var arr = [];
                 arr = res.data[0];
-                var pic = arr.logo;
+                var pic = arr.profile_pic;
                 var fields = pic.split("\\");
-                console.log(fields[10]);
-                console.log(pic);
+                //console.log(fields[10]);
+                //console.log(pic);
                 this.setState({
                     pic_name: fields[10]
                 });
-                pict = require(`../../../../storage/app/public/customer/profile_pics` +
-                    fields[10]);
+                this.setState({
+                    pictur: require(`../../../../storage/app/public/customer/profile_pics/` +
+                        fields[10])
+                });
+                //pictur = require(`../../../../storage/app/public/customer/profile_pics/` + fields[10]);
+                //console.log(pict);
             }
         });
     }
@@ -41,7 +47,11 @@ class CustProfile extends Component {
             <div className="contents ">
                 <Row>
                     <Col span={4}>
-                        <img className="avatar-uploader" src={Avatar} alt="" />
+                        <img
+                            className="avatar-uploader"
+                            src={this.state.pictur}
+                            alt={this.state.pic_name}
+                        />
                     </Col>
                     <Col
                         span={19}

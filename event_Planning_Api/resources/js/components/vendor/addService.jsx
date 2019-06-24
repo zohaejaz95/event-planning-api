@@ -30,7 +30,8 @@ function onChange(checkedValues) {
 //     console.log(time, timeString);
 //     console.log(etime);
 // }
-const Option = Select.Option;
+var pictures = [];
+//const Option = Select.Option;
 class AddService extends Component {
     constructor() {
         super();
@@ -43,8 +44,13 @@ class AddService extends Component {
             car: [],
             make: [],
             enter: [],
-            cat: []
+            cat: [],
+            name: [],
+            pictures: []
         };
+
+        this.onDrop = this.onDrop.bind(this);
+
         this.handleSubmit = this.handleSubmit.bind(this);
         this.updateForm = this.updateForm.bind(this);
         this.dishesNumber = this.dishesNumber.bind(this);
@@ -171,6 +177,31 @@ class AddService extends Component {
                 });
             }
         });
+    }
+
+    onDrop(event) {
+        var files = event.target.files;
+        for (var i = 0; i < files.length; i++) {
+            var fil = files[i];
+            this.setState({
+                name: fil.name
+            });
+            console.log(fil.name);
+            console.log(fil);
+            var reader = new FileReader();
+            reader.readAsDataURL(fil);
+            reader.onload = function() {
+                var fileContent = reader.result;
+                console.log(fileContent);
+                pictures.push(fileContent);
+                //pictures = fileContent;
+            };
+            //console.log(pictures[i]);
+        }
+        //console.log(this.state.pictures);
+        // var pic_name = event.target.files[0];
+        // console.log(event.target.files);
+        // console.log(pic_name);
     }
 
     updateForm(value) {
@@ -340,6 +371,12 @@ class AddService extends Component {
                             {/* <Form.Item>
                                 <GetImage />
                             </Form.Item> */}
+                            <input
+                                type="file"
+                                onChange={this.onDrop}
+                                multiple
+                            />
+                            <br />
                             <Form.Item>
                                 {getFieldDecorator("service_name", {
                                     rules: [
