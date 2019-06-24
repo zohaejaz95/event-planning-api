@@ -103,6 +103,21 @@ class AddPackages extends Component {
                 createPackages(values).then(res => {
                     if (res) {
                         message.success("Package Created!");
+                        var val = {};
+                        for (var i = 0; i < pictures.length; i++) {
+                            val = {
+                                img_name: this.state.name[i],
+                                image: pictures[i]
+                            };
+                            addImgPackages(res, val).then(response => {
+                                if (response) {
+                                    console.log("Images added successfully!");
+                                    console.log(response);
+                                } else {
+                                    console.log("Images couldn't be saved!");
+                                }
+                            });
+                        }
                     } else {
                         message.error("Package could not be created!");
                     }
@@ -133,22 +148,26 @@ class AddPackages extends Component {
 
     onDrop(event) {
         var files = event.target.files;
-        for (var i = 0; i < files.length; i++) {
-            var fil = files[i];
-            this.setState({
-                name: fil.name
-            });
-            console.log(fil.name);
-            console.log(fil);
-            var reader = new FileReader();
-            reader.readAsDataURL(fil);
-            reader.onload = function() {
-                var fileContent = reader.result;
-                console.log(fileContent);
-                pictures.push(fileContent);
-                //pictures = fileContent;
-            };
-            //console.log(pictures[i]);
+        if (files.length > 4) {
+            message.warning("Upto 4 images can be uploaded!!");
+        } else {
+            for (var i = 0; i < files.length; i++) {
+                var fil = files[i];
+                this.setState({
+                    name: fil.name
+                });
+                console.log(fil.name);
+                console.log(fil);
+                var reader = new FileReader();
+                reader.readAsDataURL(fil);
+                reader.onload = function() {
+                    var fileContent = reader.result;
+                    console.log(fileContent);
+                    pictures.push(fileContent);
+                    //pictures = fileContent;
+                };
+                //console.log(pictures[i]);
+            }
         }
         //console.log(this.state.pictures);
         // var pic_name = event.target.files[0];
@@ -238,14 +257,14 @@ class AddPackages extends Component {
                                     ]
                                 })(
                                     <Input
-                                        prefix={
-                                            <Icon
-                                                type="user"
-                                                style={{
-                                                    color: "rgba(0,0,0,.25)"
-                                                }}
-                                            />
-                                        }
+                                        // prefix={
+                                        //     <Icon
+                                        //         type="user"
+                                        //         style={{
+                                        //             color: "rgba(0,0,0,.25)"
+                                        //         }}
+                                        //     />
+                                        // }
                                         placeholder="Package Name"
                                     />
                                 )}

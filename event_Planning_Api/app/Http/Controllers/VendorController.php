@@ -484,7 +484,7 @@ public function add_package_img(Request $request,$id){
     if($user->user_type=="vendor"){
         $vendor=DB::select("select vendor_id from vendors where username = '$user->name'");
         $service=packages::findOrFail($id);
-        $count=package_images::where('service_id',$id)->count();
+        $count=package_images::where('package_id',$id)->count();
         if(($request->has('image'))&&($service->vendor_id==$vendor[0]->vendor_id)&&($count<4)){
 
             $image = $request->image;  // your base64 encoded

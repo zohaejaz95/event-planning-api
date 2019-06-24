@@ -196,23 +196,28 @@ class AddService extends Component {
 
     onDrop(event) {
         var files = event.target.files;
-        for (var i = 0; i < files.length; i++) {
-            var fil = files[i];
-            this.setState({
-                name: fil.name
-            });
-            console.log(fil.name);
-            console.log(fil);
-            var reader = new FileReader();
-            reader.readAsDataURL(fil);
-            reader.onload = function() {
-                var fileContent = reader.result;
-                console.log(fileContent);
-                pictures.push(fileContent);
-                //pictures = fileContent;
-            };
-            //console.log(pictures[i]);
+        if (files.length > 4) {
+            message.warning("Upto 4 images can be uploaded!!");
+        } else {
+            for (var i = 0; i < files.length; i++) {
+                var fil = files[i];
+                this.setState({
+                    name: fil.name
+                });
+                console.log(fil.name);
+                console.log(fil);
+                var reader = new FileReader();
+                reader.readAsDataURL(fil);
+                reader.onload = function() {
+                    var fileContent = reader.result;
+                    console.log(fileContent);
+                    pictures.push(fileContent);
+                    //pictures = fileContent;
+                };
+                //console.log(pictures[i]);
+            }
         }
+
         //console.log(this.state.pictures);
         // var pic_name = event.target.files[0];
         // console.log(event.target.files);

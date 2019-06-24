@@ -483,7 +483,7 @@ export const addImgServices = (id, data) => {
             }
         })
         .then(response => {
-            //console.log(response);
+            console.log(response);
 
             return true;
         })
@@ -509,7 +509,7 @@ export const addImgPackages = (id, data) => {
             }
         })
         .then(response => {
-            //console.log(response);
+            console.log(response);
 
             return true;
         })
