@@ -243,7 +243,7 @@ public function add_service_img(Request $request,$id){
         $vendor=DB::select("select vendor_id from vendors where username = '$user->name'");
         $service=services::findOrFail($id);
         $count=service_images::where('service_id',$id)->count('id');
-        if(($request->has('image'))&&($service->vendor_id==$vendor[0]->id)&&($count<4)){
+        if(($request->has('image'))&&($service->vendor_id==$vendor[0]->vendor_id)&&($count<4)){
 
             $image = $request->image;  // your base64 encoded
             if (preg_match('/^data:image\/(\w+);base64,/', $image)) {
@@ -485,7 +485,7 @@ public function add_package_img(Request $request,$id){
         $vendor=DB::select("select vendor_id from vendors where username = '$user->name'");
         $service=packages::findOrFail($id);
         $count=package_images::where('service_id',$id)->count('id');
-        if(($request->has('image'))&&($service->vendor_id==$vendor[0]->id)&&($count<4)){
+        if(($request->has('image'))&&($service->vendor_id==$vendor[0]->vendor_id)&&($count<4)){
 
             $image = $request->image;  // your base64 encoded
             if (preg_match('/^data:image\/(\w+);base64,/', $image)) {
