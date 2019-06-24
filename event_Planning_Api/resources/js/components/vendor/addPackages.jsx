@@ -11,8 +11,12 @@ import {
     message,
     DatePicker
 } from "antd";
-import { getVendorServices, createPackages } from "./vendorFunctions";
-
+import {
+    getVendorServices,
+    createPackages,
+    addImgPackages
+} from "./vendorFunctions";
+var pictures = [];
 const dateFormat = "YYYY-MM-DD";
 //import loginImage from "../../images/Pakistani-Wedding.png";
 class AddPackages extends Component {
@@ -26,8 +30,12 @@ class AddPackages extends Component {
             val: [],
             my_services: {},
             services: [],
-            expiration_date: ""
+            expiration_date: "",
+            name: [],
+            pictures: []
         };
+        this.onDrop = this.onDrop.bind(this);
+
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.selectKeys = this.selectKeys.bind(this);
@@ -122,6 +130,31 @@ class AddPackages extends Component {
             sel: value
         });
     }
+
+    onDrop(event) {
+        var files = event.target.files;
+        for (var i = 0; i < files.length; i++) {
+            var fil = files[i];
+            this.setState({
+                name: fil.name
+            });
+            console.log(fil.name);
+            console.log(fil);
+            var reader = new FileReader();
+            reader.readAsDataURL(fil);
+            reader.onload = function() {
+                var fileContent = reader.result;
+                console.log(fileContent);
+                pictures.push(fileContent);
+                //pictures = fileContent;
+            };
+            //console.log(pictures[i]);
+        }
+        //console.log(this.state.pictures);
+        // var pic_name = event.target.files[0];
+        // console.log(event.target.files);
+        // console.log(pic_name);
+    }
     componentDidMount() {
         getVendorServices().then(res => {
             if (res) {
@@ -148,6 +181,27 @@ class AddPackages extends Component {
                             onSubmit={this.handleSubmit}
                             className="login-form "
                         >
+                            <input
+                                type="file"
+                                onChange={this.onDrop}
+                                multiple
+                            />
+                            <br />
+                            <Form.Item>
+                                {getFieldDecorator("videos")(
+                                    <Input
+                                        prefix={
+                                            <Icon
+                                                type="upload"
+                                                style={{
+                                                    color: "rgba(0,0,0,.25)"
+                                                }}
+                                            />
+                                        }
+                                        placeholder="Video URL"
+                                    />
+                                )}
+                            </Form.Item>
                             <Form.Item>
                                 <Select
                                     labelInValue

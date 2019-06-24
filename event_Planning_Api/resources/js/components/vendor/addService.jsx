@@ -13,7 +13,7 @@ import {
 } from "antd";
 import moment from "moment";
 //import loginImage from "../../images/Pakistani-Wedding.png";
-import { createService } from "./vendorFunctions";
+import { createService, addImgServices } from "./vendorFunctions";
 //import GetImage from "../getImage";
 function onChange(checkedValues) {
     console.log("checked = ", checkedValues);
@@ -170,6 +170,9 @@ class AddService extends Component {
                 console.log("Received values of form: ", values);
                 createService(values).then(res => {
                     if (res) {
+                        // addImgServices().then(res=>{
+
+                        // })
                         message.success("Service created!");
                     } else {
                         message.error("Something went wrong!");
@@ -377,6 +380,21 @@ class AddService extends Component {
                                 multiple
                             />
                             <br />
+                            <Form.Item>
+                                {getFieldDecorator("videos")(
+                                    <Input
+                                        prefix={
+                                            <Icon
+                                                type="upload"
+                                                style={{
+                                                    color: "rgba(0,0,0,.25)"
+                                                }}
+                                            />
+                                        }
+                                        placeholder="Video URL"
+                                    />
+                                )}
+                            </Form.Item>
                             <Form.Item>
                                 {getFieldDecorator("service_name", {
                                     rules: [
