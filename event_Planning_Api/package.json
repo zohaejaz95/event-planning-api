@@ -31,6 +31,6 @@
         "react-confetti": "^2.8.0",
         "react-images-upload": "^1.2.6",
         "react-player": "^1.10.0",
-        "react-router-dom": "^5.0.0"
+        "react-router-dom": "^5.0.1"
     }
 }
