@@ -201,9 +201,8 @@ class AddService extends Component {
         } else {
             for (var i = 0; i < files.length; i++) {
                 var fil = files[i];
-                this.setState({
-                    name: fil.name
-                });
+
+                this.state.name.push(fil.name);
                 console.log(fil.name);
                 console.log(fil);
                 var reader = new FileReader();

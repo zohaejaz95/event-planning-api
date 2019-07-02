@@ -245,7 +245,7 @@ class Customer extends Component {
 
                             <Menu.Item
                                 key="7"
-                                onClick={this.cardCustomize.bind(this)}
+                                // onClick={this.cardCustomize.bind(this)}
                             >
                                 <a href="/cardCustomization" target="_blank">
                                     <Icon type="idcard" />

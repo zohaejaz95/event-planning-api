@@ -14,6 +14,7 @@ class packages extends Model
         'name',
         'description',
         'expiration_date',
+        'videos',
         'vendor_id'
     ];
     public function vendor(){

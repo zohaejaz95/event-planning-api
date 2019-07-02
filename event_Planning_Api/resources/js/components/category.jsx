@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 //import { Link } from "react-router-dom";
-//import ReactPlayer from "react-player";
+import ReactPlayer from "react-player";
 import Order from "./order";
 import { Card, Col, Row, Button, Select, Icon } from "antd";
 import { getServicesCat, getAllPackages } from "./vendor/vendorFunctions";
@@ -231,10 +231,17 @@ class Category extends Component {
                             <Card
                                 hoverable
                                 style={{ width: 240 }}
-                                cover={<img alt="example" src={photography} />}
+                                // cover={<img alt="example" src={photography} />}
                                 key={i}
                                 onClick={() => this.togglePackageDetail(pack)}
                             >
+                                <div style={{ height: 125 }}>
+                                    <ReactPlayer
+                                        url={pack.videos}
+                                        playing
+                                        style={{ width: 195, height: 100 }}
+                                    />
+                                </div>
                                 <Meta title={pack.name} />
                             </Card>
                         </Col>
@@ -312,10 +319,39 @@ class Category extends Component {
                             <Card
                                 hoverable
                                 style={{ width: 240 }}
-                                cover={<img alt="example" src={photography} />}
+                                // cover={<img alt="example" src={photography} />}
+                                // cover={
+                                //     <video style={{ width: 195 }} controls>
+                                //         <source
+                                //             src={serve.videos}
+                                //             type="video/mp4"
+                                //         />
+                                //     </video>
+                                // }
                                 key={i}
                                 onClick={() => this.toggleDetail(serve)}
                             >
+                                {/* <div className="video-container">
+                                    <iframe
+                                        style={{ width: 195 }}
+                                        src={serve.videos}
+                                    />
+                                </div> */}
+                                {/* <video style={{ width: 195 }} controls>
+                                    <source
+                                        src={serve.videos}
+                                        type="video/mp4"
+                                    />
+                                </video>
+                                */}
+                                <div style={{ height: 125 }}>
+                                    <ReactPlayer
+                                        url={serve.videos}
+                                        playing
+                                        style={{ width: 195, height: 100 }}
+                                    />
+                                </div>
+
                                 <Meta title={serve.service_name} />
                             </Card>
                         </Col>
