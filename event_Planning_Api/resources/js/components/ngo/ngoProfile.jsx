@@ -64,7 +64,7 @@ class NGOProfile extends Component {
                 <br />
                 <h4 className="text-to-center">Event Progress</h4>
                 <br />
-                <div style={{ background: "#ECECEC", padding: "30px" }}>
+                {/* <div style={{ background: "#ECECEC", padding: "30px" }}>
                     <Row gutter={16}>
                         <Col span={8}>
                             <Card>
@@ -80,7 +80,7 @@ class NGOProfile extends Component {
                             <h6 className="text-to-center">Event Name</h6>
                         </Col>
                     </Row>
-                </div>
+                </div> */}
             </div>
         );
     }

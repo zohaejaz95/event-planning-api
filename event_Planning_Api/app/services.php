@@ -16,6 +16,7 @@ class services extends Model
         'event_type',
         'price',
         'description',
+        'videos',
         'vendor_id'
     ];
     public function vendor(){

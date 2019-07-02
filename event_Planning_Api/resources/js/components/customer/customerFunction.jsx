@@ -329,6 +329,41 @@ export const getApprovedOrders = (id, order_type) => {
         });
 };
 
+export const getCompleteOrders = (id, order_type) => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    var event = {
+        id: id
+    };
+    return axios
+        .get(
+            "/api/customer/orders/complete/" +
+                order_type +
+                "/" +
+                id +
+                "?api_token=" +
+                token.api_token,
+            event,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Access: "application/json",
+                    Authorization: "Bearer " + token.api_token
+                }
+            }
+        )
+        .then(response => {
+            //console.log(response);
+            return response;
+        })
+        .catch(err => {
+            console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
+        });
+};
+
 export const addGuest = guest => {
     const token = JSON.parse(localStorage.getItem("usertoken"));
     //newUser["api_token"] = token.api_token;

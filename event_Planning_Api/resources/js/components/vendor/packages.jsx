@@ -150,9 +150,9 @@ class Packages extends Component {
                                 <Card
                                     hoverable
                                     style={{ width: 240 }}
-                                    cover={
-                                        <img alt="example" src={photography} />
-                                    }
+                                    // cover={
+                                    //     <img alt="example" src={photography} />
+                                    // }
                                     key={i}
                                     onClick={() => this.toggleDetail(serve)}
                                 >
@@ -163,7 +163,7 @@ class Packages extends Component {
                     ))}
                 </Row>
 
-                <Button type="primary">Update</Button>
+                {/* <Button type="primary">Update</Button> */}
                 <Button
                     type="danger"
                     onClick={() => this.deletePackage(this.state.pack.p_id)}
