@@ -181,6 +181,7 @@ public function create_service(Request $request){
         'event_type'=>$request->input('event_type'),
         'price'=>$request->input('price'),
         'description'=>$request->input('description'),
+        'videos'=>$request->input('videos'),
         'vendor_id'=>$vendor[0]->vendor_id
     ]);
     if($request->input('category')=='venues'){
@@ -464,6 +465,7 @@ public function create_package(Request $request){
             'name'=>$request->input('name'),
             'expiration_date'=>$request->input('expiration_date'),
             'description'=>$request->input('description'),
+            'videos'=>$request->input('videos'),
             'vendor_id'=>$vendor[0]->vendor_id
         ]);
         $services=$request->input('services.*');

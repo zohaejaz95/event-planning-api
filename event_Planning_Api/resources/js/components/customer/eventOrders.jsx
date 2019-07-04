@@ -7,7 +7,8 @@ import {
     getApprovedOrders,
     getPendingOrders,
     getPackage,
-    getService
+    getService,
+    getCompleteOrders
 } from "./customerFunction";
 const { Option, OptGroup } = Select;
 class EventOrders extends Component {
@@ -23,15 +24,22 @@ class EventOrders extends Component {
             pP: [],
             aS: [],
             aP: [],
+            cS: [],
+            cP: [],
             p_services: [],
             p_packages: [],
             a_services: [],
-            a_packages: []
+            a_packages: [],
+            c_services: [],
+            c_packages: []
         };
         this.approvedServices = this.approvedServices.bind(this);
         this.approvedPackages = this.approvedPackages.bind(this);
         this.pendingPackages = this.pendingPackages.bind(this);
         this.pendingServices = this.pendingServices.bind(this);
+        this.completePackages = this.completePackages.bind(this);
+        this.completeServices = this.completeServices.bind(this);
+
         this.handleChange = this.handleChange.bind(this);
     }
     handleChange(value) {
@@ -176,6 +184,56 @@ class EventOrders extends Component {
         });
     }
 
+    completeServices() {
+        getCompleteOrders(this.props.event_id, "services").then(response => {
+            if (response) {
+                this.setState({
+                    c_services: response.data.data
+                });
+                var res = response.data.data;
+                for (var i = 0; i < res.length; i++) {
+                    var id = res[i];
+                    console.log("service id: " + id.service_id);
+                    getService(id.service_id).then(res => {
+                        //console.log(id);
+                        if (res) {
+                            var val = res[0];
+                            this.state.cS.push(val);
+                            //console.log(res);
+                        }
+                    });
+                }
+            }
+            console.log(this.state.cS);
+            //console.log(response);
+        });
+    }
+
+    completePackages() {
+        getCompleteOrders(this.props.event_id, "packages").then(response => {
+            if (response) {
+                this.setState({
+                    c_packages: response.data.data
+                });
+                var res = response.data.data;
+                for (var i = 0; i < res.length; i++) {
+                    var id = res[i];
+                    console.log("pPackage: " + id.package_id);
+                    getPackage(id.package_id).then(res => {
+                        //console.log(id);
+                        if (res) {
+                            var val = res[0];
+                            this.state.cP.push(val);
+                            //console.log(res);
+                        }
+                    });
+                }
+            }
+            console.log(this.state.cP);
+            //console.log(response);
+        });
+    }
+
     componentDidMount() {
         this.setState({
             id: this.props.event_id
@@ -185,6 +243,8 @@ class EventOrders extends Component {
         this.approvedServices();
         this.pendingPackages();
         this.pendingServices();
+        this.completeServices();
+        this.completePackages();
     }
     render() {
         return (
@@ -214,6 +274,18 @@ class EventOrders extends Component {
                         pending={this.state.pP}
                         approved={this.state.aP}
                         status={true}
+                    />
+                ) : this.state.pServices ? (
+                    <DisplayServices
+                        pending={this.state.pS}
+                        approved={this.state.cS}
+                        status={false}
+                    />
+                ) : this.state.pPackages ? (
+                    <DisplayPackages
+                        pending={this.state.pP}
+                        approved={this.state.cP}
+                        status={false}
                     />
                 ) : (
                     <div />

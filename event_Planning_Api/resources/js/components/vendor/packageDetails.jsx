@@ -1,16 +1,43 @@
 import React, { Component } from "react";
-import photography from "../../images/photography.jpg";
+import photography from "../../../../storage/app/public/packages/1561441602_leonardo.jpg";
 import { Row, Col } from "antd";
 import ReactPlayer from "react-player";
-
+import { getPckgImgs } from "./vendorFunctions";
+var pict = [];
 class ServiceDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            services: []
+            name: [],
+            services: [],
+            pic_name: [],
+            pict: []
         };
     }
-    componentDidMount() {}
+    componentDidMount() {
+        //console.log
+        getPckgImgs(this.props.package.p_id).then(res => {
+            if (res) {
+                //var imga=res.data
+                console.log(res);
+                var arr = [];
+                for (var i = 0; i <= res.length; i++) {
+                    arr = res[i];
+                    var pic = arr.path;
+                    var fields = pic.split("\\");
+                    console.log(fields[9]);
+                    console.log(pic);
+
+                    this.state.pic_name.push(fields[9]);
+
+                    this.state.pict.push(
+                        require(`../../../../storage/app/public/packages/` +
+                            fields[9])
+                    );
+                }
+            }
+        });
+    }
     render() {
         const show = this.props.package;
 
@@ -24,16 +51,21 @@ class ServiceDetails extends Component {
                     <Row>
                         <Col span={14}>
                             <img
-                                alt="example"
                                 src={photography}
+                                alt=""
                                 style={{ width: "100%" }}
                             />
+                            {/* {this.state.pict.map((imag, i) => (
+                                <img
+                                    key={i}
+                                    alt="example"
+                                    src={imag}
+                                    style={{ width: "100%" }}
+                                />
+                            ))} */}
                         </Col>
                         <Col span={9} offset={1}>
-                            <ReactPlayer
-                                url="https://www.youtube.com/watch?v=NiN_3FrVCPU"
-                                playing
-                            />
+                            <ReactPlayer url={show.videos} playing />
                         </Col>
                     </Row>
                     <br />
