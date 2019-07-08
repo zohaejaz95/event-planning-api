@@ -12,6 +12,8 @@ import {
 } from "antd";
 import CustomerForm from "./customerForm";
 import loginImage from "../images/form-img.jpg";
+import mandala from "../images/mandala1.jpg";
+
 import { register } from "./userFunction";
 class CustomerRegister extends Component {
     constructor() {
@@ -133,15 +135,11 @@ class CustomerRegister extends Component {
                     <div>
                         <Row>
                             <Col span={11}>
-                                <img
-                                    src={loginImage}
-                                    alt=""
-                                    className="myImage"
-                                />
+                                <img src={mandala} alt="" className="myImage" />
                             </Col>
                             <Col span={12} offset={1}>
                                 <h4 className="text-to-left">
-                                    Customer Signup to EventEra
+                                    Customer Signup to Plan Eve
                                 </h4>
                                 <br />
                                 <Form
@@ -257,7 +255,7 @@ class CustomerRegister extends Component {
                                             Register
                                         </Button>
                                         <br />
-                                        Or <a href="/">login now!</a>
+                                        {/* Or <a href="/">login now!</a> */}
                                     </Form.Item>
                                 </Form>
                             </Col>

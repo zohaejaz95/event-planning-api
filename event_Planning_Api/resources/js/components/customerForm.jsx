@@ -12,6 +12,8 @@ import {
 } from "antd";
 import { customerRegister } from "./userFunction";
 import loginImage from "../images/form-img.jpg";
+import mandala from "../images/mandala1.jpg";
+
 var pictures;
 const Option = Select.Option;
 
@@ -129,7 +131,7 @@ class CustomerForm extends Component {
                 >
                     <Row>
                         <Col span={11}>
-                            <img src={loginImage} alt="" className="myImage" />
+                            <img src={mandala} alt="" className="myImage" />
                         </Col>
                         <Col span={12} offset={1}>
                             <h4 className="text-to-left">Account Details</h4>
@@ -139,6 +141,7 @@ class CustomerForm extends Component {
                                 className="login-form "
                             >
                                 <input type="file" onChange={this.onDrop} />
+                                <br />
                                 <Form.Item>
                                     {getFieldDecorator("first_name", {
                                         rules: [

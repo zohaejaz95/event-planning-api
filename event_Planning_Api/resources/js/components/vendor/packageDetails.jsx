@@ -1,17 +1,20 @@
 import React, { Component } from "react";
-import photography from "../../../../storage/app/public/packages/1561441602_leonardo.jpg";
-import { Row, Col } from "antd";
+import ServiceDetails from "./serviceDetails";
+//import photography from "../../../../storage/app/public/packages/1561441602_leonardo.jpg";
+import { Row, Col, Carousel, Card } from "antd";
 import ReactPlayer from "react-player";
-import { getPckgImgs } from "./vendorFunctions";
-var pict = [];
-class ServiceDetails extends Component {
+import { getPckgImgs, getPckgPrice, getPckgServices } from "./vendorFunctions";
+//var pict = [];
+const { Meta } = Card;
+class PackageDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
             name: [],
             services: [],
             pic_name: [],
-            pict: []
+            pict: [],
+            price: ""
         };
     }
     componentDidMount() {
@@ -21,7 +24,7 @@ class ServiceDetails extends Component {
                 //var imga=res.data
                 console.log(res);
                 var arr = [];
-                for (var i = 0; i <= res.length; i++) {
+                for (var i = 0; i < res.length; i++) {
                     arr = res[i];
                     var pic = arr.path;
                     var fields = pic.split("\\");
@@ -37,6 +40,21 @@ class ServiceDetails extends Component {
                 }
             }
         });
+        getPckgPrice(this.props.package.p_id).then(res => {
+            if (res) {
+                this.setState({
+                    price: res.data.price
+                });
+                console.log(res);
+            }
+        });
+        getPckgServices(this.props.package.p_id).then(res => {
+            if (res) {
+                this.setState({
+                    services: res.data
+                });
+            }
+        });
     }
     render() {
         const show = this.props.package;
@@ -44,42 +62,96 @@ class ServiceDetails extends Component {
         return (
             <div>
                 <div className="text-to-left">
-                    <span>
-                        <h4>{show.name}</h4>
-                    </span>
-                    <br />
                     <Row>
-                        <Col span={14}>
-                            <img
-                                src={photography}
-                                alt=""
-                                style={{ width: "100%" }}
-                            />
-                            {/* {this.state.pict.map((imag, i) => (
-                                <img
-                                    key={i}
-                                    alt="example"
-                                    src={imag}
-                                    style={{ width: "100%" }}
-                                />
-                            ))} */}
+                        <Col
+                            span={11}
+                            offset={1}
+                            style={{ background: "black" }}
+                        >
+                            <Carousel
+                                autoplay
+                                style={{ maxHeight: 400, background: "black" }}
+                            >
+                                {this.state.pict.map((imag, i) => (
+                                    <div key={i}>
+                                        <img
+                                            alt={this.state.pic_name[i]}
+                                            src={imag}
+                                            style={{
+                                                maxWidth: "100%",
+                                                height: 450,
+                                                display: "block",
+                                                background: "black",
+                                                marginLeft: "auto",
+                                                marginRight: "auto"
+                                            }}
+                                        />
+                                    </div>
+                                ))}
+                                <div
+                                    style={{
+                                        background: "black"
+                                    }}
+                                >
+                                    <ReactPlayer
+                                        style={{
+                                            width: 530,
+                                            height: 320,
+                                            background: "black"
+                                        }}
+                                        url={show.videos}
+                                    />
+                                </div>
+                            </Carousel>
                         </Col>
-                        <Col span={9} offset={1}>
-                            <ReactPlayer url={show.videos} playing />
+                        <Col span={10} offset={1}>
+                            <Card style={{ width: "100%" }}>
+                                <Meta
+                                    title={show.name}
+                                    description={"PKR" + this.state.price}
+                                />
+                                <br />
+                                <table className="table table-striped ">
+                                    <tbody>
+                                        <tr>
+                                            <th>ID</th>
+                                            <td>{show.p_id}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Package Name</th>
+                                            <td>{show.name}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Total Price</th>
+                                            <td>{"PKR" + this.state.price}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Availability</th>
+                                            <td>{show.expiration_date}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Description</th>
+                                            <td>{show.description}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </Card>
                         </Col>
                     </Row>
                     <br />
+                    <h4>Services Offered</h4>
                     <br />
-                    <br />
-                    <h6>ID: </h6> {show.p_id}
-                    <h6>Availability: </h6> {show.expiration_date}
-                    <h6>Description: </h6>
-                    <p>{show.description}</p>
-                    <br />
+                    <Carousel autoplay>
+                        {this.state.services.map((serv, i) => (
+                            <div key={i}>
+                                <ServiceDetails service={serv} />
+                            </div>
+                        ))}
+                    </Carousel>
                 </div>
             </div>
         );
     }
 }
 
-export default ServiceDetails;
+export default PackageDetails;

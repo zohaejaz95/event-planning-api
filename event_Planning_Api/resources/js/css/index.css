@@ -130,3 +130,17 @@ a {
     background: #94618e;
     background-clip: border-box;
 }
+
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background-color: #94618e;
+}
+
+.ant-menu-item
+    .ant-menu-item-selected-active
+    .ant-menu-item-selected
+    .customClass {
+    background-color: #94618e;
+}
+.ant-menu-item-selected {
+    color: #49274a;
+}

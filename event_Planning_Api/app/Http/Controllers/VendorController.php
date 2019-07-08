@@ -526,6 +526,17 @@ public function get_ven_package(){
     }
 }
 
+public function get_serv_package(Request $request,$id){
+    $user=User::findOrFail(Auth::guard('api')->id());
+    if($user->user_type=="vendor"||$user->user_type=="customer"){
+        //$venid=DB::select("select vendor_id from vendors where username = '$user->name'");
+        //$pack=packages::findOrFail($id);
+        $services=package_services::where('package_id',$id)->join('services','package_services.service_id','=','services.id')->paginate(10);
+        return $services;
+    }
+}
+
+//->join('package_services','packages.p_id','=','package_services.package_id')->paginate(15)
 // public function get_ven_serv(){
 //     $user=User::findOrFail(Auth::guard('api')->id());
 //     if($user->user_type=="vendor"){
@@ -688,7 +699,7 @@ public function update_order_status($id,$status){
     {
         //
         $user=User::findOrFail(Auth::guard('api')->id());
-        if($user->user_type=="vendor"){
+        if($user->user_type=="vendor"||$user->user_type=="customer"){
             return vendor::findOrFail($id);
         }
     }

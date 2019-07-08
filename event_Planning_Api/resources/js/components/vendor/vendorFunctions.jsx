@@ -21,6 +21,31 @@ export const vendorProfile = () => {
         });
 };
 
+export const vendorIDProfile = id => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //newUser["api_token"] = token.api_token;
+    console.log(token.api_token);
+    return axios
+        .get("/api/vendor/" + id, {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token
+            }
+        })
+        .then(response => {
+            //console.log(response.data.data);
+            return response.data;
+        })
+        .catch(err => {
+            console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
+        });
+};
+
 export const getLocation = () => {
     const token = JSON.parse(localStorage.getItem("usertoken"));
     //newUser["api_token"] = token.api_token;
@@ -41,6 +66,28 @@ export const getLocation = () => {
             console.log(err);
         });
 };
+
+export const getPayment = id => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //newUser["api_token"] = token.api_token;
+    //console.log(token.api_token);
+    return axios
+        .get("/api/vendor/payment_methods/" + id, {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token
+            }
+        })
+        .then(response => {
+            //console.log(response.data);
+            return response.data;
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+
 export const getCategory = () => {
     const token = JSON.parse(localStorage.getItem("usertoken"));
     //newUser["api_token"] = token.api_token;
@@ -561,5 +608,55 @@ export const getPckgImgs = id => {
         })
         .catch(err => {
             console.log(err);
+        });
+};
+
+export const getPckgPrice = id => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //newUser["api_token"] = token.api_token;
+    //console.log(token.api_token);
+    return axios
+        .get("/api/vendor/package/cost/" + id, {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token
+            }
+        })
+        .then(response => {
+            //console.log(response.data.data);
+            return response;
+        })
+        .catch(err => {
+            console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
+        });
+};
+
+export const getPckgServices = id => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //newUser["api_token"] = token.api_token;
+    //console.log(token.api_token);
+    return axios
+        .get("/api/vendor/get/services/package/" + id, {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token
+            }
+        })
+        .then(response => {
+            console.log(response.data.data);
+            return response.data;
+        })
+        .catch(err => {
+            console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
         });
 };

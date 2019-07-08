@@ -34,7 +34,7 @@ Route::get('customers/{id}','CustomerController@show');
 Route::get('customer/token/','CustomerController@show_token');
 
 Route::get('vendors','VendorController@index');
-Route::get('vendors/{id}','VendorController@show');
+Route::get('vendor/{id}','VendorController@show');
 Route::get('vendor/token','VendorController@show_token');
 
 Route::get('NGOs','NgoController@index');
@@ -103,6 +103,7 @@ Route::put('vendor/update/serivce/{id}','VendorController@update_service');
 Route::delete('vendor/delete/serivce/{id}','VendorController@delete_service');
 Route::post('vendor/create/package','VendorController@create_package');
 Route::get('vendor/get/package/{id}','VendorController@get_package');
+Route::get('vendor/get/services/package/{id}','VendorController@get_serv_package');
 Route::get('vendor/get/packages/token','VendorController@get_ven_package');
 Route::get('vendor/get/packages/all','VendorController@get_all_package');
 Route::post('vendor/package/{id}/add/image','VendorController@add_package_img');

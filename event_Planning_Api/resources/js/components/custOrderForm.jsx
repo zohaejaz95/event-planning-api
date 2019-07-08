@@ -9,6 +9,7 @@ import {
     notification
 } from "antd";
 import { getEvents, newOrder, createConvo } from "./customer/customerFunction";
+import { getPayment } from "./vendor/vendorFunctions";
 //import loginImage from "../../images/Pakistani-Wedding.png";
 const Option = Select.Option;
 class CustOrderForm extends Component {
@@ -16,7 +17,8 @@ class CustOrderForm extends Component {
         super(props);
         this.state = {
             visible: true,
-            events: []
+            events: [],
+            payment: []
         };
         this.showModal = this.showModal.bind(this);
         this.handleOk = this.handleOk.bind(this);
@@ -70,6 +72,9 @@ class CustOrderForm extends Component {
                                     description:
                                         "Now you can chat with the customer. Open messages now!"
                                 });
+                                this.setState({
+                                    visible: false
+                                });
                             }
                         });
                     } else {
@@ -90,6 +95,15 @@ class CustOrderForm extends Component {
                 this.setState({
                     events: elist
                 });
+            }
+        });
+
+        getPayment(this.props.details.vendor_id).then(res => {
+            if (res) {
+                this.setState({
+                    payment: res
+                });
+                console.log(res);
             }
         });
     }
@@ -127,7 +141,25 @@ class CustOrderForm extends Component {
                                             "Please enter your Payment Method!"
                                     }
                                 ]
-                            })(<Input placeholder="Enter Payment Method" />)}
+                            })(
+                                <Select
+                                    showSearch
+                                    style={{ width: "100%" }}
+                                    placeholder="Select Payment Method"
+                                    optionFilterProp="children"
+                                    filterOption={(input, option) =>
+                                        option.props.children
+                                            .toLowerCase()
+                                            .indexOf(input.toLowerCase()) >= 0
+                                    }
+                                >
+                                    {this.state.payment.map((pay, i) => (
+                                        <Option value={pay.method} key={i}>
+                                            {pay.method}
+                                        </Option>
+                                    ))}
+                                </Select>
+                            )}
                         </Form.Item>
                         <Form.Item>
                             {getFieldDecorator("event_id", {

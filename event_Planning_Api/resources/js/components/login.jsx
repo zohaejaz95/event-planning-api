@@ -13,6 +13,7 @@ import {
 } from "antd";
 
 import loginImage from "../images/Pakistani-Wedding.png";
+import mandala from "../images/mandala1.jpg";
 import { userLogin } from "./userFunction";
 class Login extends Component {
     constructor(props) {
@@ -132,15 +133,20 @@ class Login extends Component {
                         <div className="contents">
                             <Row>
                                 <Col span={10}>
-                                    <img
-                                        src={loginImage}
-                                        alt=""
-                                        className="myImage"
-                                    />
+                                    <div>
+                                        <img
+                                            style={{
+                                                height: "100%",
+                                                width: "100%"
+                                            }}
+                                            src={mandala}
+                                            alt=""
+                                        />
+                                    </div>
                                 </Col>
                                 <Col span={12} offset={1}>
                                     <h4 className="text-to-left">
-                                        Login to EventEra
+                                        Login to PlanEve
                                     </h4>
                                     <br />
                                     <Form
@@ -226,8 +232,8 @@ class Login extends Component {
                                                     Log in
                                                 </Button>
                                             </a>
-                                            <br />
-                                            Or <a href="/">register now!</a>
+                                            {/* <br />
+                                            Or <a href="/">register now!</a> */}
                                         </Form.Item>
                                     </Form>
                                 </Col>

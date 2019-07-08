@@ -257,6 +257,7 @@ class Customer extends Component {
                             <Menu.Item
                                 key="8"
                                 onClick={this.message.bind(this)}
+                                className="customclass"
                             >
                                 <Icon type="message" />
                                 <span>Messages</span>

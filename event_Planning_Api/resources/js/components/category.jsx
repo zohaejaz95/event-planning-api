@@ -2,8 +2,15 @@ import React, { Component } from "react";
 //import { Link } from "react-router-dom";
 import ReactPlayer from "react-player";
 import Order from "./order";
-import { Card, Col, Row, Button, Select, Icon } from "antd";
-import { getServicesCat, getAllPackages } from "./vendor/vendorFunctions";
+import { Card, Col, Row, Button, Select, Icon, Popover } from "antd";
+import {
+    getServicesCat,
+    getAllPackages,
+    vendorIDProfile,
+    getPayment
+} from "./vendor/vendorFunctions";
+//import djf from "../../../storage/"
+var pict = [];
 import ServiceDetails from "./vendor/serviceDetails";
 import PackageDetails from "./vendor/packageDetails";
 //import onlineShopping from "../images/online-shopping.jpg";
@@ -25,6 +32,8 @@ class Category extends Component {
         super(props);
         this.state = {
             detail: false,
+            vendor: [],
+            payment: [],
             age: [],
             pack: false,
             display: false,
@@ -98,6 +107,31 @@ class Category extends Component {
         });
         this.state.order.id = item.id;
         this.state.order.type = "service";
+        vendorIDProfile(item.vendor_id).then(res => {
+            if (res) {
+                this.setState({
+                    vendor: res
+                });
+                console.log(res);
+                var arr = "";
+                arr = res;
+                var pic = arr.logo;
+                var fields = pic.split("\\");
+                console.log(fields[10]);
+                console.log(pic);
+
+                pict = require(`../../../storage/app/public/vendor/logos/` +
+                    fields[10]);
+            }
+        });
+        getPayment(item.vendor_id).then(res => {
+            if (res) {
+                this.setState({
+                    payment: res
+                });
+                console.log(res);
+            }
+        });
     }
     togglePackageDetail(item) {
         this.setState({
@@ -108,6 +142,31 @@ class Category extends Component {
         });
         this.state.order.id = item.package_id;
         this.state.order.type = "package";
+        vendorIDProfile(item.vendor_id).then(res => {
+            if (res) {
+                this.setState({
+                    vendor: res
+                });
+                console.log(res);
+                var arr = "";
+                arr = res;
+                var pic = arr.logo;
+                var fields = pic.split("\\");
+                console.log(fields[10]);
+                console.log(pic);
+
+                pict = require(`../../../storage/app/public/vendor/logos/` +
+                    fields[10]);
+            }
+        });
+        getPayment(item.vendor_id).then(res => {
+            if (res) {
+                this.setState({
+                    payment: res
+                });
+                console.log(res);
+            }
+        });
     }
     toggleDetails() {
         this.setState({
@@ -209,6 +268,12 @@ class Category extends Component {
             left: "50%",
             transform: "translate(-50%, -50%)"
         };
+        const content = (
+            <div>
+                <p>{"Contact: " + this.state.vendor.contact}</p>
+                <p>{"Email  : " + this.state.vendor.email}</p>
+            </div>
+        );
         const packageList = (
             <div>
                 <div style={mainDiv}>
@@ -238,7 +303,6 @@ class Category extends Component {
                                 <div style={{ height: 125 }}>
                                     <ReactPlayer
                                         url={pack.videos}
-                                        playing
                                         style={{ width: 195, height: 100 }}
                                     />
                                 </div>
@@ -347,7 +411,6 @@ class Category extends Component {
                                 <div style={{ height: 125 }}>
                                     <ReactPlayer
                                         url={serve.videos}
-                                        playing
                                         style={{ width: 195, height: 100 }}
                                     />
                                 </div>
@@ -365,18 +428,50 @@ class Category extends Component {
             <div>
                 <br />
                 <br />
-                <Button
-                    type="primary"
-                    onClick={this.toggleDetails.bind(this)}
-                    className="text-to-left"
-                >
-                    Back
-                    <Icon type="left-circle" />
-                </Button>
-                <br />
-                <br />
+
                 <Row type="flex">
-                    <Col span={14} offset={2}>
+                    <Col span={21} offset={1}>
+                        <Row type="flex">
+                            <Col span={5}>
+                                <Button
+                                    type="primary"
+                                    onClick={this.toggleDetails.bind(this)}
+                                    className="text-to-left"
+                                >
+                                    <Icon type="left-circle" />
+                                    Back
+                                </Button>
+                                <br />
+                                <br />
+                            </Col>
+                        </Row>
+                        <Row type="flex">
+                            <Col span={2}>
+                                <img
+                                    className="avatar-uploader"
+                                    src={pict}
+                                    alt="Avatar"
+                                />
+                            </Col>
+                            <Col span={10}>
+                                <h4
+                                    className="text-to-left"
+                                    style={{ color: "#49274a" }}
+                                >
+                                    {this.state.vendor.vendor_name + "  "}
+                                    <Popover
+                                        placement="right"
+                                        title={this.state.vendor.vendor_name}
+                                        content={content}
+                                        trigger="click"
+                                    >
+                                        <Icon type="info-circle" />
+                                    </Popover>
+                                </h4>
+                            </Col>
+                        </Row>
+
+                        <br />
                         <ServiceDetails service={this.state.show} />
                     </Col>
                 </Row>
@@ -391,18 +486,49 @@ class Category extends Component {
             <div>
                 <br />
                 <br />
-                <Button
-                    type="primary"
-                    onClick={this.toggleDetails.bind(this)}
-                    className="text-to-left"
-                >
-                    Back
-                    <Icon type="left-circle" />
-                </Button>
-                <br />
-                <br />
+
                 <Row type="flex">
-                    <Col span={14} offset={2}>
+                    <Col span={21} offset={1}>
+                        <Row type="flex">
+                            <Col span={5}>
+                                <Button
+                                    type="primary"
+                                    onClick={this.toggleDetails.bind(this)}
+                                    className="text-to-left"
+                                >
+                                    <Icon type="left-circle" />
+                                    Back
+                                </Button>
+                                <br />
+                                <br />
+                            </Col>
+                        </Row>
+                        <Row type="flex">
+                            <Col span={2}>
+                                <img
+                                    className="avatar-uploader"
+                                    src={pict}
+                                    alt="Avatar"
+                                />
+                            </Col>
+                            <Col span={10}>
+                                <h4
+                                    className="text-to-left"
+                                    style={{ color: "#49274a" }}
+                                >
+                                    {this.state.vendor.vendor_name + "  "}
+                                    <Popover
+                                        placement="right"
+                                        title={this.state.vendor.vendor_name}
+                                        content={content}
+                                        trigger="click"
+                                    >
+                                        <Icon type="info-circle" />
+                                    </Popover>
+                                </h4>
+                            </Col>
+                        </Row>
+                        <br />
                         <PackageDetails package={this.state.show} />
                     </Col>
                 </Row>
