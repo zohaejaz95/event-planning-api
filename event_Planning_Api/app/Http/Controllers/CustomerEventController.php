@@ -256,33 +256,19 @@ public function get_order_approved(Request $request,$type,$id){
 public function get_order_complete(Request $request,$type,$id){
     $user=User::findOrFail(Auth::guard('api')->id());
     
-<<<<<<< HEAD
     if($user->user_type=="customer"){
-=======
-    if($user->user_type=="customer"||$user->user_type=="vendor"){
->>>>>>> 066393187258e23258bf1087bc4ea49b014e8227
         $customer=DB::select("select customer_id from customers where username = '$user->name'");
     
         if($type=="services"){
         $services=orders::select('o_id','order_status','payment_method','payment_status','description','order_type',
-<<<<<<< HEAD
         'service_id','customer_id','event_id')->where('order_status','completed')->where('order_type','service')
         ->where('customer_id',$customer[0]->customer_id)->where('event_id',$id)->where('payment_status','paid')->paginate(15);
-=======
-        'service_id','customer_id','event_id')->where('order_status','approved')->where('order_type','service')
-        ->where('customer_id',$customer[0]->customer_id)->where('event_id',$id)->where('payment_status','paid')->where('order_status','completed')->paginate(15);
->>>>>>> 066393187258e23258bf1087bc4ea49b014e8227
         return $services;
     }
     else if($type=="packages"){
         $services=orders::select('o_id','order_status','payment_method','payment_status','description','order_type',
-<<<<<<< HEAD
         'package_id','customer_id','event_id')->where('order_status','completed')->where('order_type','package')
         ->where('customer_id',$customer[0]->customer_id)->where('event_id',$id)->where('payment_status','paid')->paginate(15);
-=======
-        'package_id','customer_id','event_id')->where('order_status','approved')->where('order_type','package')
-        ->where('customer_id',$customer[0]->customer_id)->where('event_id',$id)->where('payment_status','paid')->where('order_status','completed')->paginate(15);
->>>>>>> 066393187258e23258bf1087bc4ea49b014e8227
         return $services;
     }
 }

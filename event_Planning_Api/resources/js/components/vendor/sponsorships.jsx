@@ -80,7 +80,7 @@ class Sponsorships extends Component {
     }
     render() {
         return (
-            <div>
+            <div style={{ minHeight: 440 }}>
                 <h4>Sponsored Events</h4>
                 <hr />
                 <div>

@@ -62,7 +62,7 @@ class NGOEvents extends Component {
     }
     render() {
         const ngoEventList = (
-            <div>
+            <div style={{ minHeight: 440 }}>
                 <h4>NGO Events for Sponsorship</h4>
                 <hr />
                 <List

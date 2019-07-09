@@ -651,7 +651,6 @@ export const getPckgImgs = id => {
             console.log(err);
         });
 };
-<<<<<<< HEAD
 
 export const getPckgPrice = id => {
     const token = JSON.parse(localStorage.getItem("usertoken"));
@@ -702,5 +701,3 @@ export const getPckgServices = id => {
             }
         });
 };
-=======
->>>>>>> 066393187258e23258bf1087bc4ea49b014e8227

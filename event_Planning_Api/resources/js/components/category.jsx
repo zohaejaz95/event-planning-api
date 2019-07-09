@@ -304,10 +304,6 @@ class Category extends Component {
                                 <div style={{ height: 125 }}>
                                     <ReactPlayer
                                         url={pack.videos}
-<<<<<<< HEAD
-=======
-                                        playing
->>>>>>> 066393187258e23258bf1087bc4ea49b014e8227
                                         style={{ width: 195, height: 100 }}
                                     />
                                 </div>
@@ -416,10 +412,6 @@ class Category extends Component {
                                 <div style={{ height: 125 }}>
                                     <ReactPlayer
                                         url={serve.videos}
-<<<<<<< HEAD
-=======
-                                        playing
->>>>>>> 066393187258e23258bf1087bc4ea49b014e8227
                                         style={{ width: 195, height: 100 }}
                                     />
                                 </div>

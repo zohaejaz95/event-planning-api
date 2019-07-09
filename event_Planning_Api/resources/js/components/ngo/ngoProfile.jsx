@@ -79,11 +79,6 @@ class NGOProfile extends Component {
                 {/* <br />
                 <h4 className="text-to-center">Event Progress</h4> */}
                 <br />
-<<<<<<< HEAD
-=======
-                <h4 className="text-to-center">Event Progress</h4>
-                <br />
->>>>>>> 066393187258e23258bf1087bc4ea49b014e8227
                 {/* <div style={{ background: "#ECECEC", padding: "30px" }}>
                     <Row gutter={16}>
                         <Col span={8}>

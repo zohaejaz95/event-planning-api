@@ -174,14 +174,10 @@ class Packages extends Component {
                     ))}
                 </Row>
 
-<<<<<<< HEAD
                 <Button type="primary" onClick={this.editEvent.bind(this)}>
                     <Icon type="edit" />
                     Update
                 </Button>
-=======
-                {/* <Button type="primary">Update</Button> */}
->>>>>>> 066393187258e23258bf1087bc4ea49b014e8227
                 <Button
                     type="danger"
                     onClick={() => this.deletePackage(this.state.pack.p_id)}

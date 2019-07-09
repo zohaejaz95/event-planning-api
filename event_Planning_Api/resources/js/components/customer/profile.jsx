@@ -86,11 +86,6 @@ class CustProfile extends Component {
                 </Row>
                 <br />
                 {/* <h4 className="text-to-center">Event Progress</h4> */}
-<<<<<<< HEAD
-
-=======
-                <br />
->>>>>>> 066393187258e23258bf1087bc4ea49b014e8227
                 {/* <div style={{ background: "#EEE1EE", padding: "30px" }}>
                     <Row gutter={16}>
                         <Col span={8}>

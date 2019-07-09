@@ -152,6 +152,10 @@ export const getEvents = stat => {
         })
         .catch(err => {
             console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
         });
 };
 export const getActiveEvents = () => {
@@ -172,6 +176,10 @@ export const getActiveEvents = () => {
         })
         .catch(err => {
             console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
         });
 };
 
@@ -194,6 +202,10 @@ export const getService = id => {
         })
         .catch(err => {
             console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
         });
 };
 
