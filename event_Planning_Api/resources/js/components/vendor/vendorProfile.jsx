@@ -73,7 +73,10 @@ class VendorProfile extends Component {
                     </Col>
                     <Col span={19} offset={1} style={{ padding: "30px" }}>
                         <h4>{this.state.profile.vendor_name}</h4>
-                        <table>
+                        <table
+                            className="table table-striped "
+                            style={{ width: "100%" }}
+                        >
                             <tbody>
                                 <tr>
                                     <th>Email</th>
@@ -89,14 +92,16 @@ class VendorProfile extends Component {
                                 </tr>
                                 <tr>
                                     <th>Locations</th>
-
-                                    {this.state.locations.map((con, i) => (
-                                        <td key={i}>
-                                            {i + 1}. City: {con.city}
-                                            <br />
-                                            Address: {con.address}
-                                        </td>
-                                    ))}
+                                    <td>
+                                        {this.state.locations.map((con, i) => (
+                                            <div key={i}>
+                                                {i + 1}. City: {con.city}
+                                                <br />
+                                                Address: {con.address}
+                                                <br />
+                                            </div>
+                                        ))}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>Category/ies</th>

@@ -46,7 +46,7 @@ class OrderRequests extends Component {
                 console.log("OK");
                 updateOrderStatus(item.o_id, "approved").then(res => {
                     if (res) {
-                        message.success("Marked as approved");
+                        message.success("Order Accepted!");
                     } else {
                         message.error("Something went wrong!");
                     }

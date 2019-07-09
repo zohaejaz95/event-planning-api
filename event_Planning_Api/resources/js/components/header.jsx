@@ -112,9 +112,9 @@ class Header extends Component {
                     </SubMenu>
 
                     <Menu.Item key="contact">
-                        <a href="/contact-us" style={{ color: "white" }}>
-                            <Icon type="mail" />
-                            Contact Us
+                        <a href="/about-us" style={{ color: "white" }}>
+                            <Icon type="info-circle" />
+                            About Us
                         </a>
                     </Menu.Item>
 

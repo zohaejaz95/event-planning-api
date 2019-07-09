@@ -4,24 +4,6 @@ import SponsorshipForm from "./sponsorshipForm";
 import avatar from "../../images/avatar.jpg";
 import { getNGOEvents, getNGOData } from "./vendorFunctions";
 const ButtonGroup = Button.Group;
-const data = [
-    {
-        title: "NGO Event 1"
-    },
-    {
-        title: "NGO Event 2"
-    },
-    {
-        title: "NGO Event 3"
-    },
-    {
-        title: "NGO Event 4"
-    },
-    {
-        title: "NGO Event 5"
-    }
-];
-
 class NGOEvents extends Component {
     constructor() {
         super();
@@ -189,9 +171,10 @@ class NGOEvents extends Component {
         const sponsorhipForm = (
             <div>
                 <br />
-                <Button type="danger" onClick={this.toggleDetail.bind(this)}>
-                    Cancel
+                <Button type="primary" onClick={this.toggleDetail.bind(this)}>
+                    Back
                 </Button>
+                <br />
                 <Avatar size={64} icon="user" />
                 <span>
                     <h4>{this.state.ngo_det.ngo_name}</h4>

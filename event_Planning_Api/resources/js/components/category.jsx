@@ -2,6 +2,7 @@ import React, { Component } from "react";
 //import { Link } from "react-router-dom";
 import ReactPlayer from "react-player";
 import Order from "./order";
+import Footer from "./footer";
 import { Card, Col, Row, Button, Select, Icon, Popover } from "antd";
 import {
     getServicesCat,
@@ -550,6 +551,7 @@ class Category extends Component {
                     : this.state.display
                     ? packageDetail
                     : serviceList}
+                <Footer />
             </div>
         );
     }

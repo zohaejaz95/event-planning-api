@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Card, Row, Col, message, Select } from "antd";
+import { Link } from "react-router-dom";
 import DisplayServices from "./displayServices";
 import DisplayPackages from "./displayPackages";
 //import { Link } from "react-router-dom";
@@ -31,7 +32,8 @@ class EventOrders extends Component {
             a_services: [],
             a_packages: [],
             c_services: [],
-            c_packages: []
+            c_packages: [],
+            noth: []
         };
         this.approvedServices = this.approvedServices.bind(this);
         this.approvedPackages = this.approvedPackages.bind(this);
@@ -87,21 +89,26 @@ class EventOrders extends Component {
                 this.setState({
                     a_services: response.data.data
                 });
+                console.log("fdvsetjq");
+                console.log(response);
                 var res = response.data.data;
                 for (var i = 0; i < res.length; i++) {
                     var id = res[i];
+
                     console.log("service id: " + id.service_id);
                     getService(id.service_id).then(res => {
                         //console.log(id);
                         if (res) {
                             var val = res[0];
+                            val["o_id"] = id.o_id;
                             this.state.aS.push(val);
-                            //console.log(res);
+                            //console.log("Here look!!!");
+                            //console.log(val);
                         }
                     });
                 }
             }
-            console.log(this.state.aS);
+            //console.log(this.state.aS);
             //console.log(response);
         });
     }
@@ -111,7 +118,8 @@ class EventOrders extends Component {
                 this.setState({
                     a_packages: response.data.data
                 });
-                //console.log(response.data.data);
+                console.log("fdvfbgfr");
+                console.log(response);
                 var res = response.data.data;
                 for (var i = 0; i < res.length; i++) {
                     var id = res[i];
@@ -120,14 +128,15 @@ class EventOrders extends Component {
                         //console.log(id);
                         if (res) {
                             var val = res[0];
+                            val["o_id"] = id.o_id;
                             this.state.aP.push(val);
 
-                            //console.log(res);
+                            //console.log(val);
                         }
                     });
                 }
             }
-            console.log(this.state.aP);
+            //console.log(this.state.aP);
             //console.log(response);
         });
     }
@@ -137,6 +146,7 @@ class EventOrders extends Component {
                 this.setState({
                     p_services: response.data.data
                 });
+                console.log("dffdv");
                 var res = response.data.data;
                 for (var i = 0; i < res.length; i++) {
                     var id = res[i];
@@ -146,6 +156,7 @@ class EventOrders extends Component {
 
                         if (res) {
                             var val = res[0];
+                            val["o_id"] = id.o_id;
                             //this.state.p_services[i] = val;
                             this.state.pS.push(val);
                             //this.state.p_services[i].push(val);
@@ -155,7 +166,7 @@ class EventOrders extends Component {
                     });
                 }
 
-                console.log(this.state.pS);
+                //console.log(this.state.pS);
             }
         });
     }
@@ -165,6 +176,8 @@ class EventOrders extends Component {
                 this.setState({
                     p_packages: response.data.data
                 });
+                console.log("fdv");
+                console.log(response);
                 var res = response.data.data;
                 for (var i = 0; i < res.length; i++) {
                     var id = res[i];
@@ -173,38 +186,42 @@ class EventOrders extends Component {
                         //console.log(id);
                         if (res) {
                             var val = res[0];
+                            val["o_id"] = id.o_id;
                             this.state.pP.push(val);
                             //console.log(res);
                         }
                     });
                 }
             }
-            console.log(this.state.pP);
+            //console.log(this.state.pP);
             //console.log(response);
         });
     }
 
     completeServices() {
+        console.log(this.props.event_id);
         getCompleteOrders(this.props.event_id, "services").then(response => {
             if (response) {
                 this.setState({
                     c_services: response.data.data
                 });
+                console.log(response);
                 var res = response.data.data;
                 for (var i = 0; i < res.length; i++) {
                     var id = res[i];
                     console.log("service id: " + id.service_id);
                     getService(id.service_id).then(res => {
-                        //console.log(id);
+                        console.log(res);
                         if (res) {
                             var val = res[0];
+                            val["o_id"] = id.o_id;
                             this.state.cS.push(val);
-                            //console.log(res);
+                            console.log(res);
                         }
                     });
                 }
             }
-            console.log(this.state.cS);
+            //console.log(this.state.cS);
             //console.log(response);
         });
     }
@@ -215,6 +232,7 @@ class EventOrders extends Component {
                 this.setState({
                     c_packages: response.data.data
                 });
+                console.log(response);
                 var res = response.data.data;
                 for (var i = 0; i < res.length; i++) {
                     var id = res[i];
@@ -223,8 +241,10 @@ class EventOrders extends Component {
                         //console.log(id);
                         if (res) {
                             var val = res[0];
+                            val["o_id"] = id.o_id;
                             this.state.cP.push(val);
-                            //console.log(res);
+
+                            console.log(res);
                         }
                     });
                 }
@@ -277,18 +297,30 @@ class EventOrders extends Component {
                     />
                 ) : this.state.pServices ? (
                     <DisplayServices
-                        pending={this.state.pS}
+                        pending={this.state.noth}
                         approved={this.state.cS}
                         status={false}
                     />
                 ) : this.state.pPackages ? (
                     <DisplayPackages
-                        pending={this.state.pP}
+                        pending={this.state.noth}
                         approved={this.state.cP}
                         status={false}
                     />
                 ) : (
-                    <div />
+                    <div>
+                        <br />
+                        <h3>
+                            <Link
+                                to={{
+                                    pathname: "/services",
+                                    state: { service: false }
+                                }}
+                            >
+                                Order now!
+                            </Link>
+                        </h3>
+                    </div>
                 )}
             </div>
         );

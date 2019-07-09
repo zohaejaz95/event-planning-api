@@ -167,14 +167,17 @@ class CustEventForm extends Component {
                                 )}
                             </Form.Item>
                             <Form.Item>
-                                {getFieldDecorator("description", {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message: "Please Enter Decsription!"
-                                        }
-                                    ]
-                                })(
+                                {getFieldDecorator(
+                                    "description"
+                                    // , {
+                                    //     rules: [
+                                    //         {
+                                    //             required: true,
+                                    //             message: "Please Enter Decsription!"
+                                    //         }
+                                    //     ]
+                                    // }
+                                )(
                                     <TextArea
                                         rows={4}
                                         placeholder="Enter Description"

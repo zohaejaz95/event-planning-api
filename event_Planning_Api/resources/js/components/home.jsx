@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Card, Row, Col, Input, Carousel } from "antd";
 //main images
+import Footer from "./footer";
 import main from "../images/event-planning.jpg";
 import alter from "../images/chopping.jpg";
 import eventImage from "../images/event-image.jpg";
@@ -150,6 +151,7 @@ class Home extends Component {
                     </div>
                 </div>
                 <br />
+                <Footer />
             </div>
         );
     }

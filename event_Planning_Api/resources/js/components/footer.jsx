@@ -136,18 +136,11 @@ class Footer extends Component {
                                 <a href="tel:#">+92 3214905067</a>
                                 <br />
                                 <br />
-                                <a href="/contact-us">About Us</a>
-                                <br />
-                                <a href="/contact-us">Contact Us</a>
+                                <a href="/about-us">About Us</a>
                                 <br />
                             </div>
                         </Col>
                     </Row>
-                </div>
-                <div className="end-footer">
-                    <br />
-                    <p> Event Era ©2019 Created by COMSATS Students</p>
-                    <br />
                 </div>
             </footer>
         );

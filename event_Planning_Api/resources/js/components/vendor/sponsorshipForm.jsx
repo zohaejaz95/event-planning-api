@@ -35,8 +35,8 @@ class SponsorshipForm extends Component {
         this.state = {
             value: "",
             services: [],
-            cash: "",
-            serv: ""
+            cash: true,
+            serv: true
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -76,13 +76,13 @@ class SponsorshipForm extends Component {
         });
         if (e.target.value == "cash") {
             this.setState({
-                cash: "",
-                serv: "disabled"
+                cash: false,
+                serv: true
             });
         } else {
             this.setState({
-                serv: "",
-                cash: "disabled"
+                serv: false,
+                cash: true
             });
         }
     }
@@ -118,7 +118,8 @@ class SponsorshipForm extends Component {
                             <Form.Item>
                                 {getFieldDecorator("donation")(
                                     <InputNumber
-                                        {...this.state.cash}
+                                        id="don"
+                                        disabled={this.state.cash}
                                         style={{ width: "100%" }}
                                         min={0}
                                         max={1000000}
@@ -130,7 +131,7 @@ class SponsorshipForm extends Component {
                             <Form.Item>
                                 {getFieldDecorator("service_id")(
                                     <Select
-                                        {...this.state.serv}
+                                        disabled={this.state.serv}
                                         showSearch
                                         style={{ width: "100%" }}
                                         placeholder="Select a service"

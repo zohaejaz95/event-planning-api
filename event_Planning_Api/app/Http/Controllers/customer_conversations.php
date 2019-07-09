@@ -101,6 +101,7 @@ class customer_conversations extends Controller
 
     }
     public function update_status($msg_id){
+        $user=User::findOrFail(Auth::guard('api')->id());
         if($user->user_type=="vendor"||$user->user_type=="customer"){
         $msg=customer_chats::findOrFail($msg_id);
         $msg->update([

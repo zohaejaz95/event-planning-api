@@ -3,6 +3,7 @@ import { List, Avatar, Button, Icon, message, Row, Col, Card } from "antd";
 //import ReactPlayer from "react-player";
 import { Link } from "react-router-dom";
 import photography from "../../images/photography.jpg";
+import UpdatePackage from "./updatePackage";
 import PackageDetails from "./packageDetails";
 import avatar from "../../images/avatar.jpg";
 import { getPackages, deletePackages, getServicesCat } from "./vendorFunctions";
@@ -15,7 +16,8 @@ class Packages extends Component {
             detail: false,
             packages: [],
             pack: [],
-            services: []
+            services: [],
+            edit: false
         };
         this.toggleDetail = this.toggleDetail.bind(this);
         this.paginatePackage = this.paginatePackage.bind(this);
@@ -37,13 +39,15 @@ class Packages extends Component {
     }
     toggleDetail() {
         this.setState({
-            detail: false
+            detail: false,
+            edit: false
         });
     }
     toggleDetails(item) {
         this.setState({
             detail: true,
-            pack: item
+            pack: item,
+            edit: false
         });
         getServicesCat("photographs").then(res => {
             if (res) {
@@ -66,7 +70,14 @@ class Packages extends Component {
         });
         this.paginatePackage();
         this.setState({
-            detail: false
+            detail: false,
+            edit: false
+        });
+    }
+    editEvent() {
+        this.setState({
+            detail: false,
+            edit: true
         });
     }
     render() {
@@ -163,7 +174,10 @@ class Packages extends Component {
                     ))}
                 </Row>
 
-                {/* <Button type="primary">Update</Button> */}
+                <Button type="primary" onClick={this.editEvent.bind(this)}>
+                    <Icon type="edit" />
+                    Update
+                </Button>
                 <Button
                     type="danger"
                     onClick={() => this.deletePackage(this.state.pack.p_id)}
@@ -178,7 +192,21 @@ class Packages extends Component {
             <div>
                 <br />
 
-                {this.state.detail ? packageDetail : packageList}
+                {this.state.detail ? (
+                    packageDetail
+                ) : this.state.edit ? (
+                    <div>
+                        <Button
+                            type="primary"
+                            onClick={this.toggleDetail.bind(this)}
+                        >
+                            Back
+                        </Button>
+                        <UpdatePackage pack={this.state.pack} />
+                    </div>
+                ) : (
+                    packageList
+                )}
             </div>
         );
     }

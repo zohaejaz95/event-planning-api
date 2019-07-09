@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import Footer from "./footer";
 import { Row, Col } from "antd";
 
 import contact from "../images/contact-us.jpg";
@@ -126,6 +126,7 @@ class ContactUs extends Component {
                     </Col>
                 </Row>
                 <br />
+                <Footer />
             </div>
         );
     }

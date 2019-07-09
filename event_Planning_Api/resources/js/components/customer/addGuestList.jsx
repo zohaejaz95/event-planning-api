@@ -11,7 +11,8 @@ class GuestList extends Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log("Received values of form: ", values);
+                (values["contact"] = "92" + values["contact"]),
+                    console.log("Received values of form: ", values);
                 createContact(values).then(res => {
                     if (res) {
                         message.success("Contact Added");
@@ -25,6 +26,13 @@ class GuestList extends Component {
 
     render() {
         const { getFieldDecorator } = this.props.form;
+        const prefixSelector = getFieldDecorator("prefix", {
+            initialValue: "92"
+        })(
+            <Select>
+                <Option value="92">+92</Option>
+            </Select>
+        );
         return (
             <div className="contents">
                 <Row>
@@ -92,7 +100,7 @@ class GuestList extends Component {
                                                 "Please input your Contact No.!"
                                         },
                                         {
-                                            pattern: "[9][2][0-9]{10}",
+                                            pattern: "[0-9]{10}",
                                             message: "Invalid Contact Number!"
                                         }
                                     ]

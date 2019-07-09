@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Select, Card, Button, Icon, message } from "antd";
+import { Select, Card, Button, Icon, message, Row, Col } from "antd";
 import {
     getEvents,
     getContacts,
@@ -126,9 +126,36 @@ class Contacts extends Component {
                 {this.state.contacts.map((con, i) => (
                     <div key={i}>
                         <Card hoverable bordered={false}>
-                            <h6>{con.first_name + " " + con.last_name}</h6>
-                            <p>Email: {con.email}</p>
-                            <a
+                            <Row>
+                                <Col span={10}>
+                                    <h6>
+                                        {con.first_name + " " + con.last_name}
+                                    </h6>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col span={16}>
+                                    <p>Email: {con.email}</p>
+                                </Col>
+                                <Col span={4}>
+                                    <Button
+                                        onClick={() => this.invitation(con.id)}
+                                    >
+                                        <Icon type="plus" />
+                                        Invite
+                                    </Button>
+                                </Col>
+                                <Col span={4}>
+                                    <Button
+                                        type="danger"
+                                        onClick={() => this.deleteC(con.id)}
+                                    >
+                                        <Icon type="delete" />
+                                        Delete
+                                    </Button>
+                                </Col>
+                            </Row>
+                            {/* <a
                                 href={
                                     "mailto:" + con.email + "?Subject=Invitaion"
                                 }
@@ -137,18 +164,12 @@ class Contacts extends Component {
                                     <Icon type="plus" />
                                     Invite
                                 </Button>
-                            </a>
-                            <Button
-                                type="danger"
-                                onClick={() => this.deleteC(con.id)}
-                            >
-                                <Icon type="delete" />
-                                Delete
-                            </Button>
+                            </a> */}
                         </Card>
                         <br />
                     </div>
                 ))}
+                <div style={{ height: 100 }} />
             </div>
         );
     }

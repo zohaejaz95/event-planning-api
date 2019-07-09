@@ -11,13 +11,20 @@ import {
     message,
     DatePicker
 } from "antd";
-import { getVendorServices, updatePackage } from "./vendorFunctions";
+import moment from "moment";
 
+import {
+    getVendorServices,
+    updatePackage,
+    addImgPackages
+} from "./vendorFunctions";
+var pictures = [];
 const dateFormat = "YYYY-MM-DD";
+var dat = moment();
 //import loginImage from "../../images/Pakistani-Wedding.png";
 class UpdatePackage extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             service: [],
             id: [],
@@ -26,8 +33,12 @@ class UpdatePackage extends Component {
             val: [],
             my_services: {},
             services: [],
-            expiration_date: ""
+            expiration_date: "",
+            name: [],
+            pictures: []
         };
+        this.onDrop = this.onDrop.bind(this);
+
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.selectKeys = this.selectKeys.bind(this);
@@ -92,9 +103,24 @@ class UpdatePackage extends Component {
                 values["services"] = serve;
                 console.log(values);
                 values["expiration_date"] = this.state.expiration_date;
-                createPackages(values).then(res => {
+                updatePackage(this.props.pack.p_id, values).then(res => {
                     if (res) {
-                        message.success("Package Created!");
+                        message.success("Package Updated!");
+                        // var val = {};
+                        // for (var i = 0; i < pictures.length; i++) {
+                        //     val = {
+                        //         img_name: this.state.name[i],
+                        //         image: pictures[i]
+                        //     };
+                        //     addImgPackages(res, val).then(response => {
+                        //         if (response) {
+                        //             console.log("Images added successfully!");
+                        //             console.log(response);
+                        //         } else {
+                        //             console.log("Images couldn't be saved!");
+                        //         }
+                        //     });
+                        // }
                     } else {
                         message.error("Package could not be created!");
                     }
@@ -123,6 +149,19 @@ class UpdatePackage extends Component {
         });
     }
     componentDidMount() {
+        this.setState({
+            expiration_date: this.props.pack.expiration_date
+        });
+        dat = moment(this.props.pack.expiration_date, "YYYY-MM-DD");
+        console.log(this.props.pack);
+        // getPckgServices(this.props.pack.p_id).then(res => {
+        //     if (res) {
+        //         this.setState({
+        //             sel: res
+        //         });
+        //     }
+        // });
+        //this.state.expiration_date = this.state.props.pack.expiration_date;
         getVendorServices().then(res => {
             if (res) {
                 //console.log(res);
@@ -131,6 +170,32 @@ class UpdatePackage extends Component {
                 });
             }
         });
+    }
+    onDrop(event) {
+        var files = event.target.files;
+        if (files.length > 4) {
+            message.warning("Upto 4 images can be uploaded!!");
+        } else {
+            for (var i = 0; i < files.length; i++) {
+                var fil = files[i];
+                this.state.name.push(fil.name);
+                console.log(fil.name);
+                console.log(fil);
+                var reader = new FileReader();
+                reader.readAsDataURL(fil);
+                reader.onload = function() {
+                    var fileContent = reader.result;
+                    console.log(fileContent);
+                    pictures.push(fileContent);
+                    //pictures = fileContent;
+                };
+                //console.log(pictures[i]);
+            }
+        }
+        //console.log(this.state.pictures);
+        // var pic_name = event.target.files[0];
+        // console.log(event.target.files);
+        // console.log(pic_name);
     }
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -142,12 +207,18 @@ class UpdatePackage extends Component {
                 <br />
                 <Row>
                     <Col span={12} offset={3}>
-                        <h3 className="text-to-left">Add Package</h3>
+                        <h3 className="text-to-left">Edit Package</h3>
                         <br />
                         <Form
                             onSubmit={this.handleSubmit}
                             className="login-form "
                         >
+                            {/* <input
+                                type="file"
+                                onChange={this.onDrop}
+                                multiple
+                            />
+                            <br /> */}
                             <Form.Item>
                                 <Select
                                     labelInValue
@@ -174,15 +245,21 @@ class UpdatePackage extends Component {
                             </Form.Item>
 
                             <Form.Item>
-                                {getFieldDecorator("name", {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message:
-                                                "Please input your Package Name!"
-                                        }
-                                    ]
-                                })(
+                                {getFieldDecorator(
+                                    "name",
+                                    {
+                                        initialValue: this.props.pack.name
+                                    },
+                                    {
+                                        rules: [
+                                            {
+                                                required: true,
+                                                message:
+                                                    "Please input your Package Name!"
+                                            }
+                                        ]
+                                    }
+                                )(
                                     <Input
                                         prefix={
                                             <Icon
@@ -197,15 +274,21 @@ class UpdatePackage extends Component {
                                 )}
                             </Form.Item>
                             <Form.Item>
-                                {getFieldDecorator("expiration_date", {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message:
-                                                "Please input your Expirateion Date!"
-                                        }
-                                    ]
-                                })(
+                                {getFieldDecorator(
+                                    "expiration_date",
+                                    {
+                                        initialValue: dat
+                                    },
+                                    {
+                                        rules: [
+                                            {
+                                                required: true,
+                                                message:
+                                                    "Please input your Expirateion Date!"
+                                            }
+                                        ]
+                                    }
+                                )(
                                     <DatePicker
                                         style={{ width: "100%" }}
                                         format={dateFormat}
@@ -215,15 +298,39 @@ class UpdatePackage extends Component {
                                 )}
                             </Form.Item>
                             <Form.Item>
-                                {getFieldDecorator("description", {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message:
-                                                "Please input your Package Name!"
-                                        }
-                                    ]
+                                {getFieldDecorator("videos", {
+                                    initialValue: this.props.pack.videos
                                 })(
+                                    <Input
+                                        prefix={
+                                            <Icon
+                                                type="upload"
+                                                style={{
+                                                    color: "rgba(0,0,0,.25)"
+                                                }}
+                                            />
+                                        }
+                                        placeholder="Video URL"
+                                    />
+                                )}
+                            </Form.Item>
+                            <Form.Item>
+                                {getFieldDecorator(
+                                    "description",
+                                    {
+                                        initialValue: this.props.pack
+                                            .description
+                                    },
+                                    {
+                                        rules: [
+                                            {
+                                                required: true,
+                                                message:
+                                                    "Please input your Package Name!"
+                                            }
+                                        ]
+                                    }
+                                )(
                                     <TextArea
                                         rows={4}
                                         placeholder="Enter Description"
@@ -237,7 +344,7 @@ class UpdatePackage extends Component {
                                         <br />
                                         <InputNumber
                                             labelInValue
-                                            style={{ width: 300 }}
+                                            style={{ width: "100%" }}
                                             min={1}
                                             max={100}
                                             onChange={e =>
@@ -264,6 +371,8 @@ class UpdatePackage extends Component {
     }
 }
 
-const WrappedAddPackages = Form.create({ name: "normal_login" })(UpdatePackage);
-export default WrappedAddPackages;
+const WrappedUpdatePackage = Form.create({ name: "normal_login" })(
+    UpdatePackage
+);
+export default WrappedUpdatePackage;
 //export default VendorRegister;

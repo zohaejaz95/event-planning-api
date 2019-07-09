@@ -22,7 +22,7 @@ class DisplayServices extends Component {
         });
     }
     onPayment(val) {
-        updatePaymentStatus(val, "complete").then(res => {
+        updatePaymentStatus(val, "completed").then(res => {
             if (res) {
                 console.log(res);
                 message.success("Marked as paid!!");
@@ -39,11 +39,25 @@ class DisplayServices extends Component {
             }
         });
     }
+    // componentWillUnmount() {
+    //     this.setState({
+    //         status: "",
+    //         approve: [],
+    //         pend: []
+    //     });
+    // }
+    // shouldComponentUpdate(){
+
+    // }
     render() {
         return (
             <div>
                 <br />
-                <h5>Approved Orders</h5>
+                {this.state.status ? (
+                    <h5>Approved Orders</h5>
+                ) : (
+                    <h5>Complete Orders</h5>
+                )}
                 <List
                     itemLayout="horizontal"
                     dataSource={this.state.approve}
@@ -56,7 +70,7 @@ class DisplayServices extends Component {
                             {this.state.status ? (
                                 <Button
                                     type="primary"
-                                    onClick={() => this.onPayment(item.id)}
+                                    onClick={() => this.onPayment(item.o_id)}
                                 >
                                     Paid
                                 </Button>
@@ -67,19 +81,28 @@ class DisplayServices extends Component {
                     )}
                 />
 
-                <h5>Pending Orders</h5>
-                <List
-                    itemLayout="horizontal"
-                    dataSource={this.state.pend}
-                    renderItem={item => (
-                        <List.Item>
-                            <List.Item.Meta
-                                title={<a href="/">{item.service_name}</a>}
-                                description={item.description}
-                            />
-                        </List.Item>
-                    )}
-                />
+                {this.state.status ? (
+                    <div>
+                        <h5>Pending Orders</h5>
+                        <List
+                            itemLayout="horizontal"
+                            dataSource={this.state.pend}
+                            renderItem={item => (
+                                <List.Item>
+                                    <List.Item.Meta
+                                        title={
+                                            <a href="/">{item.service_name}</a>
+                                        }
+                                        description={item.description}
+                                    />
+                                </List.Item>
+                            )}
+                        />
+                    </div>
+                ) : (
+                    <div />
+                )}
+                <div style={{ height: 100 }} />
             </div>
         );
     }

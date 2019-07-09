@@ -295,35 +295,69 @@ class ViewEventCust extends Component {
                         </Button>
                     </Col>
                 </Row>
-                <span>
-                    <h4>{this.state.sel.event_name}</h4>
-                    <h5>{this.state.sel.category}</h5>
-                </span>
                 <br />
-                <p>Subject: </p>
-                <p>{this.state.sel.description}</p>
-                <p>Time: {this.state.sel.time}</p>
-                <p>Date: {this.state.sel.date}</p>
-                <br />
-                <hr />
-                <h4>Budget Manager</h4>
-                <p>Budget: {this.state.sel.budget}</p>
-                <p>Expenses: {this.state.expenses}</p>
-                <p>Budget Status: </p>
-                {this.state.status ? (
-                    <h6 style={{ color: "green" }}>Within Budget</h6>
-                ) : (
-                    <h6 style={{ color: "red" }}>Out of Budget</h6>
-                )}
+                <table className="table table-striped">
+                    <tbody>
+                        <tr>
+                            <th>Event Name</th>
+                            <td>{this.state.sel.event_name}</td>
+                        </tr>
+                        <tr>
+                            <th>Category</th>
+                            <td>{this.state.sel.category}</td>
+                        </tr>
+                        <tr>
+                            <th>Subject</th>
+                            <td>{this.state.sel.description}</td>
+                        </tr>
+                        <tr>
+                            <th>Time</th>
+                            <td>{this.state.sel.time}</td>
+                        </tr>
+                        <tr>
+                            <th>Date</th>
+                            <td>{this.state.sel.date}</td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <h4>Budget Manager</h4>
+                            </th>
+                            <td> </td>
+                        </tr>
+                        <tr>
+                            <th>Budget</th>
+                            <td>{this.state.sel.budget}</td>
+                        </tr>
+                        <tr>
+                            <th>Expenses</th>
+                            <td>{this.state.expenses}</td>
+                        </tr>
+                        <tr>
+                            <th>Status</th>
+                            <td>
+                                {this.state.status ? (
+                                    <h6 style={{ color: "green" }}>
+                                        Within Budget
+                                    </h6>
+                                ) : (
+                                    <h6 style={{ color: "red" }}>
+                                        Out of Budget
+                                    </h6>
+                                )}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
                 <br />
                 <div>
-                    <Tooltip placement="topLeft" title="Total Budget">
+                    {/* <Tooltip placement="topLeft" title="Total Budget">
                         <Progress percent={100} />
-                    </Tooltip>
-                    <Tooltip placement="topLeft" title="Used Budget">
+                    </Tooltip> */}
+                    <Tooltip placement="topLeft" title="Budget Used">
                         <Progress percent={this.state.used} />
                     </Tooltip>
-                    <Tooltip placement="topLeft" title="Exceeding Budget">
+                    {/* <Tooltip placement="topLeft" title="Exceeding Budget">
                         <Progress
                             percent={this.state.exeed}
                             status="exception"
@@ -331,18 +365,20 @@ class ViewEventCust extends Component {
                     </Tooltip>
                     <Tooltip placement="topLeft" title="Within Budget">
                         <Progress percent={this.state.within} />
-                    </Tooltip>
+                    </Tooltip> */}
                 </div>
                 <br />
-                <br />
+
                 <hr />
+                <br />
+                <h4>Orders</h4>
                 <EventOrders event_id={this.state.sel.event_id} />
                 <br />
             </div>
         );
 
         return (
-            <div>
+            <div style={{ minHeight: 440 }}>
                 <br />
 
                 {this.state.list ? (
@@ -360,6 +396,7 @@ class ViewEventCust extends Component {
                 ) : (
                     custEventList
                 )}
+                <div style={{ height: 10 }} />
             </div>
         );
     }

@@ -6,13 +6,40 @@ import {
     getCustToVendor,
     getVendorToCust,
     getCustChat,
-    getNGOChat
+    getNGOChat,
+    getunReadCust,
+    getunReadNGO,
+    changeStatusNGO,
+    changeStatusCust
 } from "./chatFunctions";
 import ChatBox from "./chatBox";
-import { Row, Col, Menu, Icon } from "antd";
+import { Row, Col, Menu, Icon, Badge } from "antd";
 // var sender = "";
 // var receiver = "";
+var count = 0;
+function getValueCust(item) {
+    //console.log(item.id);
 
+    getunReadCust(item.id).then(res => {
+        if (res) {
+            console.log(res.length);
+            count = parseInt(res.length, 10);
+            //return count;
+        }
+    });
+    return count;
+}
+function getValueNGO(item) {
+    //console.log(item.id);
+    getunReadNGO(item.id).then(res => {
+        if (res) {
+            console.log(res.length);
+            count = parseInt(res.length, 10);
+            return 3;
+        }
+    });
+    return count;
+}
 class Messages extends Component {
     constructor(props) {
         super(props);
@@ -24,10 +51,38 @@ class Messages extends Component {
             cust: false,
             chat: [],
             data: [],
-            sel: []
+            sel: [],
+            unread: [],
+            show: true
         };
         this.custChat = this.custChat.bind(this);
         this.ngoChat = this.ngoChat.bind(this);
+        this.ngoUnread = this.ngoUnread.bind(this);
+        this.custUnread = this.custUnread.bind(this);
+    }
+    custUnread(c_id) {
+        if (this.state.show) {
+            getunReadCust(c_id).then(res => {
+                if (res) {
+                    this.setState({
+                        unread: res,
+                        show: false
+                    });
+                }
+            });
+        }
+    }
+    ngoUnread(c_id) {
+        if (this.state.show) {
+            getunReadNGO(c_id).then(res => {
+                if (res) {
+                    this.setState({
+                        unread: res,
+                        show: false
+                    });
+                }
+            });
+        }
     }
     componentWillMount() {
         var sender = "";
@@ -102,6 +157,14 @@ class Messages extends Component {
                     chat: res.data,
                     display: true
                 });
+                for (var i = 0; i < this.state.unread.length; i++) {
+                    var val = this.state.unread[i];
+                    changeStatusNGO(val.id).then(res => {
+                        if (res) {
+                            console.log("Marked as Read!");
+                        }
+                    });
+                }
             }
         });
     }
@@ -117,11 +180,35 @@ class Messages extends Component {
                     chat: res.data,
                     display: true
                 });
+                for (var i = 0; i < this.state.unread.length; i++) {
+                    var val = this.state.unread[i];
+                    changeStatusCust(val.id).then(res => {
+                        if (res) {
+                            console.log("Marked as Read!");
+                        }
+                    });
+                }
             }
         });
     }
 
     render() {
+        var ngoget = item => {
+            if (this.state.show) {
+                this.ngoUnread(item.id);
+                return this.state.unread.length;
+            } else {
+                return this.state.unread.length;
+            }
+        };
+        var custget = item => {
+            if (this.state.show) {
+                this.custUnread(item.id);
+                return this.state.unread.length;
+            } else {
+                return this.state.unread.length;
+            }
+        };
         const ngoDisplay = (
             <div>
                 <Menu
@@ -132,8 +219,10 @@ class Messages extends Component {
                 >
                     {this.state.data.map((data, i) => (
                         <Menu.Item key={i} onClick={() => this.ngoChat(data)}>
-                            <Icon type="user" />
-                            {data.vendor_name}
+                            <Badge count={ngoget(data)}>
+                                <Icon type="user" />
+                                {data.vendor_name + "  "}
+                            </Badge>
                         </Menu.Item>
                     ))}
                 </Menu>
@@ -149,8 +238,10 @@ class Messages extends Component {
                 >
                     {this.state.data.map((data, i) => (
                         <Menu.Item key={i} onClick={() => this.custChat(data)}>
-                            <Icon type="user" />
-                            {data.vendor_name}
+                            <Badge count={custget(data)}>
+                                <Icon type="user" />
+                                {data.vendor_name}
+                            </Badge>
                         </Menu.Item>
                     ))}
                 </Menu>
@@ -166,8 +257,10 @@ class Messages extends Component {
                 >
                     {this.state.data.map((data, i) => (
                         <Menu.Item key={i} onClick={() => this.ngoChat(data)}>
-                            <Icon type="user" />
-                            {data.ngo_name}
+                            <Badge count={ngoget(data)}>
+                                <Icon type="user" />
+                                {data.ngo_name}
+                            </Badge>
                         </Menu.Item>
                     ))}
                 </Menu>
@@ -183,13 +276,16 @@ class Messages extends Component {
                 >
                     {this.state.data.map((data, i) => (
                         <Menu.Item key={i} onClick={() => this.custChat(data)}>
-                            <Icon type="user" />
-                            {data.first_name + " " + data.last_name}
+                            <Badge count={custget(data)}>
+                                <Icon type="user" />
+                                {data.first_name + " " + data.last_name}
+                            </Badge>
                         </Menu.Item>
                     ))}
                 </Menu>
             </div>
         );
+
         return (
             <div>
                 <Row>
@@ -206,7 +302,6 @@ class Messages extends Component {
                                 <br />
                                 <br />
                                 <br />
-                                <h6>Select a chat to display.</h6>
                             </div>
                         )}
                     </Col>

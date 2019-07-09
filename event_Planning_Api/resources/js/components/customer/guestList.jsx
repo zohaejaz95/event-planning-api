@@ -88,7 +88,7 @@ class GuestList extends Component {
             });
         }
         return (
-            <div>
+            <div style={{ minHeight: 440 }}>
                 <h4>Guest List</h4>
                 <hr />
                 <Select
@@ -125,22 +125,45 @@ class GuestList extends Component {
                 </Select>
 
                 <br />
+                <br />
                 {this.state.guests.map((guest, i) => (
                     <div key={i}>
                         <Card hoverable bordered={false}>
-                            <h5>{guest.first_name + " " + guest.last_name}</h5>
-                            <h6>Details</h6>
-                            <p>{"Email: " + guest.email}</p>
-                            <p>{"Contact: " + guest.contact}</p>
-                            <p>
-                                {"Address: " +
-                                    guest.address +
-                                    ", " +
-                                    guest.city +
-                                    ", " +
-                                    guest.province}
-                            </p>
+                            <table class="table table-striped ">
+                                <thead class="thead-inverse">
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>
+                                            {guest.first_name +
+                                                " " +
+                                                guest.last_name}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>Email</th>
+                                        <td>{guest.email}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Contact</th>
+                                        <td>{guest.contact}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Address</th>
+                                        <td>
+                                            {guest.address +
+                                                ", " +
+                                                guest.city +
+                                                ", " +
+                                                guest.province}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
                             <Button
+                                style={{ float: "right" }}
                                 type="danger"
                                 onClick={() => this.deleteG(guest.guest_id)}
                             >
@@ -151,6 +174,7 @@ class GuestList extends Component {
                         <br />
                     </div>
                 ))}
+                <div style={{ height: 100 }} />
             </div>
         );
     }

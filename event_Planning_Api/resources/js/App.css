@@ -80,12 +80,12 @@ Color schemes
 
 /* unvisited link */
 a:link {
-    color: #ff3355;
+    color: black;
 }
 
 /* visited link */
 a:visited {
-    color: #ff3355;
+    color: black;
 }
 
 /* mouse over link */
@@ -122,5 +122,5 @@ End of color schemes
     .ant-menu-item-selected-active
     .ant-menu-item-selected
     .customClass {
-    background-color: #94618e;
+    background-color: #94618e !important;
 }

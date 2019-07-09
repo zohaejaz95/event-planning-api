@@ -36,7 +36,7 @@ export default class App extends Component {
                     <Route exact path="/" component={Home} />
                     <Switch>
                         <Route exact path="/ngos" component={NGO} />
-                        <Route exact path="/contact-us" component={Contact} />
+                        <Route exact path="/about-us" component={Contact} />
                         <Route
                             history={browserHistory}
                             exact
@@ -76,7 +76,12 @@ export default class App extends Component {
                         path="/ngos/register"
                         component={NGORegister}
                     />
-                    <Footer />
+                    {/* <Footer /> */}
+                    <div className="end-footer">
+                        <br />
+                        <p> Event Era ©2019 Created by COMSATS Students</p>
+                        <br />
+                    </div>
                 </div>
             </Router>
         );

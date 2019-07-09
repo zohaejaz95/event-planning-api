@@ -171,7 +171,7 @@ class Customer extends Component {
                         collapsed={this.state.collapsed}
                         style={{ background: "#fff" }}
                     >
-                        <div className="logo">Dashboard</div>
+                        <div className="logo" />
                         <Menu
                             mode="inline"
                             defaultSelectedKeys={["1"]}
@@ -206,12 +206,12 @@ class Customer extends Component {
                                 >
                                     New Event
                                 </Menu.Item>
-                                <Menu.Item
+                                {/* <Menu.Item
                                     key="4"
                                     onClick={this.todoList.bind(this)}
                                 >
                                     To-Do List
-                                </Menu.Item>
+                                </Menu.Item> */}
                             </SubMenu>
 
                             <SubMenu
@@ -278,7 +278,6 @@ class Customer extends Component {
                         </Header>
                         <Content
                             style={{
-                                margin: "24px 16px",
                                 padding: 24,
                                 background: "#fff",
                                 minHeight: 280

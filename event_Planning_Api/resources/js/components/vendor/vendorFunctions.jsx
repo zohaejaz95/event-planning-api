@@ -5,7 +5,7 @@ export const vendorProfile = () => {
     //newUser["api_token"] = token.api_token;
     console.log(token.api_token);
     return axios
-        .get("/api/vendor/token", {
+        .get("/api/vendors/token", {
             headers: {
                 "Content-Type": "application/json",
                 Access: "application/json",
@@ -18,6 +18,10 @@ export const vendorProfile = () => {
         })
         .catch(err => {
             console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
         });
 };
 
@@ -51,7 +55,7 @@ export const getLocation = () => {
     //newUser["api_token"] = token.api_token;
     //console.log(token.api_token);
     return axios
-        .get("/api/vendor/locations", {
+        .get("/api/vendors/locations", {
             headers: {
                 "Content-Type": "application/json",
                 Access: "application/json",
@@ -64,6 +68,10 @@ export const getLocation = () => {
         })
         .catch(err => {
             console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
         });
 };
 
@@ -85,6 +93,10 @@ export const getPayment = id => {
         })
         .catch(err => {
             console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
         });
 };
 
@@ -93,7 +105,7 @@ export const getCategory = () => {
     //newUser["api_token"] = token.api_token;
     //console.log(token.api_token);
     return axios
-        .get("/api/vendor/categories", {
+        .get("/api/vendors/categories", {
             headers: {
                 "Content-Type": "application/json",
                 Access: "application/json",
@@ -106,6 +118,10 @@ export const getCategory = () => {
         })
         .catch(err => {
             console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
         });
 };
 
@@ -148,6 +164,31 @@ export const createPackages = service => {
         })
         .catch(err => {
             console.log(err);
+        });
+};
+
+export const updatePackage = (id, service) => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    //newUser["api_token"] = token.api_token;
+    //console.log(token.api_token);
+    return axios
+        .post("/api/vendor/update/package/" + id, service, {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token
+            }
+        })
+        .then(response => {
+            console.log(response);
+            return true;
+        })
+        .catch(err => {
+            console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
         });
 };
 

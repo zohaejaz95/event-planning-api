@@ -183,7 +183,7 @@ class VendorInfo extends Component {
         );
         return (
             <div>
-                <div>
+                {/* <div>
                     <Tooltip placement="top" title="Total Vendors">
                         <Progress type="circle" percent={30} width={80} />
                     </Tooltip>
@@ -202,7 +202,7 @@ class VendorInfo extends Component {
                     <Tooltip placement="top" title="Approved">
                         <Progress type="circle" percent={100} width={80} />
                     </Tooltip>
-                </div>
+                </div> */}
                 <br />
 
                 {this.state.detail ? vendorDetail : vendorList}

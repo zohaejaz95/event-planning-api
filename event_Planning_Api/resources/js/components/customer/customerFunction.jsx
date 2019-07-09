@@ -533,14 +533,14 @@ export const feedback = item => {
         });
 };
 //customers/orders/update/payment/
-export const updatePaymentStatus = (id, status) => {
+export const updatePaymentStatus = (id, stat) => {
     const token = JSON.parse(localStorage.getItem("usertoken"));
     //newUser["api_token"] = token.api_token;
     console.log(token.api_token);
     return axios
         .post(
             "/api/customers/orders/update/payment/" + id,
-            { status: status },
+            { payment_status: stat },
             {
                 headers: {
                     "Content-Type": "application/json",

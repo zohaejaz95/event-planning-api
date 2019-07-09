@@ -44,7 +44,7 @@ class CustProfile extends Component {
     }
     render() {
         return (
-            <div className="contents ">
+            <div className="contents " style={{ minHeight: 440 }}>
                 <Row>
                     <Col span={4}>
                         <img
@@ -53,25 +53,40 @@ class CustProfile extends Component {
                             alt={this.state.pic_name}
                         />
                     </Col>
-                    <Col
-                        span={19}
-                        offset={1}
-                        style={{ background: "#EEE1EE", padding: "30px" }}
-                    >
-                        <h4>
-                            {this.state.profile.first_name +
-                                " " +
-                                this.state.profile.last_name}
-                        </h4>
-                        <h6>{this.state.profile.username}</h6>
-                        <p>Email: {profileData.email}</p>
-                        <p>Contact: {this.state.profile.contact}</p>
-                        <p>Address: {this.state.profile.address}</p>
+                    <Col span={19} offset={1} style={{ padding: "30px" }}>
+                        <table className="table table-striped ">
+                            <tbody>
+                                <tr>
+                                    <th>Name</th>
+                                    <td>
+                                        {this.state.profile.first_name +
+                                            " " +
+                                            this.state.profile.last_name}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Username</th>
+                                    <td>{this.state.profile.username}</td>
+                                </tr>
+                                <tr>
+                                    <th>Email</th>
+                                    <td>{profileData.email}</td>
+                                </tr>
+                                <tr>
+                                    <th>Contact</th>
+                                    <td>{this.state.profile.contact}</td>
+                                </tr>
+                                <tr>
+                                    <th>Address</th>
+                                    <td>{this.state.profile.address}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </Col>
                 </Row>
                 <br />
                 {/* <h4 className="text-to-center">Event Progress</h4> */}
-                <br />
+
                 {/* <div style={{ background: "#EEE1EE", padding: "30px" }}>
                     <Row gutter={16}>
                         <Col span={8}>

@@ -30,6 +30,7 @@ class Sponsors extends Component {
                         </TabPane>
                     </Tabs>
                 </div>
+                <div style={{ height: 100 }} />
             </div>
         );
     }

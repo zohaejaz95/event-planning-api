@@ -86,7 +86,7 @@ class Services extends Component {
                 <hr />
                 <Select
                     showSearch
-                    style={{ width: 200 }}
+                    style={{ width: 200, minHeight: 200 }}
                     placeholder="Select category to search"
                     optionFilterProp="children"
                     onChange={this.handleChange}
@@ -163,7 +163,7 @@ class Services extends Component {
 
                         <ServiceDetails service={this.state.show} />
 
-                        {/* <Button type="primary">Update</Button> */}
+                        <Button type="primary">Update</Button>
                         <Button
                             type="danger"
                             onClick={() =>

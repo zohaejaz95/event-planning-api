@@ -129,15 +129,37 @@ class NGOInfo extends Component {
                     </Button>
                     <br />
                     <br />
-                    <span>
-                        <Avatar size={64} icon="user" />
-                        <h4>{this.state.arr.ngo_name}</h4>
-                    </span>
-                    <br />
-                    <p>Email: {this.state.arr.email}</p>
-                    <p>Website: {this.state.arr.website}</p>
-                    <p>Contact: {this.state.arr.contact}</p>
-                    <p>Purpose: {this.state.arr.purpose}</p>
+                    <table className="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <td>
+                                    <Avatar size={64} icon="user" />
+                                </td>
+                                <td>
+                                    <h4>{this.state.arr.ngo_name}</h4>
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>Email</th>
+                                <td>{this.state.arr.email}</td>
+                            </tr>
+                            <tr>
+                                <th>Website</th>
+                                <td>{this.state.arr.website}</td>
+                            </tr>
+                            <tr>
+                                <th>Contact</th>
+                                <td>{this.state.arr.contact}</td>
+                            </tr>
+                            <tr>
+                                <th>Purpose</th>
+                                <td>{this.state.arr.purpose}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
                     <br />
                     <Button type="primary" onClick={this.accepted.bind(this)}>
                         Accept
@@ -150,7 +172,7 @@ class NGOInfo extends Component {
         );
         return (
             <div>
-                <div>
+                {/* <div>
                     <Tooltip placement="top" title="Total NGOs">
                         <Progress type="circle" percent={30} width={80} />
                     </Tooltip>
@@ -169,7 +191,7 @@ class NGOInfo extends Component {
                     <Tooltip placement="top" title="Approved">
                         <Progress type="circle" percent={100} width={80} />
                     </Tooltip>
-                </div>
+                </div> */}
                 <hr />
                 <br />
                 {this.state.detail ? ngoDetail : ngoList}

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Row, Col } from "antd";
 import ngoMain from "../images/ngo-main.jpg";
 import joinWork from "../images/join-work.jpg";
-
+import Footer from "./footer";
 class NGO extends Component {
     render() {
         return (
@@ -95,6 +95,7 @@ class NGO extends Component {
                     </Col>
                 </Row>
                 <br />
+                <Footer />
             </div>
         );
     }

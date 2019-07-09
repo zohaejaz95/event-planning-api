@@ -13,7 +13,7 @@ code {
         monospace;
 }
 .fixed-element {
-    z-index: 5;
+    z-index: 200;
     position: fixed;
     width: 100%;
 }
@@ -139,8 +139,24 @@ a {
     .ant-menu-item-selected-active
     .ant-menu-item-selected
     .customClass {
-    background-color: #94618e;
+    background-color: #94618e !important;
 }
 .ant-menu-item-selected {
     color: #49274a;
+}
+
+.table-striped > tbody > tr:nth-child(2n + 1) > td,
+.table-striped > tbody > tr:nth-child(2n + 1) > th {
+    background-color: #f8eee7;
+}
+
+li::selection {
+    background-color: #f8eee7;
+}
+li .ant-menu-item .ant-menu-item-selected {
+    background-color: #f8eee7;
+}
+
+.ant-menu-item .ant-menu-item-active .ant-menu-item-selected {
+    color: #94618e;
 }

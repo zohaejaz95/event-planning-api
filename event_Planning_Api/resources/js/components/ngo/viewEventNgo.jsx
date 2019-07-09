@@ -140,7 +140,7 @@ class ViewEventNGO extends Component {
     render() {
         //const { Option, OptGroup } = Select;
         const custEventList = (
-            <div>
+            <div style={{ minHeight: 300 }}>
                 <h4>Events</h4>
                 <hr />
                 <List
@@ -266,6 +266,7 @@ class ViewEventNGO extends Component {
                 ) : (
                     custEventList
                 )}
+                <div style={{ height: 100 }} />
             </div>
         );
     }

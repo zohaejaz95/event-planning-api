@@ -286,15 +286,18 @@ class AddPackages extends Component {
                                 )}
                             </Form.Item>
                             <Form.Item>
-                                {getFieldDecorator("description", {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message:
-                                                "Please input your Package Name!"
-                                        }
-                                    ]
-                                })(
+                                {getFieldDecorator(
+                                    "description"
+                                    // , {
+                                    //     rules: [
+                                    //         {
+                                    //             required: true,
+                                    //             message:
+                                    //                 "Please input your Package Name!"
+                                    //         }
+                                    //     ]
+                                    // }
+                                )(
                                     <TextArea
                                         rows={4}
                                         placeholder="Enter Description"

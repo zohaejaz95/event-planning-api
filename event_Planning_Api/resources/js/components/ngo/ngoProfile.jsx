@@ -45,24 +45,39 @@ class NGOProfile extends Component {
         };
         return (
             <div className="contents ">
+                <br />
+                <br />
                 <Row>
                     <Col span={4}>
                         {/* <div style={Logo} /> */}
                         <img className="avatar-uploader" src={pict} alt="" />
                     </Col>
-                    <Col
-                        span={19}
-                        offset={1}
-                        style={{ background: "#ECECEC", padding: "30px" }}
-                    >
-                        <h4>{this.state.ngo.ngo_name}</h4>
-                        <p>Email: {this.state.ngo.email}</p>
-                        <p>Contact: {"+" + this.state.ngo.contact}</p>
-                        <p>Purpose: {this.state.ngo.purpose}</p>
+                    <Col span={19} offset={1}>
+                        <table className="table table-striped ">
+                            <tbody>
+                                <tr>
+                                    <th>Organization Name</th>
+                                    <td>{this.state.ngo.ngo_name}</td>
+                                </tr>
+                                <tr>
+                                    <th>Email</th>
+                                    <td>{this.state.ngo.email}</td>
+                                </tr>
+                                <tr>
+                                    <th>Contact</th>
+                                    <td>{"+" + this.state.ngo.contact}</td>
+                                </tr>
+                                <tr>
+                                    <th>Purpose</th>
+                                    <td>{this.state.ngo.purpose}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </Col>
                 </Row>
-                <br />
-                <h4 className="text-to-center">Event Progress</h4>
+                <div style={{ height: 160 }} />
+                {/* <br />
+                <h4 className="text-to-center">Event Progress</h4> */}
                 <br />
                 {/* <div style={{ background: "#ECECEC", padding: "30px" }}>
                     <Row gutter={16}>

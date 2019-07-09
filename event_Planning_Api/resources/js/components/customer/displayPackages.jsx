@@ -44,7 +44,11 @@ class DisplayPackages extends Component {
         return (
             <div>
                 <br />
-                <h5>Approved Orders</h5>
+                {this.state.status ? (
+                    <h5>Approved Orders</h5>
+                ) : (
+                    <h5>Complete Orders</h5>
+                )}
                 <List
                     itemLayout="horizontal"
                     dataSource={this.state.approve}
@@ -61,7 +65,7 @@ class DisplayPackages extends Component {
                             {this.state.status ? (
                                 <Button
                                     type="primary"
-                                    onClick={() => this.onPayment(item.p_id)}
+                                    onClick={() => this.onPayment(item.o_id)}
                                 >
                                     Paid
                                 </Button>
@@ -71,20 +75,26 @@ class DisplayPackages extends Component {
                         </List.Item>
                     )}
                 />
-
-                <h5>Pending Orders</h5>
-                <List
-                    itemLayout="horizontal"
-                    dataSource={this.state.pend}
-                    renderItem={item => (
-                        <List.Item>
-                            <List.Item.Meta
-                                title={<a href="/">{item.name}</a>}
-                                description={item.description}
-                            />
-                        </List.Item>
-                    )}
-                />
+                {this.state.status ? (
+                    <div>
+                        <h5>Pending Orders</h5>
+                        <List
+                            itemLayout="horizontal"
+                            dataSource={this.state.pend}
+                            renderItem={item => (
+                                <List.Item>
+                                    <List.Item.Meta
+                                        title={<a href="/">{item.name}</a>}
+                                        description={item.description}
+                                    />
+                                </List.Item>
+                            )}
+                        />
+                    </div>
+                ) : (
+                    <div />
+                )}
+                <div style={{ height: 100 }} />
             </div>
         );
     }

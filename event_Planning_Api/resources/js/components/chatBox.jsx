@@ -190,7 +190,7 @@ class ChatBox extends Component {
                                         <br />
                                         <p
                                             style={{
-                                                backgroundColor: "#D3D3D3",
+                                                backgroundColor: "#f8eee7",
                                                 fontSize: 16,
                                                 float: "left"
                                             }}

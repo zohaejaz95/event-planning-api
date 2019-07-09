@@ -11,12 +11,11 @@ function callback(key) {
 class Orders extends Component {
     render() {
         return (
-            <div>
+            <div style={{ minHeight: 400 }}>
                 <div
                     style={{
                         background: "#fff",
-                        padding: 32,
-                        minHeight: 280
+                        padding: 32
                     }}
                     className="text-to-left"
                 >
@@ -57,6 +56,7 @@ class Orders extends Component {
                         </TabPane>
                     </Tabs>
                 </div>
+                <div style={{ height: 40 }} />
             </div>
         );
     }

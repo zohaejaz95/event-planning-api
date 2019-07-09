@@ -70,7 +70,7 @@ class CustOrderForm extends Component {
                                 notification["info"]({
                                     message: "Chat Now",
                                     description:
-                                        "Now you can chat with the customer. Open messages now!"
+                                        "Now you can chat with the vendor. Open messages now!"
                                 });
                                 this.setState({
                                     visible: false

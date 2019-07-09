@@ -435,14 +435,17 @@ class AddService extends Component {
                                 )}
                             </Form.Item>
                             <Form.Item>
-                                {getFieldDecorator("description", {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message: "Please Enter Description!"
-                                        }
-                                    ]
-                                })(
+                                {getFieldDecorator(
+                                    "description"
+                                    // , {
+                                    //     rules: [
+                                    //         {
+                                    //             required: true,
+                                    //             message: "Please Enter Description!"
+                                    //         }
+                                    //     ]
+                                    // }
+                                )(
                                     <TextArea
                                         rows={4}
                                         placeholder="Enter Description"
@@ -572,7 +575,7 @@ class AddService extends Component {
                                     rules: [
                                         {
                                             required: true,
-                                            message: "Please Select Category!"
+                                            message: "Please Enter Price!"
                                         }
                                     ]
                                 })(

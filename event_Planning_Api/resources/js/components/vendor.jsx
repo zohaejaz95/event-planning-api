@@ -193,7 +193,7 @@ class Vendor extends Component {
                         collapsed={this.state.collapsed}
                         style={{ background: "#fff" }}
                     >
-                        <div className="logo">Dashboard</div>
+                        <div className="logo" />
                         <Menu mode="inline" defaultSelectedKeys={["1"]}>
                             <Menu.Item
                                 key="1"
@@ -304,7 +304,6 @@ class Vendor extends Component {
                         </Header>
                         <Content
                             style={{
-                                margin: "24px 16px",
                                 padding: 24,
                                 background: "#fff",
                                 minHeight: 280
