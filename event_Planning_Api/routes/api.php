@@ -63,6 +63,7 @@ Route::get('admin/vendor/approved/','VendorController@approved');
 Route::get('admin/vendor/rejected/','VendorController@rejected');
 Route::get('admin/vendor/pending/','VendorController@pending');
 
+<<<<<<< HEAD
 Route::post('customer/newevent/','CustomerEventController@store');
 Route::post('customer/update/event/{id}','CustomerEventController@edit');
 Route::get('customer/events/list/{status}','CustomerEventController@index');
@@ -82,6 +83,27 @@ Route::get('customer/orders/complete/{type}/{id}','CustomerEventController@get_o
 
 Route::post('customers/orders/update/order/{id}','CustomerEventController@update_order_status');
 Route::post('customers/orders/update/payment/{id}','CustomerEventController@update_payment_status');
+=======
+Route::post('customer/newevent/','customerEventController@store');
+Route::post('customer/update/event/{id}','customerEventController@edit');
+Route::get('customer/events/list/{status}','customerEventController@index');
+Route::get('customer/events/active','customerEventController@activeEvents');
+
+Route::get('customer/events/expenses/{id}','customerEventController@get_expenses');
+Route::get('vendor/package/cost/{id}','customerEventController@get_package_cost');
+Route::delete('customer/events/delete/{id}','customerEventController@destroy');
+Route::post('customer/events/update/status','customerEventController@update_event_status');
+
+Route::get('customer/events/{id}','customerEventController@show');
+Route::post('customer/orders/new','customerEventController@new_order');
+Route::get('customer/orders/{id}','customerEventController@get_order');
+Route::get('customer/orders/pending/{type}/{id}','customerEventController@get_order_pending');
+Route::get('customer/orders/approved/{type}/{id}','customerEventController@get_order_approved');
+Route::get('customer/orders/complete/{type}/{id}','customerEventController@get_order_complete');
+
+Route::post('customers/orders/update/order/{id}','customerEventController@update_order_status');
+Route::post('customers/orders/update/payment/{id}','customerEventController@update_payment_status');
+>>>>>>> 066393187258e23258bf1087bc4ea49b014e8227
 Route::post('customer/newcontact/','ContactListController@store');
 Route::get('customer/contacts','ContactListController@index');
 Route::delete('customer/contacts/delete/{id}','ContactListController@destroy');

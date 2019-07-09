@@ -163,7 +163,7 @@ class Services extends Component {
 
                         <ServiceDetails service={this.state.show} />
 
-                        <Button type="primary">Update</Button>
+                        {/* <Button type="primary">Update</Button> */}
                         <Button
                             type="danger"
                             onClick={() =>

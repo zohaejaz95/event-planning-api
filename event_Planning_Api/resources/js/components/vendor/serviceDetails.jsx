@@ -1,16 +1,24 @@
 import React, { Component } from "react";
 import photography from "../../images/photography.jpg";
+<<<<<<< HEAD
 import { Avatar, Row, Col, Carousel, Card } from "antd";
+=======
+import { Avatar, Row, Col } from "antd";
+>>>>>>> 066393187258e23258bf1087bc4ea49b014e8227
 //import sjh from "../../../../storage/app/public/services/";
 import { getServImgs } from "./vendorFunctions";
 import ReactPlayer from "react-player";
 var pict = [];
+<<<<<<< HEAD
 const { Meta } = Card;
+=======
+>>>>>>> 066393187258e23258bf1087bc4ea49b014e8227
 class ServiceDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
             pic_name: [],
+<<<<<<< HEAD
             images: [],
             v: false,
             p: false,
@@ -103,6 +111,37 @@ class ServiceDetails extends Component {
             }
         });
     }
+=======
+            images: []
+        };
+    }
+    componentDidMount() {
+        getServImgs(this.props.service.id).then(res => {
+            if (res) {
+                //var imga=res.data
+                console.log(res);
+                var arr = [];
+                for (var i = 0; i < res.length; i++) {
+                    arr = res[i];
+                    var pic = arr.path;
+                    var fields = pic.split("\\");
+                    console.log(fields[9]);
+                    console.log(pic);
+
+                    this.state.pic_name.push(fields[9]);
+
+                    pict.push(
+                        require(`../../../../storage/app/public/services/` +
+                            fields[9])
+                    );
+                    this.setState({
+                        images: res.data
+                    });
+                }
+            }
+        });
+    }
+>>>>>>> 066393187258e23258bf1087bc4ea49b014e8227
 
     render() {
         const show = this.props.service;

@@ -32,8 +32,12 @@ class EventOrders extends Component {
             a_services: [],
             a_packages: [],
             c_services: [],
+<<<<<<< HEAD
             c_packages: [],
             noth: []
+=======
+            c_packages: []
+>>>>>>> 066393187258e23258bf1087bc4ea49b014e8227
         };
         this.approvedServices = this.approvedServices.bind(this);
         this.approvedPackages = this.approvedPackages.bind(this);
@@ -254,6 +258,56 @@ class EventOrders extends Component {
         });
     }
 
+    completeServices() {
+        getCompleteOrders(this.props.event_id, "services").then(response => {
+            if (response) {
+                this.setState({
+                    c_services: response.data.data
+                });
+                var res = response.data.data;
+                for (var i = 0; i < res.length; i++) {
+                    var id = res[i];
+                    console.log("service id: " + id.service_id);
+                    getService(id.service_id).then(res => {
+                        //console.log(id);
+                        if (res) {
+                            var val = res[0];
+                            this.state.cS.push(val);
+                            //console.log(res);
+                        }
+                    });
+                }
+            }
+            console.log(this.state.cS);
+            //console.log(response);
+        });
+    }
+
+    completePackages() {
+        getCompleteOrders(this.props.event_id, "packages").then(response => {
+            if (response) {
+                this.setState({
+                    c_packages: response.data.data
+                });
+                var res = response.data.data;
+                for (var i = 0; i < res.length; i++) {
+                    var id = res[i];
+                    console.log("pPackage: " + id.package_id);
+                    getPackage(id.package_id).then(res => {
+                        //console.log(id);
+                        if (res) {
+                            var val = res[0];
+                            this.state.cP.push(val);
+                            //console.log(res);
+                        }
+                    });
+                }
+            }
+            console.log(this.state.cP);
+            //console.log(response);
+        });
+    }
+
     componentDidMount() {
         this.setState({
             id: this.props.event_id
@@ -297,13 +351,21 @@ class EventOrders extends Component {
                     />
                 ) : this.state.pServices ? (
                     <DisplayServices
+<<<<<<< HEAD
                         pending={this.state.noth}
+=======
+                        pending={this.state.pS}
+>>>>>>> 066393187258e23258bf1087bc4ea49b014e8227
                         approved={this.state.cS}
                         status={false}
                     />
                 ) : this.state.pPackages ? (
                     <DisplayPackages
+<<<<<<< HEAD
                         pending={this.state.noth}
+=======
+                        pending={this.state.pP}
+>>>>>>> 066393187258e23258bf1087bc4ea49b014e8227
                         approved={this.state.cP}
                         status={false}
                     />

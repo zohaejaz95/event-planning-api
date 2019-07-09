@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+<<<<<<< HEAD
 import ServiceDetails from "./serviceDetails";
 //import photography from "../../../../storage/app/public/packages/1561441602_leonardo.jpg";
 import { Row, Col, Carousel, Card } from "antd";
@@ -7,14 +8,26 @@ import { getPckgImgs, getPckgPrice, getPckgServices } from "./vendorFunctions";
 //var pict = [];
 const { Meta } = Card;
 class PackageDetails extends Component {
+=======
+import photography from "../../../../storage/app/public/packages/1561441602_leonardo.jpg";
+import { Row, Col } from "antd";
+import ReactPlayer from "react-player";
+import { getPckgImgs } from "./vendorFunctions";
+var pict = [];
+class ServiceDetails extends Component {
+>>>>>>> 066393187258e23258bf1087bc4ea49b014e8227
     constructor(props) {
         super(props);
         this.state = {
             name: [],
             services: [],
             pic_name: [],
+<<<<<<< HEAD
             pict: [],
             price: ""
+=======
+            pict: []
+>>>>>>> 066393187258e23258bf1087bc4ea49b014e8227
         };
     }
     componentDidMount() {
@@ -24,7 +37,11 @@ class PackageDetails extends Component {
                 //var imga=res.data
                 console.log(res);
                 var arr = [];
+<<<<<<< HEAD
                 for (var i = 0; i < res.length; i++) {
+=======
+                for (var i = 0; i <= res.length; i++) {
+>>>>>>> 066393187258e23258bf1087bc4ea49b014e8227
                     arr = res[i];
                     var pic = arr.path;
                     var fields = pic.split("\\");
@@ -40,6 +57,7 @@ class PackageDetails extends Component {
                 }
             }
         });
+<<<<<<< HEAD
         getPckgPrice(this.props.package.p_id).then(res => {
             if (res) {
                 this.setState({
@@ -55,6 +73,8 @@ class PackageDetails extends Component {
                 });
             }
         });
+=======
+>>>>>>> 066393187258e23258bf1087bc4ea49b014e8227
     }
     render() {
         const show = this.props.package;
@@ -63,6 +83,7 @@ class PackageDetails extends Component {
             <div>
                 <div className="text-to-left">
                     <Row>
+<<<<<<< HEAD
                         <Col
                             span={11}
                             offset={1}
@@ -136,6 +157,25 @@ class PackageDetails extends Component {
                                     </tbody>
                                 </table>
                             </Card>
+=======
+                        <Col span={14}>
+                            <img
+                                src={photography}
+                                alt=""
+                                style={{ width: "100%" }}
+                            />
+                            {/* {this.state.pict.map((imag, i) => (
+                                <img
+                                    key={i}
+                                    alt="example"
+                                    src={imag}
+                                    style={{ width: "100%" }}
+                                />
+                            ))} */}
+                        </Col>
+                        <Col span={9} offset={1}>
+                            <ReactPlayer url={show.videos} playing />
+>>>>>>> 066393187258e23258bf1087bc4ea49b014e8227
                         </Col>
                     </Row>
                     <br />
