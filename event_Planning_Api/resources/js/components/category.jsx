@@ -7,7 +7,8 @@ import {
     getServicesCat,
     getServicesCatToken,
     vendorIDProfile,
-    getPayment
+    getPayment,
+    getServicesCatVen
 } from "./vendor/vendorFunctions";
 import ServiceDetails from "./vendor/serviceDetails";
 import texture from "../images/texture.jpg";
@@ -99,7 +100,7 @@ class Category extends Component {
         //         detail: false
         //     });
         // }
-        getServicesCatToken("photographs", "36").then(res => {
+        getServicesCatVen("photographs", "31").then(res => {
             if (res) {
                 console.log(res);
 
