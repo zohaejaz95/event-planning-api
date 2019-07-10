@@ -96,7 +96,15 @@ Route::post('vendor/create/service','VendorController@create_service');
 Route::get('vendor/get/service/{id}','VendorController@get_service');
 Route::get('vendor/get/service/category/{cat}','VendorController@get_service_cat');
 Route::get('vendor/get/service/category/token/{cat}','VendorController@get_service_cat_token');
+
+
+//--------------------------------
 Route::get('vendor/services/category/{cat}/{id}','VendorController@get_service_cat_ven');
+Route::get('vendor/services/for/customer/{id}','VendorController@ven_services_for_cust');
+//---------------------------------
+
+
+
 Route::get('vendor/get/service/all/token','VendorController@get_vendor_services');
 Route::post('vendor/service/{id}/add/image','VendorController@add_service_img');
 Route::get('vendor/service/{id}/get/image','VendorController@get_serv_img');
