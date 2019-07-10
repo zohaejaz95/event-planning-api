@@ -105,7 +105,7 @@ class Category extends Component {
                 console.log(res);
 
                 this.setState({
-                    services: res
+                    services: res.data.data
                 });
             }
         });

@@ -131,7 +131,7 @@ Route::get('vendor/payment_methods/{id}','VendorController@get_payment_methods')
 Route::get('vendor/get/services','VendorController@get_vendor_services');
 
 //feedbacks
-Route::get('customer/feedbacks/service/{id}','feedback_controller@show_cust_service');
+Route::get('customers/feedbacks/service/{id}','feedback_controller@show_cust_service');
 Route::get('customer/feedbacks/package/{id}','feedback_controller@show_cust_package');
 Route::get('feedbacks/service/{id}','feedback_controller@show_service');
 Route::get('feedbacks/package/{id}','feedback_controller@show_package');

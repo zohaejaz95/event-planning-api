@@ -15,7 +15,7 @@ class Feedbacks extends Component {
         var feedbackPath;
         if (this.props.type == "service") {
             var id = this.props.details.id;
-            feedbackPath = "api/customer/feedbacks/service/" + id;
+            feedbackPath = "api/customers/feedbacks/service/" + id;
             getFeedback(feedbackPath).then(res => {
                 if (res) {
                     var c_id;
