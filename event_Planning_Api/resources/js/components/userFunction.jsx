@@ -89,6 +89,50 @@ export const getPendingVendors = () => {
         });
 };
 
+export const getApprovedVendors = cat => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    return axios
+        .get("/api/admin/vendor/approved/" + cat, {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token
+            }
+        })
+        .then(response => {
+            return response.data;
+        })
+        .catch(err => {
+            console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
+        });
+};
+
+export const getAllApprovedVendors = () => {
+    const token = JSON.parse(localStorage.getItem("usertoken"));
+    return axios
+        .get("/api/admin/vendor/all/approved/", {
+            headers: {
+                "Content-Type": "application/json",
+                Access: "application/json",
+                Authorization: "Bearer " + token.api_token
+            }
+        })
+        .then(response => {
+            return response.data;
+        })
+        .catch(err => {
+            console.log(err);
+            console.log(typeof err);
+            if (err.response) {
+                console.log(err.response);
+            }
+        });
+};
+
 export const getPendingNGOs = () => {
     const token = JSON.parse(localStorage.getItem("usertoken"));
     return axios

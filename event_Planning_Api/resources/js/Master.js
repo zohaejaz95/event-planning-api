@@ -12,10 +12,12 @@ import "antd/dist/antd.css";
 import Header from "./components/header";
 import Home from "./components/home";
 import NGO from "./components/ngo";
+import Packages from "./components/packages";
 import Contact from "./components/contactUs";
 //import Services from "./components/services";
 import Category from "./components/category";
-import Order from "./components/order";
+//import Order from "./components/order";
+import VendorsList from "./components/vendorsList";
 
 import Admin from "./components/admin";
 import NGORegister from "./components/ngoRegister";
@@ -23,7 +25,7 @@ import VendorSignup from "./components/vendorRegister";
 import Vendor from "./components/vendor";
 import Customer from "./components/customer";
 //import CustProfile from "./components/customer/profile";
-import Footer from "./components/footer";
+//import Footer from "./components/footer";
 import NGOSidebar from "./components/ngoSidebar";
 
 export default class App extends Component {
@@ -43,13 +45,14 @@ export default class App extends Component {
                             path="/admin"
                             component={Admin}
                         />
-                        <Route exact path="/services" component={Category} />
+                        <Route exact path="/services" component={VendorsList} />
                         <Route
                             exact
                             path="/services/category"
-                            component={Order}
+                            {...this.props}
+                            component={Category}
                         />
-
+                        <Route exact path="/packages" component={Packages} />
                         <Route
                             exact
                             path="/vendor-register"

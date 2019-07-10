@@ -59,7 +59,8 @@ Route::put('admin/NGO/update/{id}','NgoController@updateStatus');
 Route::get('admin/NGO/approved/','NgoController@approved');
 Route::get('admin/NGO/rejected/','NgoController@rejected');
 Route::get('admin/NGO/pending/','NgoController@pending');
-Route::get('admin/vendor/approved/','VendorController@approved');
+Route::get('admin/vendor/approved/{cat}','VendorController@approved');
+Route::get('admin/vendor/all/approved/','VendorController@approved_All');
 Route::get('admin/vendor/rejected/','VendorController@rejected');
 Route::get('admin/vendor/pending/','VendorController@pending');
 
@@ -95,11 +96,12 @@ Route::post('vendor/create/service','VendorController@create_service');
 Route::get('vendor/get/service/{id}','VendorController@get_service');
 Route::get('vendor/get/service/category/{cat}','VendorController@get_service_cat');
 Route::get('vendor/get/service/category/token/{cat}','VendorController@get_service_cat_token');
+Route::get('vendor/services/category/{cat}/{id}','VendorController@get_service_cat_ven');
 Route::get('vendor/get/service/all/token','VendorController@get_vendor_services');
 Route::post('vendor/service/{id}/add/image','VendorController@add_service_img');
 Route::get('vendor/service/{id}/get/image','VendorController@get_serv_img');
 
-Route::put('vendor/update/serivce/{id}','VendorController@update_service');
+Route::post('vendors/update/serivces/{id}','VendorController@update_service');
 Route::delete('vendor/delete/serivce/{id}','VendorController@delete_service');
 Route::post('vendor/create/package','VendorController@create_package');
 Route::get('vendor/get/package/{id}','VendorController@get_package');

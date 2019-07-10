@@ -106,6 +106,7 @@ class GuestList extends Component {
                                     ]
                                 })(
                                     <Input
+                                        addonBefore={prefixSelector}
                                         prefix={
                                             <Icon
                                                 type="phone"

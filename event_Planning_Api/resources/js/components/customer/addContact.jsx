@@ -16,6 +16,13 @@ class AddContact extends Component {
         });
     }
     render() {
+        const prefixSelector = getFieldDecorator("prefix", {
+            initialValue: "92"
+        })(
+            <Select>
+                <Option value="92">+92</Option>
+            </Select>
+        );
         const { getFieldDecorator } = this.props.form;
         return (
             <div className="contents">
@@ -92,6 +99,7 @@ class AddContact extends Component {
                                     ]
                                 })(
                                     <Input
+                                        addonBefore={prefixSelector}
                                         prefix={
                                             <Icon
                                                 type="phone"

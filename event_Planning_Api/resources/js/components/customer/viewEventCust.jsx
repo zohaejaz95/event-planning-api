@@ -221,7 +221,7 @@ class ViewEventCust extends Component {
     }
     render() {
         const custEventList = (
-            <div>
+            <div style={{ minHeight: 440 }}>
                 {"Inactive "}
                 <Switch defaultChecked onChange={this.onChange} />
                 {" Active"}
@@ -378,7 +378,7 @@ class ViewEventCust extends Component {
         );
 
         return (
-            <div style={{ minHeight: 440 }}>
+            <div >
                 <br />
 
                 {this.state.list ? (

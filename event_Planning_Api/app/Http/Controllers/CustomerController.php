@@ -88,7 +88,7 @@ class CustomerController extends Controller
             */
             print_r($path);
             $customer->update([
-                'profile_pic' => $path
+                'profile_pic' => $request->input('img_name')
             ]);
         }
 

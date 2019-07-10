@@ -227,7 +227,7 @@ class Customer extends Component {
                                     key="5"
                                     onClick={this.contacts.bind(this)}
                                 >
-                                    Invitaions
+                                    Invitations
                                 </Menu.Item>
                                 <Menu.Item
                                     key="6"

@@ -198,7 +198,7 @@ class Packages extends Component {
                     <div>
                         <Button
                             type="primary"
-                            onClick={this.toggleDetail.bind(this)}
+                            onClick={this.toggleDetails(this.state.pack)}
                         >
                             Back
                         </Button>

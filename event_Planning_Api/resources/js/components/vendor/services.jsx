@@ -3,6 +3,7 @@ import { List, Avatar, Button, Icon, Select, message, Row, Col } from "antd";
 //import ReactPlayer from "react-player";
 import ServiceDetails from "./serviceDetails";
 import avatar from "../../images/avatar.jpg";
+import UpdateService from "./updateService";
 import { getServicesCatToken, deleteServices } from "./vendorFunctions";
 
 const ButtonGroup = Button.Group;
@@ -15,7 +16,8 @@ class Services extends Component {
             category: "",
             service: [],
             show: [],
-            profile: []
+            profile: [],
+            edit: false
         };
         this.toggleDetail = this.toggleDetail.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -25,11 +27,19 @@ class Services extends Component {
     toggleDetail(item) {
         this.setState({
             detail: true,
-            show: item
+            show: item,
+            edit: false
         });
     }
     toggleDetails() {
         this.setState({
+            detail: false,
+            edit: false
+        });
+    }
+    toggleEdit() {
+        this.setState({
+            edit: true,
             detail: false
         });
     }
@@ -81,12 +91,12 @@ class Services extends Component {
             console.log("focus");
         }
         const serviceList = (
-            <div>
+            <div style={{ minHeight: 420 }}>
                 <h4>Services</h4>
                 <hr />
                 <Select
                     showSearch
-                    style={{ width: 200, minHeight: 200 }}
+                    style={{ width: 200 }}
                     placeholder="Select category to search"
                     optionFilterProp="children"
                     onChange={this.handleChange}
@@ -163,7 +173,12 @@ class Services extends Component {
 
                         <ServiceDetails service={this.state.show} />
 
-                        {/* <Button type="primary">Update</Button> */}
+                        <Button
+                            type="primary"
+                            onClick={this.toggleEdit.bind(this)}
+                        >
+                            Update
+                        </Button>
                         <Button
                             type="danger"
                             onClick={() =>
@@ -181,7 +196,21 @@ class Services extends Component {
             <div>
                 <br />
 
-                {this.state.detail ? serviceDetail : serviceList}
+                {this.state.detail ? (
+                    serviceDetail
+                ) : this.state.edit ? (
+                    <div>
+                        <Button
+                            type="primary"
+                            onClick={() => this.toggleDetail(this.state.show)}
+                        >
+                            Back
+                        </Button>
+                        <UpdateService service={this.state.show} />
+                    </div>
+                ) : (
+                    serviceList
+                )}
             </div>
         );
     }

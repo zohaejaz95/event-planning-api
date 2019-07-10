@@ -142,8 +142,7 @@ class Home extends Component {
                     >
                         <Link
                             to={{
-                                pathname: "/services",
-                                state: { service: false }
+                                pathname: "/services"
                             }}
                         >
                             View more

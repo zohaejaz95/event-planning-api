@@ -119,7 +119,7 @@ class NgoController extends Controller
             */
             print_r($path);
             $ngo->update([
-                'profile_pic' => $path
+                'profile_pic' => $request->input('img_name')
             ]);
         }
         }

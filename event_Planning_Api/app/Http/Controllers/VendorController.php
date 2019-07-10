@@ -53,11 +53,42 @@ class VendorController extends Controller
             }
     }
     }
-    public function approved(request $request){
+    public function approved(request $request, $cat){
         $user=User::findOrFail(Auth::guard('api')->id());
-        if($user->user_type=="admin"){
-            $vendor=vendor::where('account_status','approved')->paginate(15);
+        if($user->user_type=="admin"||$user->user_type=="customer"){
+            $vendor=vendor::where('account_status','approved')->join('category_events','vendors.vendor_id','=','category_events.vendor_id')->paginate(15);
+             $category=category_event::where('category',$cat)->join('vendors','category_events.vendor_id','=','vendors.vendor_id')->get();
+             return $category;
+
+            // if($category){
+            //     if($cat==$category->category){
+            //         return vendorResource::collection($vendor);
+            //     }
+            // }
+            // else{
+            //     return "No vendors in this category!";
+            // }
+            //return vendorResource::collection($vendor);
+            
+        }
+    }
+
+    public function approved_All(request $request){
+        $user=User::findOrFail(Auth::guard('api')->id());
+        if($user->user_type=="admin"||$user->user_type=="customer"){
+            $vendor=vendor::where('account_status','approved')->paginate(5);
+            // $category=category_event::where('vendor_id',$vendor[0]->vendor_id)->where('category',$cat)->get();
+            // //return $category;
+            // if($category){
+            //     if($cat==$category['category']){
+            //         return vendorResource::collection($vendor);
+            //     }
+            // }
+            // else{
+            //     return "No vendors in this category!";
+            // }
             return vendorResource::collection($vendor);
+            
         }
     }
     public function rejected(request $request){
@@ -129,7 +160,7 @@ class VendorController extends Controller
             */
             print_r($path);
             $vendor->update([
-                'logo' => $path
+                'logo' => $request->input('img_name')
             ]);
         }
         $vendor=DB::select("select vendor_id from vendors where username = '$user->name'");
@@ -254,7 +285,7 @@ public function add_service_img(Request $request,$id){
                 //File::put(storage_path(). '\public\vendor\logos\\' . $imageName, base64_decode($image));
             $path = Storage::disk('local')->path('public\services\\'.$imageName);
             $simg=service_images::create([
-                'path'=> $path,
+                'path'=> $request->input('img_name'),
                 'service_id'=> $id
             ]);    
         
@@ -276,6 +307,7 @@ public function update_service(Request $request,$id){
         'category'=>$request->input('category'),
         'event_type'=>$request->input('event_type'),
         'price'=>$request->input('price'),
+        'videos'=>$request->input('videos'),
         'description'=>$request->input('description'),
         'vendor_id'=>$vendor[0]->vendor_id
     ]);
@@ -430,6 +462,37 @@ public function get_service_cat_token($cat){
     }
 }
 
+public function get_service_cat_ven($cat, $id){
+    $user=User::findOrFail(Auth::guard('api')->id());
+    if(($user->user_type=="customer")){
+        //$vendor=DB::select("select vendor_id from vendors where username = '$user->name'");
+        $service= services::where('category',$id)->get();
+        return $service;
+    // if($cat=='venues'){
+    //     return services::where('vendor_id',$id)->where('category',$cat)->join('venues','services.id','=','venues.service_id')->paginate(15);
+    // }
+    // else if($cat=='photographs'){
+    //     //return services::findOrFail($id)->photographs()->get();
+    //       return services::where('vendor_id',$id)->where('category',$cat)->join('photographs','services.id','=','photographs.services_id')->paginate(15);
+    // }
+    // else if($cat=='makeup artists'){
+    //     return services::where('vendor_id',$id)->where('category',$cat)->join('makeup_artists','services.id','=','makeup_artists.service_id')->paginate(15);
+    // }
+    // else if($cat=='entertainment'){
+    //     return services::where('vendor_id',$id)->where('category',$cat)->join('entertainments','services.id','=','entertainments.service_id')->paginate(15);
+    // }
+    // else if($cat=='car rental'){
+    //     return services::where('vendor_id',$id)->where('category',$cat)->join('car_rentals','services.id','=','car_rentals.service_id')->paginate(15);
+    // }
+    // else if($cat=='catering'){
+    //     return services::where('vendor_id',$id)->where('category',$cat)->join('caterings','services.id','=','caterings.service_id')->join('food_services','caterings.id','=','food_services.cater_id')->paginate(15);
+    // }
+    // else{
+    //     return services::where('vendor_id',$id)->where('category',$cat)->paginate(15);
+    // }
+    }
+}
+
 public function delete_service(Request $request,$id){
     $user=User::findOrFail(Auth::guard('api')->id());
     if($user->user_type=="vendor"){
@@ -497,7 +560,7 @@ public function add_package_img(Request $request,$id){
                 //File::put(storage_path(). '\public\vendor\logos\\' . $imageName, base64_decode($image));
             $path = Storage::disk('local')->path('public\packages\\'.$imageName);
             $simg=package_images::create([
-                'path'=> $path,
+                'path'=> $request->input('img_name'),
                 'package_id'=> $id
             ]);    
         
@@ -559,6 +622,7 @@ public function update_package(Request $request,$id){
         $package->update([
             'name'=>$request->input('name'),
             'expiration_date'=>$request->input('expiration_date'),
+            'videos'=>$request->input('videos'),
             'description'=>$request->input('description'),
             'vendor_id'=>$vendor[0]->vendor_id
         ]);

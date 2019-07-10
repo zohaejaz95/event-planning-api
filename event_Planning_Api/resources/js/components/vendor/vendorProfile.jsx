@@ -25,18 +25,19 @@ class VendorProfile extends Component {
                 this.setState({
                     profile: JSON.parse(localStorage.getItem("profile"))
                 });
-                console.log(res.data[0]);
-                var arr = "";
-                arr = res.data[0];
-                var pic = arr.logo;
-                var fields = pic.split("\\");
-                console.log(fields[10]);
-                console.log(pic);
-                this.setState({
-                    pic_name: fields[10]
-                });
+                // console.log(res.data[0]);
+
+                var arr = res.data[0];
+                // var pic = arr.logo;
+                // var fields = pic.split("\\");
+                // console.log(fields[10]);
+                // console.log(pic);
+                // this.setState({
+                //     pic_name: fields[10]
+                // });
                 pict = require(`../../../../storage/app/public/vendor/logos/` +
-                    fields[10]);
+                    arr.logo);
+                //pict = arr.logo;
             }
         });
         getCategory().then(resp => {
